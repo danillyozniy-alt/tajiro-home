@@ -1,0 +1,188 @@
+/* ==========================================================================
+   tajiro — Home · 01 · Hero
+   Figma: HoPojxNiFElmltha1NOl3N, node 511:151
+   Первый экран: копирайт слева, фотоблок справа, гирих-паттерн подложкой.
+   ========================================================================== */
+
+.s-01 {
+  --s01-logo-dot:       #2a3d2e;                   /* точка над ȷ (нет в токенах) */
+
+  overflow: hidden;   /* гирих уходит за правый край */
+  background: var(--c-bg);
+}
+
+/* --- Декоративная подложка ------------------------------------------------ */
+/* Шапка вынесена в отдельный компонент (см. css/00-header.css), секция стала
+   на 96px ниже. Паттерн поднят на ту же величину — фаза решётки относительно
+   страницы сохраняется, как в кадре Figma 1440×880. */
+.s-01__girih {
+  position: absolute;
+  z-index: 0;
+  top: -96px;
+  right: 0;
+  width: 760px;
+  height: 880px;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* --- Первый экран --------------------------------------------------------- */
+.s-01__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);  /* 660 / 500 */
+  column-gap: 40px;
+  align-items: center;   /* колонки по общей оси: у фото и текста разная высота */
+  padding-top: 74px;
+  padding-bottom: 14px;   /* добор до 880px высоты кадра */
+}
+
+/* --- Копирайт ------------------------------------------------------------- */
+.s-01__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Отступы ниже выставлены по фактическим глифам макета, а не по pad-дивам
+   Figma: у Figma и CSS разная развёртка line-height, поэтому «26/22/34/16/44/22»
+   давали снос 6–14px вниз. Значения сверены с рендером 1440×880. */
+.s-01__title {
+  margin-top: 14px;
+
+  /* Строки выравниваются по длине автоматически. Без этого рваньё выходило
+     294 / 413 / 637 / 540 px при колонке в 654: третья строка упиралась в
+     самый край, а следующая начиналась с обрубка «in». */
+  text-wrap: balance;
+}
+
+/* Дефис внутри слова — законное место переноса, и браузер им пользовался:
+   «Built-» оставалось на строке, «in AI Influencers» уезжало на следующую.
+   Слово разорвано пополам, причём ровно то, на котором держится вся фраза.
+   Здесь перенос внутри него запрещён.
+
+   Обычный дефис в неразрывной обёртке, а не символ U+2011: с ним фраза
+   перестала бы находиться поиском и копировалась бы с невидимой подменой. */
+.s-01__nobr { white-space: nowrap; }
+
+.s-01__lead {
+  max-width: 520px;
+  margin-top: 26px;
+}
+
+.s-01__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-top: 36px;
+}
+
+.s-01__arrow {
+  font-size: 15px;
+  transition: transform 0.18s ease;
+}
+
+.s-01__talk:hover .s-01__arrow { transform: translateX(2px); }
+
+.s-01__note { margin-top: 12px; }
+
+
+/* --- Фотоблок -------------------------------------------------------------
+   Арка снята по правке: обводка читалась чужеродной, а сам силуэт съедал
+   кадр. Вместо неё приём с экомзи (.hero-photo + .hero-photo-glow):
+   скруглённый прямоугольник, глубокая тень и зелёный ореол под ним.
+   -------------------------------------------------------------------------- */
+.s-01__visual {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+}
+
+.s-01__portrait {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  aspect-ratio: 500 / 620;
+  border-radius: 24px;
+  background: var(--c-surface);
+}
+
+.s-01__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+
+/* Ореола и тени под кадром нет намеренно: на кремовом фоне и то и другое
+   читалось грязным зелёным пятном. Кадр держится собственным контуром. */
+.s-01__glow { display: none; }
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-01__inner { padding-top: 64px; }
+}
+
+/* Пока колонки ещё рядом, заголовок в 72px перестаёт помещаться раньше,
+   чем сработает общий брейкпоинт .h1 (900px) */
+@media (min-width: 901px) and (max-width: 1080px) {
+  .s-01__title {
+    font-size: 60px;
+    line-height: 66px;
+    letter-spacing: -1.6px;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .s-01__inner {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 56px;
+    padding-top: 56px;
+    padding-bottom: 8px;
+  }
+
+
+  /* Одноколоночно — возвращаем воздушный ритм: подгонка под 1440 больше не нужна */
+  .s-01__title  { margin-top: 24px; }
+  .s-01__lead   { margin-top: 22px; }
+  .s-01__actions { margin-top: 32px; }
+  .s-01__note   { margin-top: 16px; }
+
+  .s-01__visual {
+    max-width: 420px;
+    margin-inline: auto;
+  }
+
+  .s-01__girih { opacity: 0.7; }
+}
+
+@media (max-width: 600px) {
+
+  .s-01__inner {
+    row-gap: 40px;
+    padding-top: 40px;
+  }
+
+  .s-01__title { margin-top: 20px; }
+
+  .s-01__lead { margin-top: 18px; }
+
+  .s-01__actions {
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  .s-01__note {
+    margin-top: 14px;
+    font-size: 12px;
+  }
+
+
+
+
+  .s-01__visual { max-width: 300px; }
+}

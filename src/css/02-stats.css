@@ -1,0 +1,99 @@
+/* ==========================================================================
+   tajiro — Home · 02 · Stats
+   Figma: HoPojxNiFElmltha1NOl3N, node 511:300
+   Полоса из четырёх показателей на кремовом фоне.
+   ========================================================================== */
+
+.s-02 {
+  padding-block: 120px;
+  background: var(--c-bg);
+}
+
+/* --- Сетка показателей ---------------------------------------------------- */
+.s-02__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+  text-align: center;
+}
+
+/* --- Карточка показателя -------------------------------------------------- */
+/* column-reverse: в разметке сначала подпись (dt), визуально сначала число */
+.s-02__stat {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 20px 24px;
+  border: 1px solid rgba(212, 163, 115, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  overflow: clip;   /* Figma: overflow-clip — страница не должна ехать вбок */
+}
+
+.s-02__value {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 64px;
+  letter-spacing: -2px;
+  color: var(--c-text);
+}
+
+.s-02__label {
+  font-size: 16px;
+  line-height: 22px;
+  color: #706b61;
+}
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-02__grid { gap: 24px; }
+
+  .s-02__value {
+    font-size: 54px;
+    line-height: 56px;
+    letter-spacing: -1.6px;
+  }
+}
+
+/* На четыре колонки «12,400+» перестаёт влезать раньше 900px:
+   при gutter 64px трек = (vw − 200) / 4, а число в 54px требует ~236px
+   вместе с паддингами. Порог перехода на две колонки — 1080px. */
+@media (max-width: 1080px) {
+  .s-02__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .s-02__value {
+    font-size: 48px;
+    line-height: 52px;
+    letter-spacing: -1.4px;
+  }
+}
+
+@media (max-width: 900px) {
+  .s-02 { padding-block: 80px; }
+}
+
+@media (max-width: 600px) {
+  .s-02 { padding-block: 56px; }
+
+  .s-02__grid { gap: 12px; }
+
+  .s-02__stat {
+    gap: 4px;
+    padding: 16px 12px;
+    border-radius: 14px;
+  }
+
+  .s-02__value {
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -1px;
+  }
+
+  .s-02__label {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

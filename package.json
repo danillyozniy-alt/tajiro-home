@@ -1,0 +1,12 @@
+{
+  "name": "tajiro-home",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tajiro — лендинг главной страницы",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "dev": "node tools/build.mjs --serve",
+    "watch": "node tools/build.mjs --watch"
+  }
+}

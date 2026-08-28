@@ -1,0 +1,849 @@
+/* ==========================================================================
+   tajiro — Home · 06 · Pillar 01 — Your store
+   Figma: HoPojxNiFElmltha1NOl3N, node 511:376
+   Текстовая колонка + макет телефона с плавающими карточками-метриками.
+   ========================================================================== */
+
+.s-06 {
+  overflow: hidden;   /* сияние вокруг телефона шире секции — режем по её краю */
+  --s06-ink:   var(--c-ink-surface-2);      /* заголовок, цифры метрик */
+  --s06-muted: #6e675c;                     /* лид, подписи метрик      */
+  --s06-glow:  #c9a96a;                     /* галочки, сумма в тосте   */
+
+  padding-block: var(--gutter);
+  background: var(--c-bg-plain);
+}
+
+.s-06__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+}
+
+/* --- Левая колонка -------------------------------------------------------- */
+.s-06__text {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+  width: 520px;
+}
+
+.s-06__block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 480px;
+}
+
+.s-06__numeral {
+  font-family: var(--f-display);
+  font-size: 96px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -3.8px;
+  color: var(--c-gold);
+}
+
+/* .kicker с пилюлей: другой цвет и трекинг, чем у базового надзаголовка */
+.s-06__label {
+  align-self: flex-start;
+  padding: 5px 14px;
+  border-radius: var(--r-pill);
+  /* Подложка зелёная, а не песочная. Цвет текста тут ни при чём: он и был
+     --c-green-text, тот же #2f6b4a, что у цены в фокусе ленты. Коричневой
+     мульку делала песочная плашка — на 12 px с трекингом 1.44 буквы тонкие,
+     и тёплая подложка перекрашивала их на глаз. Зелёный тинт в 10 % даёт
+     контраст 4.91:1 при пороге 4.5, запас есть. */
+  background: color-mix(in srgb, var(--c-green) 10%, transparent);
+  letter-spacing: 1.44px;
+  line-height: 16px;
+  color: var(--c-green-text);
+}
+
+.s-06__title {
+  font-size: 56px;
+  line-height: 62px;
+  letter-spacing: -1.5px;
+  color: var(--s06-ink);
+}
+
+.s-06__lead {
+  color: var(--s06-muted);
+}
+
+/* --- Список фич ----------------------------------------------------------- */
+.s-06__features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.s-06__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--c-text-muted);
+}
+
+/* В макете иконка выровнена по верху строки (items-start), не по центру */
+.s-06__check {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Ряд метрик ----------------------------------------------------------- */
+.s-06__stats {
+  display: flex;
+  gap: 32px;
+}
+
+/* dt→dd в разметке (термин перед значением), column-reverse — для вида */
+.s-06__stat {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.s-06__stat-value {
+  font-family: var(--f-display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 30px;
+  color: var(--s06-ink);
+}
+
+.s-06__stat-label {
+  font-size: 11px;
+  line-height: 15px;
+  letter-spacing: 0.55px;
+  color: var(--s06-muted);
+}
+
+/* --- Правая колонка: сцена с телефоном ------------------------------------ */
+.s-06__visual {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 640px;
+}
+
+.s-06__stage {
+  position: relative;
+  width: min(280px, 100%);
+  margin-right: 40px;   /* сдвиг влево, как в макете (phone left 140 из 600) */
+}
+
+.s-06__phone {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 280 / 572;
+  border-radius: 48px;
+  background: #080808;
+  /* Базовое свечение живёт в box-shadow, анимация только качает его силу —
+     при отключённой анимации подсветка остаётся, просто перестаёт дышать. */
+  box-shadow:
+    0 0 0 1px rgba(212, 163, 115, 0.22),
+    0 0 30px -8px rgba(212, 163, 115, 0.40),
+    0 34px 70px -24px rgba(43, 38, 33, 0.50);
+  animation: s06-glow 6s ease-in-out infinite;
+}
+
+@keyframes s06-glow {
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(212, 163, 115, 0.45),
+      0 0 58px -4px rgba(212, 163, 115, 0.65),
+      0 34px 70px -24px rgba(43, 38, 33, 0.50);
+  }
+}
+
+.s-06__screen {
+  position: absolute;
+  inset: 4px;
+  border-radius: 44px;
+  overflow: hidden;
+}
+
+.s-06__shot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.s-06__scrim {
+  position: absolute;
+  inset: 0;
+  /* Скрим отпущен по всей высоте, и особенно снизу: 0.92 превращали нижнюю
+     четверть экрана в чёрную полосу. С новым дневным кадром это топило всю
+     витрину — средняя яркость экрана выходила 106 при яркости самого фото
+     184, то есть скрим съедал две трети света.
+
+     Теперь экран держится около 134. Низ больше не затемняем ради ленты
+     заказов: плашка получила собственное тёмное стекло и читается на любом
+     фоне сама, без помощи скрима. */
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, 0.40) 0%,
+    rgba(0, 0, 0, 0.05) 26%,
+    rgba(0, 0, 0, 0.30) 56%,
+    rgba(0, 0, 0, 0.45) 100%);
+}
+
+/* Витрина внутри экрана */
+.s-06__store-hero {
+  position: absolute;
+  /* Приподнят с 53.2%: под кнопкой должны помещаться две плашки заказов,
+     а они занимают ровно столько, сколько было свободного низа — зазор
+     выходил минус два пикселя, стопка наезжала на кнопку. */
+  top: 50.2%;
+  left: 8.1%;
+  right: 8.1%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.s-06__store-title {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 30px;
+  letter-spacing: -0.5px;
+  color: var(--c-on-dark);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+}
+
+.s-06__store-sub {
+  font-size: 11px;
+  line-height: 16px;
+  /* По той же причине, что и логотип: приглушённый бежевый на светлом кадре
+     не отделялся от фона. Здесь белый с прозрачностью — тише заголовка, но
+     всё ещё явно светлее подложки. */
+  color: rgba(251, 248, 243, 0.85);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+}
+
+.s-06__store-cta {
+  padding: 10px 24px;
+  border-radius: 24px;
+  background: var(--c-surface);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+  color: #0e0e0e;
+}
+
+/* Тост «новый заказ» поверх экрана */
+/* Обёртка прижата к низу экрана, а не отсчитана сверху: плашки копятся в
+   стопку, и растёт она вверх — ниже места нет, там край телефона. */
+.s-06__toasts {
+  position: absolute;
+  /* Ниже нельзя: у экрана скругление 44 px, и на отступе меньше 14 px
+     угол начинает срезать нижние края плашки. */
+  bottom: 3.2%;
+  left: 4.4%;
+  right: 4.4%;
+}
+
+.s-06__toast {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Место в стопке задаёт --y: у свежей плашки ноль, каждая следующая
+     поднята на свою высоту плюс зазор. Считает его скрипт: высота плашки
+     зависит от содержимого, в стилях её не знать.
+
+     Переход по transform, а не по top: перекладывать страницу на каждом
+     кадре ради сдвига на полсотни пикселей незачем. */
+  transform: translateY(var(--y, 0px));
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  /* Плашка ужата: две штуки в стопке должны уместиться под кнопкой
+     витрины, а на прежних 54 px высоты они туда не влезали. */
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  /* Тёмное стекло, а не светлое. Светлое работало только потому, что скрим
+     выжигал низ экрана в чёрный; на дневном кадре светлая плашка со светлым
+     текстом растворялась в светлом камне. Теперь плашка держит контраст
+     сама и не зависит от того, что под ней. */
+  /* Стекло чуть плотнее (0.5 -> 0.56): мелкий текст на полупрозрачной
+     подложке ловит рябь фотографии под собой и от этого мылится. */
+  background: rgba(18, 15, 12, 0.56);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  color: var(--c-on-dark);
+}
+
+/* Плашку создаёт и убирает скрипт — своего цикла у неё нет. Прежние четыре
+   карточки крутились по кругу с зашитыми задержками, и заказ в них ничего
+   не значил: выручка рядом жила отдельной анимацией. */
+.s-06__toast {
+  animation: s06-toast-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Пока идёт въезд, анимация перебивает базовый transform, и подъём по стопке
+   не сработал бы. Поэтому, как только въезд закончился, скрипт вешает этот
+   класс и анимация снимается — дальше место в стопке держит переход. */
+.s-06__toast.is-settled { animation: none; }
+
+/* Идёт после is-settled: при одинаковой силе селекторов побеждает последний,
+   иначе уход не проигрался бы. */
+.s-06__toast.is-leaving {
+  animation: s06-toast-out 0.4s ease both;
+}
+
+/* Окна соседних карточек слегка перекрываются: на стыке идёт перекрёстное
+   затухание, а не пустой экран (шаг 25%, видимость 2–23%, уход к 26%). */
+/* Въезд и уход отсчитываются от места в стопке, а не от нуля: плашка должна
+   приезжать на свою полку, а не на дно. */
+@keyframes s06-toast-in {
+  /* Разбег 9 px, а не 14: на четырнадцати плашка на миг заходила в
+     скругление нижнего угла экрана и подрезалась на въезде. */
+  from { opacity: 0; transform: translateY(calc(var(--y, 0px) + 9px)) scale(0.96); }
+  to   { opacity: 1; transform: translateY(var(--y, 0px)) scale(1); }
+}
+
+@keyframes s06-toast-out {
+  to { opacity: 0; transform: translateY(calc(var(--y, 0px) - 10px)); }
+}
+
+.s-06__toast-icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  /* Значок и задаёт высоту плашки: текст рядом ниже него. */
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: rgba(201, 169, 106, 0.22);
+}
+
+.s-06__toast-copy {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.s-06__toast-title {
+  /* Без переноса: на длинных городах вроде Abu Dhabi строка ломалась
+     надвое, плашка становилась выше остальных, и стопка лезла на кнопку
+     витрины. Одинаковая высота у всех плашек тут не косметика, а условие. */
+  overflow: hidden;
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.s-06__toast-sub {
+  /* Было 8 px — на таком кегле название товара уже не читается, буквы
+     сливаются в серую полосу. Место под прибавку есть: высоту плашки задаёт
+     значок в 28 px, а две строки текста занимали 24.
+
+     Цвет не трогаем в сторону приглушения: подпись и так была почти белой,
+     нечитаемой её делал размер. Иерархию с заголовком держим весом и
+     кеглем, а не блёклостью. */
+  font-size: 9.5px;
+  font-weight: 500;
+  line-height: 13px;
+  color: rgba(251, 248, 243, 0.85);
+}
+
+.s-06__toast-amount {
+  flex: none;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  color: var(--s06-glow);
+}
+
+/* --- Плавающие карточки-метрики ------------------------------------------- */
+.s-06__float {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px 16px;
+  border: 1px solid rgba(212, 163, 115, 0.28);
+  border-radius: 14px;
+  background: rgba(251, 248, 243, 0.92);
+  box-shadow: 0 12px 30px rgba(89, 61, 28, 0.18);
+  white-space: nowrap;
+}
+
+.s-06__float-label {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  letter-spacing: 0.9px;
+  color: var(--s06-muted);
+}
+
+.s-06__float-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.s-06__float-value {
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.4px;
+  color: var(--c-ink-surface-2);
+}
+
+/* Счётчик заказов: лента цифр едет на одну строку с каждым заказом */
+.s-06__float { animation: s06-drift 7s ease-in-out infinite; }
+.s-06__float--rating { animation-duration: 8.5s; animation-delay: -2s; }
+.s-06__float--orders { animation-duration: 9.5s; animation-delay: -4s; }
+
+@keyframes s06-drift {
+  50% { transform: translateY(-6px); }
+}
+
+/* Отступ задан от корпуса телефона, а не долей его ширины.
+
+   Раньше стояло left: -50% / -47.1%: это позиция ЛЕВОГО края плашки, а
+   зазор до телефона получался разностью с её собственной шириной. Плашки
+   разной ширины — и зазоры вышли 3px, 15px и минус 22px, то есть «Orders»
+   заезжала под корпус. Теперь left/right отсчитывается от ближней грани, и
+   зазор одинаков независимо от того, насколько длинная в плашке цифра.
+
+   56px — та же дистанция, что на экомзи (там 60–80px при том же корпусе). */
+.s-06__float { --s06-gap: 56px; }
+
+.s-06__float--catalog { top: 20.3%; right: calc(100% + var(--s06-gap)); }
+.s-06__float--rating  { top: 46.5%; left:  calc(100% + var(--s06-gap)); }
+.s-06__float--orders  { top: 79%;   right: calc(100% + var(--s06-gap)); }
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-06__inner { gap: 56px; }
+  .s-06__text { width: 460px; }
+  .s-06__title { font-size: 48px; line-height: 54px; letter-spacing: -1.2px; }
+  .s-06__numeral { font-size: 80px; letter-spacing: -3px; }
+  .s-06__stage { margin-right: 0; }
+  .s-06__float { --s06-gap: 32px; }
+}
+
+/* Видимость плашек по ширине идёт не по убыванию, и это не ошибка: на 900px
+   секция перестаёт быть двухколоночной, телефон уезжает на всю ширину — и
+   место по бокам появляется заново.
+
+     901–1120  двухколоночная, визуальная колонка у́же самих свесов → прячем
+     ≤900      колонка одна, по бокам снова просторно → показываем
+     ≤760      корпус 280 плюс два свеса по 154 уже не влезают → прячем
+
+   Прежде здесь плашки прижимались к корпусу на -18px. При z-index телефона
+   выше их собственного это давало не «прижались», а «скрылись за телефоном»:
+   от карточки оставалась кромка в пару пикселей. */
+@media (max-width: 1120px) and (min-width: 901px) {
+  .s-06__float { display: none; }
+}
+
+@media (max-width: 760px) {
+  .s-06__float { display: none; }
+}
+
+@media (max-width: 900px) {
+  .s-06__float { --s06-gap: 28px; }
+
+  .s-06__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 56px;
+  }
+
+  .s-06__text {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .s-06__block { max-width: none; }
+  .s-06__title { font-size: 38px; line-height: 46px; letter-spacing: -1px; }
+  .s-06__numeral { font-size: 68px; letter-spacing: -2.4px; }
+
+  .s-06__visual { min-height: 0; }
+  /* Смещения задаёт общая схема выше (right/left: calc(100% + gap)) —
+     здесь меняется только сам зазор. Прежние проценты её перебивали:
+     rating с left: 88% залезал на корпус и тянул строку за край экрана. */
+  .s-06__float--orders { top: 79%; }
+}
+
+@media (max-width: 600px) {
+  .s-06__inner { gap: 44px; }
+  .s-06__numeral { font-size: 56px; letter-spacing: -2px; }
+  .s-06__title { font-size: 30px; line-height: 38px; letter-spacing: -0.7px; }
+  .s-06__stats { flex-wrap: wrap; gap: 20px 28px; }
+  .s-06__stat-value { font-size: 24px; line-height: 28px; }
+
+  /* поле под свесы карточек, чтобы ничего не выходило за экран */
+  .s-06__visual { padding-inline: 18px; }
+  .s-06__phone { border-radius: 40px; }
+  .s-06__screen { border-radius: 36px; }
+
+  .s-06__float {
+    gap: 2px;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+  .s-06__float-label { font-size: 9px; letter-spacing: 0.7px; }
+  .s-06__float-value { font-size: 18px; line-height: 22px; }
+  .s-06__float-note { font-size: 10px; }
+
+  /* карточки прижимаются к краям корпуса и уходят в спокойную верхнюю
+     половину экрана — витрина и тост внизу остаются открытыми */
+  .s-06__float--catalog { top: 13%; left: -16px; }
+  .s-06__float--rating  { top: 29%; left: auto; right: -16px; }
+  .s-06__float--orders  { top: 40%; left: -16px; }
+}
+
+/* --- Уважение к prefers-reduced-motion ------------------------------------
+   Сброс в 00-base.css схлопывает анимации в последний кадр. У карточек
+   заказов это opacity: 0 — без этого блока лента исчезла бы целиком.
+   Оставляем статичную первую карточку, свечение и счётчик на первом значении. */
+@media (prefers-reduced-motion: reduce) {
+  /* Плашка остаётся видимой, просто без выезда: скрипт всё равно создаёт
+     её и убирает, и прятать её тут значило бы показывать пустой экран. */
+  .s-06__toast {
+    animation: none !important;
+    transform: none;
+  }
+
+  .s-06__float,
+  .s-06__phone {
+    animation: none !important;
+    transform: none;
+  }
+}
+
+/* --- Сцена вокруг телефона -------------------------------------------------
+   Портирована с экомзи (pv-aurora / pv-rays / pv-orbit / pv-particle /
+   pv-float-card). До неё телефон стоял в пустоте, и блок читался плоским —
+   ровно то, на что была правка.
+
+   Слои идут от дальнего к ближнему: сияние → лучи → кольца → орбиты →
+   пылинки → плашки. Телефон стоит над всем этим на z-index: 3.
+
+   Всё, что двигается, собрано на transform и opacity: сцена крутится
+   постоянно, и любое свойство, дёргающее раскладку, тут стоило бы кадров.
+   -------------------------------------------------------------------------- */
+.s-06__stage { position: relative; }
+
+.s-06__phone { position: relative; z-index: 3; }
+
+/* --- Сияние --- */
+.s-06__aurora {
+  position: absolute;
+  z-index: 0;
+  inset: -12% -18%;
+  /* Плотность поднята: на кремовом фоне прежние 0.28/0.22 после блюра
+     не читались вовсе — сцена выглядела пустой. */
+  background:
+    radial-gradient(ellipse 46% 38% at 32% 30%, rgba(61, 143, 99, 0.42) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 34% at 70% 68%, rgba(212, 163, 115, 0.34) 0%, transparent 70%);
+  filter: blur(46px);
+  animation: s06-aurora 14s ease-in-out infinite;
+}
+
+@keyframes s06-aurora {
+  0%, 100% { transform: scale(1)    translate(0, 0);      opacity: 0.9; }
+  50%      { transform: scale(1.08) translate(2%, -2%);   opacity: 1; }
+}
+
+/* --- Кольца-импульсы ---
+   Расходятся из центра и гаснут. Три штуки с разбежкой в треть такта —
+   получается непрерывная волна, а не три синхронных вспышки. */
+.s-06__rings { position: absolute; z-index: 0; inset: 0; }
+
+.s-06__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(61, 143, 99, 0.30);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: s06-pulse 6s ease-out infinite;
+}
+
+.s-06__ring--2 { animation-delay: 2s; }
+.s-06__ring--3 { animation-delay: 4s; }
+
+@keyframes s06-pulse {
+  0%   { opacity: 0;    transform: translate(-50%, -50%) scale(0.6); }
+  15%  { opacity: 0.85; }
+  100% { opacity: 0;    transform: translate(-50%, -50%) scale(2.1); }
+}
+
+/* --- Орбиты ---
+   Наклонённые кольца с точками на ободе. Точка держится за счёт вращения
+   родителя, а не собственной анимации: так их фазы никогда не разъедутся.
+   Контр-вращение на самой точке гасит её собственный поворот. */
+.s-06__orbits { position: absolute; z-index: 0; inset: 0; }
+
+.s-06__orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(61, 143, 99, 0.16);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotateX(74deg);
+}
+
+.s-06__orbit i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-green-bright);
+  box-shadow: 0 0 10px rgba(61, 143, 99, 0.9);
+}
+
+.s-06__orbit--1 { --o: 39%; width: 78%; aspect-ratio: 1; animation: s06-orbit 22s linear infinite; }
+.s-06__orbit--2 { --o: 48%; width: 96%; aspect-ratio: 1; animation: s06-orbit 34s linear infinite reverse; }
+.s-06__orbit--3 { --o: 57%; width: 114%; aspect-ratio: 1; animation: s06-orbit 48s linear infinite; }
+
+.s-06__orbit i:nth-child(1) { transform: translate(-50%, -50%) rotate(0deg)   translateX(var(--o, 50%)); }
+.s-06__orbit i:nth-child(2) { transform: translate(-50%, -50%) rotate(140deg) translateX(var(--o, 50%)); }
+.s-06__orbit i:nth-child(3) { transform: translate(-50%, -50%) rotate(255deg) translateX(var(--o, 50%)); }
+
+@keyframes s06-orbit {
+  from { transform: translate(-50%, -50%) rotateX(74deg) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotateX(74deg) rotate(360deg); }
+}
+
+/* --- Пылинки ---
+   Шесть точек, всплывающих вверх с разной задержкой. Позиции заданы явно:
+   случайная россыпь тут читается лучше равномерной сетки. */
+.s-06__motes { position: absolute; z-index: 1; inset: 0; }
+
+.s-06__motes span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(61, 143, 99, 0.7);
+  animation: s06-mote 9s ease-in-out infinite;
+}
+
+.s-06__motes span:nth-child(1) { top: 72%; left: 14%; animation-delay: 0s; }
+.s-06__motes span:nth-child(2) { top: 84%; left: 33%; animation-delay: 1.6s; }
+.s-06__motes span:nth-child(3) { top: 66%; left: 82%; animation-delay: 3.1s; }
+.s-06__motes span:nth-child(4) { top: 88%; left: 68%; animation-delay: 4.4s; }
+.s-06__motes span:nth-child(5) { top: 58%; left: 8%;  animation-delay: 6s; }
+.s-06__motes span:nth-child(6) { top: 78%; left: 91%; animation-delay: 7.4s; }
+
+@keyframes s06-mote {
+  0%       { opacity: 0; transform: translateY(0) scale(0.6); }
+  15%, 60% { opacity: 0.9; }
+  100%     { opacity: 0; transform: translateY(-120px) scale(1); }
+}
+
+/* --- Стекло на плавающих плашках ------------------------------------------
+   Плашки в блоке были и раньше — им не хватало не существования, а
+   материала: сплошная заливка на фоне сцены читалась наклейкой. Теперь
+   сквозь них видно сияние и орбиты, как на экомзи.
+   -------------------------------------------------------------------------- */
+.s-06__float {
+  /* 62% белого перекрывали фон почти насухо, и стекло было не отличить от
+     обычной плашки. На 44% сквозь него читается решётка — размытая, но
+     узнаваемая, а это и есть то, ради чего стекло ставят. */
+  background: rgba(255, 255, 255, 0.44);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px) saturate(170%);
+  -webkit-backdrop-filter: blur(14px) saturate(170%);
+  box-shadow: 0 10px 30px rgba(43, 38, 33, 0.12),
+              inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .s-06__float { background: rgba(255, 255, 255, 0.94); }   /* без размытия — только глухая подложка */
+}
+
+/* --- Адаптив сцены --------------------------------------------------------
+   Ниже 900px по бокам от телефона места нет: плашки уехали бы за край
+   экрана, поэтому их убираем целиком, а не поджимаем. Сияние и кольца
+   остаются — они держатся внутри сцены. */
+@media (max-width: 900px) {
+  .s-06__lattice { display: none; }
+
+  .s-06__orbit--3 { display: none; }
+}
+
+/* Сцена декоративна целиком: при «меньше движения» она замирает, но не
+   исчезает — статичный кадр остаётся осмысленным. */
+@media (prefers-reduced-motion: reduce) {
+  .s-06__aurora,
+  .s-06__ring,
+  .s-06__orbit,
+  .s-06__motes span { animation: none !important; }
+
+  .s-06__ring--1 { opacity: 0.5; }
+  .s-06__ring--2,
+  .s-06__ring--3 { opacity: 0; }
+  .s-06__motes span { opacity: 0.7; }
+}
+
+/* Панель витрины (бургер, логотип AURA, корзина со счётчиком) снята вместе
+   со своими анимациями. Заказ по-прежнему виден: он двигает плашку
+   уведомления, выручку и число заказов — просто без отклика в корзине. */
+
+@media (prefers-reduced-motion: reduce) {
+  .s-06__toast { animation: none; }
+}
+[hidden] .s-06__toast-proto { display: none; }
+
+
+/* --- Решётка гириха --------------------------------------------------------
+   Замена расходящимся кривым: они читались случайными царапинами по фону.
+   Здесь вместо них фирменный мотив — тот же ромб, что лежит подложкой
+   первого экрана, только собранный в решётку вокруг телефона.
+
+   На каждый заказ по решётке идёт волна: ромбы вспыхивают кольцами от
+   корпуса наружу. Задержку каждый ромб знает сам — она записана ему в
+   --d при построении, и волна получается из одной анимации на всех.
+
+   Маска гасит решётку к краям, иначе она читается обоями, а не подложкой.
+   -------------------------------------------------------------------------- */
+.s-06__lattice {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: 340%;
+  max-width: none;   /* сброс в 00-base.css зажимает svg до ширины родителя */
+  aspect-ratio: 1;
+  overflow: visible;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* Растушёвка отодвинута к краю: раньше решётка гасла раньше, чем
+     начинаются плавающие плашки, и стеклу нечего было показывать —
+     размытие пустого фона остаётся пустым фоном. */
+  mask-image: radial-gradient(circle at 50% 50%,
+              #000 22%, rgba(0, 0, 0, 0.5) 54%, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%,
+              #000 22%, rgba(0, 0, 0, 0.5) 54%, transparent 78%);
+}
+
+/* Цвет ромба идёт через currentColor: только так его можно переназначить
+   для <use>. Класс на самом пути перебил бы стиль, заданный на <use>. */
+/* Ромб умеет заливаться, а не только светиться контуром.
+
+   Всё, что было до этого, крутилось вокруг обводки в 1px на прозрачности
+   20% — такое на кремовом фоне не видно в принципе, сколько ни добавляй
+   частоты. Залитая плитка — это форма, её видно. Заодно это честнее к
+   мотиву: в настоящем герихе плитки залиты, а не вычерчены.
+
+   Прозрачности сидят на самом ромбе, а не на группе: групповая opacity
+   зажимала бы и активное состояние тоже, и вспышке некуда было расти. */
+.s-06__diamond {
+  fill: currentColor;
+  fill-opacity: 0;
+  stroke: currentColor;
+  stroke-opacity: 0.11;
+  stroke-width: 1;
+}
+
+.s-06__lattice-grid { color: var(--c-gold); }
+
+/* --- Блик ------------------------------------------------------------------
+   Медленная полоса света, идущая по решётке наискось. Нужна затем, что
+   между заказами проходит пять-восемь секунд, и без неё фон всё это время
+   стоит мёртвым — волна по событию есть, а жизни нет.
+
+   Двигается маска на одном элементе, а не 172 ромба по отдельности: смена
+   mask-position уходит в композитор, перерисовки путей не происходит.
+   -------------------------------------------------------------------------- */
+.s-06__sheen {
+  color: var(--c-green-bright);
+  opacity: 0.45;
+  /* Две полосы в одной маске, а не два элемента: цикл тот же, а проход
+     света случается вдвое чаще. Плюс сам цикл укорочен — одиннадцать
+     секунд на проход читались как «ничего не происходит». */
+  mask-image: linear-gradient(112deg,
+              transparent 14%, #000 22%, #000 26%, transparent 34%,
+              transparent 62%, #000 70%, #000 74%, transparent 82%);
+  -webkit-mask-image: linear-gradient(112deg,
+              transparent 14%, #000 22%, #000 26%, transparent 34%,
+              transparent 62%, #000 70%, #000 74%, transparent 82%);
+  mask-size: 300% 300%;
+  -webkit-mask-size: 300% 300%;
+  animation: s06-sheen 6.5s linear infinite;
+}
+
+@keyframes s06-sheen {
+  from { mask-position: 120% 120%; -webkit-mask-position: 120% 120%; }
+  to   { mask-position: -60% -60%; -webkit-mask-position: -60% -60%; }
+}
+
+/* --- Волна заказа ----------------------------------------------------------
+   Идёт снаружи внутрь, от той стороны, с которой пришёл заказ, и гаснет на
+   корпусе. Раньше расходилась от телефона наружу — то есть рассказывала
+   ровно обратное тому, что написано на плашке рядом.
+
+   Задержку каждый ромб получает при заказе: она считается как проекция на
+   направление прилёта, поэтому фронт идёт полосой, а не кольцом.
+   -------------------------------------------------------------------------- */
+.s-06__lattice-grid.is-rippling .s-06__diamond {
+  animation: s06-ripple 0.62s ease-out both;
+  animation-delay: calc(var(--d, 0) * 1ms);
+}
+
+@keyframes s06-ripple {
+  0%   { color: var(--c-gold);         fill-opacity: 0;    stroke-opacity: 0.11; }
+  28%  { color: var(--c-green-bright); fill-opacity: 0.55; stroke-opacity: 0.95; }
+  100% { color: var(--c-gold);         fill-opacity: 0;    stroke-opacity: 0.11; }
+}
+
+/* --- Искры -----------------------------------------------------------------
+   Волна привязана к заказу, а он приходит раз в пять-восемь секунд — всё
+   это время решётка стояла. Искры дают мелкую постоянную жизнь: пара
+   случайных ромбов вспыхивает и гаснет несколько раз в секунду.
+
+   Правило стоит ПОСЛЕ волны намеренно: у них одинаковая специфичность, и
+   ромб, попавший под искру во время волны, должен доиграть искру, а не
+   мигнуть дважды.
+   -------------------------------------------------------------------------- */
+.s-06__diamond.is-spark {
+  animation: s06-spark 0.9s ease-out both;
+}
+
+@keyframes s06-spark {
+  0%   { color: var(--c-gold);         fill-opacity: 0;    stroke-opacity: 0.11; }
+  22%  { color: var(--c-green-bright); fill-opacity: 0.42; stroke-opacity: 0.85; }
+  100% { color: var(--c-gold);         fill-opacity: 0;    stroke-opacity: 0.11; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-06__diamond.is-spark,
+  .s-06__lattice-grid.is-rippling,
+  .s-06__lattice-grid.is-rippling .s-06__diamond,
+  .s-06__sheen { animation: none; }
+}

@@ -1,0 +1,1497 @@
+/* ==========================================================================
+   08 · Pillar 03 — Marketing
+   Figma: HoPojxNiFElmltha1NOl3N, node 511:455
+   Текстовая колонка (520) + панель «Playhead»: недельный график, который
+   пишет один бегущий курсор, и все остальные цифры — следствие его позиции.
+   ========================================================================== */
+
+.s-08 {
+  /* локальные значения, которых нет в токенах 00-base.css */
+  --s08-bg:    var(--c-bg-plain);    /* белёсый: соседи слева и справа кремовые */
+  --s08-soft:  #6e675c;              /* text/on-dark-soft */
+  --s08-tile:  #f7f1e8;              /* плашка статистики внутри панели */
+
+  /* Живая пилюля. Раньше точка была #3fb85c — 2.55:1 на зелёной подложке,
+     то есть индикатор «онлайн» практически не читался. Берём токен:
+     --c-green даёт 9.98:1 на белом, а текст самой пилюли на 10%-подложке
+     поднимается с 5.23:1 до 8.45:1. Ореол остался, только перекрашен. */
+  --s08-live:  color-mix(in srgb, var(--c-green) 10%, transparent);
+  --s08-dot:   var(--c-green);
+
+  /* Единственный сырой hex в секции. Токена под «цвет ряда данных» нет:
+     --c-text-muted превращает искролинию в серый интерфейсный хром, а
+     --c-sand даёт ~2.0:1 на плашке и как метка данных нечитаем вовсе.
+     #a4763f = 3.577:1 на --s08-tile — порог 1.4.11 для не-текста (3:1) взят. */
+  --s08-bar:   #a4763f;
+
+  --s08-slot:  44px;                 /* высота слота ленты заказов */
+
+  /* Шаг тикеров. Держим высоту строки в переменной, потому что от неё
+     считаются и кейфреймы, и парковка в reduced-motion: на узком экране
+     строки ниже, и зашитые пиксели увели бы ленту за последнюю строку. */
+  --s08-row-hero: 40px;
+  --s08-row-tile: 26px;
+
+  padding-block: 120px;
+  background: var(--s08-bg);
+}
+
+.s-08__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 520px) minmax(0, 1fr);
+  gap: 80px;
+  align-items: center;
+}
+
+/* --- Левая колонка --------------------------------------------------------- */
+.s-08__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+.s-08__block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 480px;
+}
+
+.s-08__num {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 96px;
+  line-height: 1;
+  letter-spacing: -3.8px;
+  color: var(--c-gold);
+}
+
+/* .kicker + пилюля на песочном фоне */
+.s-08__label {
+  padding: 5px 14px;
+  border-radius: var(--r-pill);
+  /* Подложка зелёная, а не песочная. Цвет текста тут ни при чём: он и был
+     --c-green-text, тот же #2f6b4a, что у цены в фокусе ленты. Коричневой
+     мульку делала песочная плашка — на 12 px с трекингом 1.44 буквы тонкие,
+     и тёплая подложка перекрашивала их на глаз. Зелёный тинт в 10 % даёт
+     контраст 4.91:1 при пороге 4.5, запас есть. */
+  background: color-mix(in srgb, var(--c-green) 10%, transparent);
+  letter-spacing: 1.44px;
+  line-height: 16px;
+  color: var(--c-green-text);
+}
+
+.s-08__title {
+  font-size: 56px;
+  line-height: 62px;
+  letter-spacing: -1.5px;
+  color: var(--c-ink-surface-2);
+}
+
+.s-08__lead {
+  color: var(--s08-soft);
+}
+
+/* --- Список фич ------------------------------------------------------------ */
+.s-08__features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.s-08__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 24px;   /* фиксированная строка списка из макета */
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--s08-soft);
+}
+
+.s-08__check {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Мини-статистика под списком ------------------------------------------- */
+.s-08__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.s-08__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.s-08__stat-value {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 30px;
+  color: var(--c-ink-surface-2);
+}
+
+.s-08__stat-label {
+  font-size: 11px;
+  line-height: 15px;
+  letter-spacing: 0.55px;
+  color: var(--s08-soft);
+}
+
+/* ==========================================================================
+   Правая колонка: панель дашборда
+   ========================================================================== */
+
+.s-08__visual {
+  display: flex;
+  justify-content: flex-start;
+  padding-inline-start: 24px;
+}
+
+.s-08__panel {
+  width: 100%;
+  max-width: 512px;
+  padding: 24px;
+  /* Граница прозрачна и работает распоркой: в её толщину видно нижний
+     слой фона — градиентную кромку, обрезанную по border-box. Слои
+     поверхности обрезаны по padding-box и внутрь границы не заходят. */
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+
+  /* Ровно один пиксель, а не полтора: дробную границу браузер округляет до
+     целого, и заявленные 1.5 всё равно превращались в 1. Лучше задать то,
+     что действительно нарисуется. */
+  border: 1px solid transparent;
+  border-radius: 18px;
+  background-image: var(--glass-bg), var(--glass-edge);
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  overflow: hidden;   /* страховка: ничто внутри не выезжает за скругление */
+  /* Базовое свечение живёт в статической тени, анимация только качает
+     прозрачность кольца — при выключенной анимации подсветка остаётся. */
+  box-shadow: var(--glass-shadow);
+  animation: s08-glow 6s ease-in-out infinite;
+}
+
+/* Вертикальный ритм панели: head → 18 → hero → 18 → chart → 16 → tiles
+   → 14 → линейка → 14 → лента. Задан марджинами, а не gap: шаги разные. */
+.s-08__hero  { margin-top: 18px; }
+.s-08__chart { margin-top: 18px; }
+.s-08__tiles { margin-top: 16px; }
+.s-08__feed  { margin-top: 14px; }
+
+/* --- Шапка панели ---------------------------------------------------------- */
+.s-08__panel-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 20px;
+}
+
+/* Панель целиком aria-hidden, поэтому заголовок понижен с h3 до p:
+   пустая ступень в структуре заголовков хуже, чем её отсутствие. */
+.s-08__panel-title {
+  flex: 1 1 auto;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 18px;
+  letter-spacing: -0.13px;
+  color: var(--c-ink-surface-2);
+}
+
+.s-08__live {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px 5px 10px;
+  border-radius: var(--r-pill);
+  background: var(--s08-live);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  letter-spacing: 0.6px;
+  color: var(--c-green);
+  white-space: nowrap;
+}
+
+.s-08__live-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--s08-dot);
+  animation: s08-live-dot 2s ease-in-out infinite;
+}
+
+.s-08__live-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* --- Герой: накопительная выручка ------------------------------------------ */
+.s-08__hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.s-08__hero-metric {
+  min-width: 0;
+  animation: s08-dip 18s linear infinite;
+}
+
+.s-08__hero-label {
+  margin-bottom: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  letter-spacing: 0.7px;
+  color: var(--c-text-muted);
+}
+
+.s-08__hero-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.s-08__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--c-green) 10%, transparent);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 14px;
+  color: var(--c-green);
+  white-space: nowrap;
+  animation: s08-delta 18s linear infinite;
+}
+
+.s-08__delta-arrow { flex: none; }
+
+/* --- Легенда каналов ------------------------------------------------------- */
+.s-08__legend {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 156px;
+}
+
+.s-08__legend-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 16px;
+}
+
+.s-08__legend-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--s08-ch);
+}
+
+.s-08__legend-name {
+  flex: none;
+  width: 62px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  letter-spacing: 0.4px;
+  color: var(--c-text-muted);
+}
+
+.s-08__legend-bar {
+  flex: none;
+  width: 44px;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--c-gold) 10%, transparent);
+}
+
+/* Ширины пропорциональны наибольшей доле (46/33/21 → 100/72/46 %),
+   но общий масштаб срезан до 96 %: оставшиеся 4 % — запас под толчок
+   от заказа, чтобы заливка не выехала за границу дорожки. */
+.s-08__legend-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--s08-ch);
+  transform-origin: left;
+  animation-duration: 18s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.s-08__legend-pct {
+  flex: none;
+  width: 26px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  text-align: right;
+  color: var(--c-ink-surface-2);
+}
+
+.s-08__legend-row--google    { --s08-ch: var(--c-gold);  }
+.s-08__legend-row--facebook  { --s08-ch: var(--c-green); }
+.s-08__legend-row--instagram { --s08-ch: var(--c-sand);  }
+
+.s-08__legend-row--google    .s-08__legend-fill { width: 96%;   animation-name: s08-legend-google; }
+.s-08__legend-row--facebook  .s-08__legend-fill { width: 69.1%; animation-name: s08-legend-facebook; }
+.s-08__legend-row--instagram .s-08__legend-fill { width: 44.2%; animation-name: s08-legend-instagram; }
+
+/* --- Карточка графика ------------------------------------------------------ */
+.s-08__chart {
+  padding: 14px 14px 10px;
+  border-radius: 14px;
+  background: var(--s08-tile);
+}
+
+.s-08__chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.s-08__chart-label {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  letter-spacing: 0.6px;
+  color: var(--c-text-muted);
+}
+
+/* 7 %, а не 10 %: на 10 % пара даёт 4.63:1 — проходит, но без запаса
+   на округление в 10px. 7 % = 4.80:1. */
+.s-08__chart-range {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--c-gold) 7%, transparent);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  color: var(--c-gold);
+}
+
+/* Три SVG друг на друге с общим viewBox: живой слой можно срезать
+   clip-path целиком, а сетка и прошлая неделя остаются видимы всегда —
+   поле графика никогда не бывает пустым. */
+.s-08__plot {
+  position: relative;
+  height: 140px;
+}
+
+.s-08__chart-base,
+.s-08__chart-live,
+.s-08__chart-cursor {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.s-08__grid line {
+  stroke: var(--c-line-soft);
+  stroke-width: 1;
+}
+
+.s-08__baseline {
+  stroke: var(--c-line);
+  stroke-width: 1;
+}
+
+.s-08__compare {
+  fill: none;
+  stroke: color-mix(in srgb, var(--c-gold) 45%, transparent);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 4;
+}
+
+.s-08__area-stop { stop-color: var(--c-sand); }
+.s-08__area-stop--0 { stop-opacity: 0.38; }
+.s-08__area-stop--1 { stop-opacity: 0.14; }
+.s-08__area-stop--2 { stop-opacity: 0; }
+
+.s-08__line {
+  fill: none;
+  stroke: var(--c-gold);
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Без transform-box: fill-box точки масштабировались бы от начала viewBox
+   и разлетелись бы по графику. */
+.s-08__pt,
+.s-08__pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.s-08__pt {
+  fill: var(--c-surface);
+  stroke: var(--c-gold);
+  stroke-width: 2;
+  opacity: 0;
+  animation-duration: 18s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.s-08__pt--1 { animation-name: s08-pt1; }
+.s-08__pt--2 { animation-name: s08-pt2; }
+.s-08__pt--3 { animation-name: s08-pt3; }
+.s-08__pt--4 { animation-name: s08-pt4; }
+.s-08__pt--5 { animation-name: s08-pt5; }
+.s-08__pt--6 { animation-name: s08-pt6; }
+.s-08__pt--7 { animation-name: s08-pt7; }
+
+/* Кольцо живёт внутри .s-08__chart-live: срез-плейхед сам вводит его
+   в кадр на 43.2 % и уносит на 100 % — отдельного гейта не нужно. */
+.s-08__pulse {
+  fill: none;
+  stroke: var(--c-gold);
+  stroke-width: 2;
+  animation: s08-pulse 2s cubic-bezier(0.16, 0.8, 0.4, 1) infinite;
+}
+
+/* Срез-плейхед: линия, заливка и точки — не три анимации, а одна
+   субстанция, которую открывает движущийся край. Разъехаться не могут.
+   Проценты inset() считаются от border-box <svg> (100 % × 140px). */
+.s-08__chart-live {
+  clip-path: inset(0 100% 0 0);
+  animation: s08-reveal 18s linear infinite;
+}
+
+/* transform-box: view-box — иначе translate резолвится от bbox самой
+   группы и курсор уезжает не туда. */
+.s-08__cursor-x,
+.s-08__cursor-y {
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+
+.s-08__cursor-x { animation: s08-cursor-x 18s linear infinite; }
+.s-08__cursor-y { animation: s08-cursor-y 18s linear infinite; }
+
+.s-08__cursor-line {
+  stroke: var(--c-gold);
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.s-08__cursor-dot {
+  fill: var(--c-gold);
+  stroke: var(--c-surface);
+  stroke-width: 2;
+}
+
+/* Флажок значения — HTML, а не SVG: текст остаётся чётким и берёт
+   --f-display. Сдвиг по X вынесен в переменную, потому что на узком
+   экране флажок должен свисать влево, а не за край поля. */
+.s-08__flag {
+  --s08-flag-x: -50%;
+  --s08-flag-tail: 50%;
+
+  position: absolute;
+  top: 6px;
+  left: 92.9%;   /* = x 405 из 436 */
+  z-index: 2;
+  padding: 4px 8px;
+  border-radius: 7px;
+  background: var(--c-ink-surface-2);
+  font-family: var(--f-display);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  color: var(--c-on-dark);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(var(--s08-flag-x), 0);
+  animation: s08-flag 18s linear infinite;
+}
+
+.s-08__flag::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: var(--s08-flag-tail);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--c-ink-surface-2);
+  transform: translateX(-50%);
+}
+
+/* --- Подписи дней ---------------------------------------------------------- */
+.s-08__days {
+  position: relative;
+  display: flex;
+  margin-top: 8px;
+}
+
+.s-08__daymark {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: 0;
+  width: calc(100% / 7);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--c-gold) 8%, transparent);
+  opacity: 0;
+  animation: s08-daymark 18s steps(1, end) infinite;
+}
+
+.s-08__day {
+  position: relative;
+  flex: 1 1 0;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  color: var(--c-text-muted);
+}
+
+/* --- Плитки с искролиниями -------------------------------------------------- */
+.s-08__tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.s-08__tile {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--s08-tile);
+  animation: s08-dip 18s linear infinite;
+}
+
+.s-08__tile-label {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  letter-spacing: 0.6px;
+  color: var(--c-text-muted);
+}
+
+.s-08__tile-value {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.s-08__spark {
+  width: 100%;
+  height: 20px;
+}
+
+.s-08__spark path {
+  fill: none;
+  stroke: var(--s08-spark);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation-duration: 18s;
+  animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
+  animation-iteration-count: infinite;
+}
+
+.s-08__tile--impressions { --s08-spark: var(--c-gold);  }
+.s-08__tile--clicks   { --s08-spark: var(--c-green); }
+.s-08__tile--ctr      { --s08-spark: var(--s08-bar); }
+
+.s-08__tile--impressions .s-08__spark path { animation-name: s08-spark1; }
+.s-08__tile--clicks   .s-08__spark path { animation-name: s08-spark2; }
+.s-08__tile--ctr      .s-08__spark path { animation-name: s08-spark3; }
+
+/* --- Лента заказов --------------------------------------------------------- */
+.s-08__feed {
+  position: relative;
+  padding-top: 14px;
+  border-top: 1px solid var(--c-line-soft);
+}
+
+/* Шесть строк лежат друг на друге в слоте фиксированной высоты и
+   сменяются с перекрытием — слот никогда не мигает пустотой. */
+.s-08__orders {
+  position: relative;
+  z-index: 1;
+  height: var(--s08-slot);
+}
+
+.s-08__order {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* Подсветка лежит на ::before с z-index: -1. Без isolation при
+     выключенной анимации строка перестаёт быть контекстом наложения,
+     и подсветка проваливается под белый фон панели. */
+  isolation: isolate;
+  opacity: 0;
+  animation-duration: 18s;
+  animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
+  animation-iteration-count: infinite;
+}
+
+/* Песочная подсветка «только что пришло»: пик — тёплая пауза 1.5s —
+   остывание 1.0s. Анимируется opacity псевдоэлемента, а не background:
+   так в композиторе меняется только альфа, и потолок жёстко зафиксирован
+   на rgba(212,163,115,.22). Выше нельзя: подложка становится #f6ebe0,
+   где --c-text-muted 5.02:1 и --c-gold 4.99:1 — дальше строка проваливает AA. */
+.s-08__order::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -2px -8px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--c-sand) 22%, transparent);
+  opacity: 0;
+  animation-duration: 18s;
+  animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
+  animation-iteration-count: infinite;
+}
+
+.s-08__order--1 { animation-name: s08-order1; }
+.s-08__order--2 { animation-name: s08-order2; }
+.s-08__order--3 { animation-name: s08-order3; }
+.s-08__order--4 { animation-name: s08-order4; }
+.s-08__order--5 { animation-name: s08-order5; }
+.s-08__order--6 { animation-name: s08-order6; }
+
+.s-08__order--1::before { animation-name: s08-tint1; }
+.s-08__order--2::before { animation-name: s08-tint2; }
+.s-08__order--3::before { animation-name: s08-tint3; }
+.s-08__order--4::before { animation-name: s08-tint4; }
+.s-08__order--5::before { animation-name: s08-tint5; }
+.s-08__order--6::before { animation-name: s08-tint6; }
+
+.s-08__avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--c-sand) 16%, transparent);
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--c-gold);
+}
+
+/* Портрет вместо буквы. Песочная заливка родителя остаётся под картинкой и
+   работает подложкой, пока та грузится, — на ленте, которая едет, пустой
+   прозрачный квадрат бросался бы в глаза.
+
+   Скругление наследуется: у панели весь язык на квадратах со скруглением,
+   круглая аватарка выпала бы из него. Шрифтовые правила выше теперь ни на
+   что не влияют и оставлены на случай, если картинка не загрузится. */
+.s-08__avatar {
+  overflow: hidden;
+}
+
+.s-08__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.s-08__order-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--c-text-muted);
+}
+
+/* Метка канала связывает строку заказа с легендой: цвет несёт точка,
+   текст остаётся --c-text-muted. Песочный (Instagram) как текст даёт
+   ~2.0:1 и в надписи использован быть не может. */
+.s-08__via {
+  white-space: nowrap;
+  margin-left: 5px;
+}
+
+.s-08__via-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-inline: 6px 5px;
+  border-radius: 50%;
+  background: var(--s08-ch);
+  vertical-align: 1px;
+}
+
+.s-08__order--google    { --s08-ch: var(--c-gold);  }
+.s-08__order--facebook  { --s08-ch: var(--c-green); }
+.s-08__order--instagram { --s08-ch: var(--c-sand);  }
+
+/* Скелетон занимает слот в фазе обновления: панель видимо идёт за
+   новыми данными, а не показывает дырку. */
+.s-08__skeleton {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--s08-slot);
+  overflow: hidden;
+  animation: s08-skel 18s linear infinite;
+}
+
+.s-08__sk-avatar {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--s08-tile);
+}
+
+.s-08__sk-lines {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.s-08__sk-line {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--s08-tile);
+}
+
+.s-08__sk-line--wide  { width: 60%; }
+.s-08__sk-line--short { width: 34%; }
+
+.s-08__sk-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent,
+    color-mix(in srgb, var(--c-surface) 70%, transparent),
+    transparent);
+  animation: s08-sheen 1.5s linear infinite;
+}
+
+/* --- Тикеры ---------------------------------------------------------------- */
+/* Механика s-06: окно высотой в одну строку, лента внутри едет целыми
+   строками. Высоты строк заданы явно — на метрики шрифта не полагаемся,
+   иначе цифры показываются подрезанными. */
+.s-08__ticker {
+  display: block;
+  overflow: hidden;
+}
+
+.s-08__ticker-track { display: block; }
+
+.s-08__ticker-track > span {
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+
+.s-08__ticker--hero,
+.s-08__ticker--hero .s-08__ticker-track > span {
+  height: var(--s08-row-hero);
+  line-height: var(--s08-row-hero);
+}
+
+.s-08__ticker--hero .s-08__ticker-track > span {
+  font-family: var(--f-display);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  color: var(--c-ink-surface-2);
+}
+
+.s-08__ticker--hero .s-08__ticker-track {
+  animation: s08-tick-hero 18s steps(1, end) infinite;
+}
+
+.s-08__ticker--flag,
+.s-08__ticker--flag .s-08__ticker-track > span {
+  height: 14px;
+  line-height: 14px;
+}
+
+.s-08__ticker--flag .s-08__ticker-track {
+  animation: s08-tick-flag 18s steps(1, end) infinite;
+}
+
+.s-08__ticker--tile,
+.s-08__ticker--tile .s-08__ticker-track > span {
+  height: var(--s08-row-tile);
+  line-height: var(--s08-row-tile);
+}
+
+.s-08__ticker--tile .s-08__ticker-track > span {
+  font-family: var(--f-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: var(--c-ink-surface-2);
+}
+
+.s-08__tile--impressions .s-08__ticker-track { animation: s08-tick-impressions 18s steps(1, end) infinite; }
+.s-08__tile--clicks   .s-08__ticker-track { animation: s08-tick-clicks   18s steps(1, end) infinite; }
+.s-08__tile--ctr      .s-08__ticker-track { animation: s08-tick-ctr      18s steps(1, end) infinite; }
+
+.s-08__ticker--live,
+.s-08__ticker--live .s-08__ticker-track > span {
+  height: 13px;
+  line-height: 13px;
+}
+
+/* Единственный элемент вне мастер-сетки — и намеренно. 25s несоизмеримы
+   с 18s, поэтому счётчик и остальная панель никогда не встают в такт:
+   период совпадения — 450s, поймать цикл на глаз невозможно.
+   Значения ходят вверх-вниз (47 52 49 56 51 58), последняя строка
+   дублирует первую — шов петли не виден. */
+.s-08__ticker--live .s-08__ticker-track {
+  animation: s08-live-count 25s steps(1, end) infinite;
+}
+
+/* ==========================================================================
+   МОТОРИКА. Мастер-цикл — 18s, animation-delay: 0 на всех элементах.
+
+   1) animation-delay ОБЯЗАН оставаться нулевым. Весь стаггер живёт внутри
+      процентов кейфреймов. Свести семь блоков s08-ptN к одному блоку плюс
+      задержки — выглядит как очевидная уборка и молча рассинхронизирует
+      панель: вместе с началом сдвинется и хвост (точка обязана оставаться
+      на месте до конца цикла, а не «доигрывать» со сдвигом).
+   2) На уровне элемента стоит linear (или steps — там, где нужен щелчок).
+      Любое ease на уровне элемента переразмечает ВЕСЬ цикл и рушит все
+      сегменты-паузы. Каждое смягчение объявлено внутри кейфрейма через
+      animation-timing-function.
+   3) Ambient-петли — целые делители 18s (2s ×9, 1.5s ×12, 6s ×3), поэтому
+      фазируются с мастером, а не бьются с ним.
+
+   Фазы: P1 кадр 0–6 % · P2 развёртка 6–46 % · P3 удержание 46–90 %
+         · P4 обновление 90–100 % (сброс тикеров на 95 %).
+   Биты (пересечение курсором дня): Mon 8.8 · Tue 14.5 · Wed 20.3
+         · Thu 26.0 · Fri 31.7 · Sat 37.5 · Sun 43.2; ещё два в
+         удержании — 58 % и 73 % (живые заказы).
+   ========================================================================== */
+
+/* --- 1. Срез-плейхед -------------------------------------------------------- */
+@keyframes s08-reveal {
+  0%   { clip-path: inset(0 100% 0 0); animation-timing-function: linear; }
+  6%   { clip-path: inset(0 100% 0 0); animation-timing-function: linear; }
+  46%  { clip-path: inset(0 0 0 0); }
+  90%  { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(0.7, 0, 0.3, 1); }
+  100% { clip-path: inset(0 0 0 100%); }
+}
+
+/* --- 2. Курсор: X ровно линейный, Y едет по кривой -------------------------- */
+@keyframes s08-cursor-x {
+  0%, 6%   { transform: translateX(0);     opacity: 0; }
+  6.5%     { opacity: 1; }
+  46%      { transform: translateX(436px); opacity: 1; }
+  47%      { transform: translateX(436px); opacity: 0; }
+  100%     { transform: translateX(436px); opacity: 0; }
+}
+
+@keyframes s08-cursor-y {
+  0%, 6%   { transform: translateY(92px); }   /* кривая плоская до x31 */
+  8.8%     { transform: translateY(92px); }   /* Mon */
+  14.5%    { transform: translateY(82px); }   /* Tue */
+  20.3%    { transform: translateY(88px); }   /* Wed */
+  26%      { transform: translateY(64px); }   /* Thu */
+  31.7%    { transform: translateY(50px); }   /* Fri */
+  37.5%    { transform: translateY(56px); }   /* Sat */
+  43.2%    { transform: translateY(28px); }   /* Sun */
+  46%, 100% { transform: translateY(28px); }
+}
+
+/* --- 3. Семь точек: каждая всплывает на своём бите --------------------------- */
+@keyframes s08-pt1 {
+  0%, 8.8%    { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  10%         { transform: scale(1.35); opacity: 1; }
+  10.8%, 100% { transform: scale(1); opacity: 1; }
+}
+@keyframes s08-pt2 {
+  0%, 14.5%   { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  15.7%       { transform: scale(1.35); opacity: 1; }
+  16.5%, 100% { transform: scale(1); opacity: 1; }
+}
+@keyframes s08-pt3 {
+  0%, 20.3%   { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  21.5%       { transform: scale(1.35); opacity: 1; }
+  22.3%, 100% { transform: scale(1); opacity: 1; }
+}
+@keyframes s08-pt4 {
+  0%, 26%     { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  27.2%       { transform: scale(1.35); opacity: 1; }
+  28%, 100%   { transform: scale(1); opacity: 1; }
+}
+@keyframes s08-pt5 {
+  0%, 31.7%   { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  32.9%       { transform: scale(1.35); opacity: 1; }
+  33.7%, 100% { transform: scale(1); opacity: 1; }
+}
+@keyframes s08-pt6 {
+  0%, 37.5%   { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  38.7%       { transform: scale(1.35); opacity: 1; }
+  39.5%, 100% { transform: scale(1); opacity: 1; }
+}
+@keyframes s08-pt7 {
+  0%, 43.2%   { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  44.4%       { transform: scale(1.35); opacity: 1; }
+  45.2%, 100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- 4. Подсветка активного дня: щелчком, не скольжением --------------------- */
+@keyframes s08-daymark {
+  0%    { opacity: 0; transform: translateX(0); }
+  8.8%  { opacity: 1; transform: translateX(0); }
+  14.5% { transform: translateX(100%); }
+  20.3% { transform: translateX(200%); }
+  26%   { transform: translateX(300%); }
+  31.7% { transform: translateX(400%); }
+  37.5% { transform: translateX(500%); }
+  43.2% { transform: translateX(600%); }
+  90%   { opacity: 1; transform: translateX(600%); }
+  /* Гаснет на 95 %, вместе со сбросом тикеров, а не ровно на стыке петли:
+     иначе на 100 % пилюля пропадала скачком на уже пустом поле. Теперь
+     кадры 99.9 % и 0 % идентичны — шов не читается. */
+  95%   { opacity: 0; transform: translateX(0); }
+  100%  { opacity: 0; transform: translateX(0); }
+}
+
+/* --- 5. Тикеры -------------------------------------------------------------- */
+/* Понедельник (8.8 %) намеренно НЕ щёлкает: строка 0 уже показывает
+   $1,204, поэтому в фазе кадра панель не врёт нулём. */
+@keyframes s08-tick-hero {
+  0%    { transform: translateY(0); }
+  14.5% { transform: translateY(calc(var(--s08-row-hero) * -1)); }
+  20.3% { transform: translateY(calc(var(--s08-row-hero) * -2)); }
+  26%   { transform: translateY(calc(var(--s08-row-hero) * -3)); }
+  31.7% { transform: translateY(calc(var(--s08-row-hero) * -4)); }
+  37.5% { transform: translateY(calc(var(--s08-row-hero) * -5)); }
+  43.2% { transform: translateY(calc(var(--s08-row-hero) * -6)); }
+  58%   { transform: translateY(calc(var(--s08-row-hero) * -7)); }   /* +$39 — заказ Hassan */
+  73%   { transform: translateY(calc(var(--s08-row-hero) * -8)); }   /* +$19 — заказ Noor  */
+  95%   { transform: translateY(0); }
+  100%  { transform: translateY(0); }
+}
+
+@keyframes s08-tick-flag {
+  0%    { transform: translateY(0); }
+  58%   { transform: translateY(-14px); }
+  73%   { transform: translateY(-28px); }
+  95%   { transform: translateY(0); }
+  100%  { transform: translateY(0); }
+}
+
+@keyframes s08-tick-impressions {
+  0%    { transform: translateY(0); }
+  14.5% { transform: translateY(calc(var(--s08-row-tile) * -1)); }
+  26%   { transform: translateY(calc(var(--s08-row-tile) * -2)); }
+  37.5% { transform: translateY(calc(var(--s08-row-tile) * -3)); }
+  43.2% { transform: translateY(calc(var(--s08-row-tile) * -4)); }
+  95%   { transform: translateY(0); }
+  100%  { transform: translateY(0); }
+}
+
+@keyframes s08-tick-clicks {
+  0%    { transform: translateY(0); }
+  20.3% { transform: translateY(calc(var(--s08-row-tile) * -1)); }
+  31.7% { transform: translateY(calc(var(--s08-row-tile) * -2)); }
+  43.2% { transform: translateY(calc(var(--s08-row-tile) * -3)); }
+  58%   { transform: translateY(calc(var(--s08-row-tile) * -4)); }
+  73%   { transform: translateY(calc(var(--s08-row-tile) * -5)); }
+  95%   { transform: translateY(0); }
+  100%  { transform: translateY(0); }
+}
+
+@keyframes s08-tick-ctr {
+  0%    { transform: translateY(0); }
+  26%   { transform: translateY(calc(var(--s08-row-tile) * -1)); }
+  43.2% { transform: translateY(calc(var(--s08-row-tile) * -2)); }
+  95%   { transform: translateY(0); }
+  100%  { transform: translateY(0); }
+}
+
+@keyframes s08-live-count {
+  0%     { transform: translateY(0); }      /* 47 */
+  14.29% { transform: translateY(-13px); }  /* 52 */
+  28.57% { transform: translateY(-26px); }  /* 49 */
+  42.86% { transform: translateY(-39px); }  /* 56 */
+  57.14% { transform: translateY(-52px); }  /* 51 */
+  71.43% { transform: translateY(-65px); }  /* 58 */
+  85.71% { transform: translateY(-78px); }  /* 47 — дубль строки 0 */
+  100%   { transform: translateY(-78px); }
+}
+
+/* --- 6. Провал обновления: под ним прячется сброс тикеров -------------------- */
+@keyframes s08-dip {
+  0%, 90% { opacity: 1; }
+  95%     { opacity: 0.12; }
+  100%    { opacity: 1; }
+}
+
+/* --- 7. Искролинии: дорисовываются в кильватере плейхеда -------------------- */
+@keyframes s08-spark1 {
+  0%   { stroke-dashoffset: 100; }
+  8%   { stroke-dashoffset: 100; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  24%  { stroke-dashoffset: 0; }
+  90%  { stroke-dashoffset: 0; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  100% { stroke-dashoffset: -100; }
+}
+@keyframes s08-spark2 {
+  0%   { stroke-dashoffset: 100; }
+  14%  { stroke-dashoffset: 100; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  30%  { stroke-dashoffset: 0; }
+  90%  { stroke-dashoffset: 0; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  100% { stroke-dashoffset: -100; }
+}
+@keyframes s08-spark3 {
+  0%   { stroke-dashoffset: 100; }
+  20%  { stroke-dashoffset: 100; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  36%  { stroke-dashoffset: 0; }
+  90%  { stroke-dashoffset: 0; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  100% { stroke-dashoffset: -100; }
+}
+
+/* --- 8. Полосы легенды + реакция на заказ ------------------------------------
+   Каждый заказ помечен каналом, и легенда на него отвечает: полоса своего
+   канала подскакивает на 4 % и возвращается за ~1.4s, отставая от прихода
+   строки на ~0.45s (=2.5 % цикла) — читается как причина, затем следствие.
+   Заказ №1 (Google, бит 8.8 %) попадает в момент, когда полоса ещё растёт,
+   поэтому его толчок вписан в саму дорастающую кривую как перелёт. */
+@keyframes s08-legend-google {
+  0%, 8%  { transform: scaleX(0); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  15.2%   { transform: scaleX(1.04); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  19.1%   { transform: scaleX(1); }
+  34.2%   { transform: scaleX(1); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  38.1%   { transform: scaleX(1.04); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  42%     { transform: scaleX(1); }
+  60.5%   { transform: scaleX(1); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  64.4%   { transform: scaleX(1.04); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  68.3%   { transform: scaleX(1); }
+  90%     { transform: scaleX(1); }
+  100%    { transform: scaleX(0); }
+}
+
+@keyframes s08-legend-facebook {
+  0%, 12% { transform: scaleX(0); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  22%     { transform: scaleX(1); }
+  22.8%   { transform: scaleX(1); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  26.7%   { transform: scaleX(1.04); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  30.6%   { transform: scaleX(1); }
+  75.5%   { transform: scaleX(1); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  79.4%   { transform: scaleX(1.04); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  83.3%   { transform: scaleX(1); }
+  90%     { transform: scaleX(1); }
+  100%    { transform: scaleX(0); }
+}
+
+@keyframes s08-legend-instagram {
+  0%, 16% { transform: scaleX(0); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  26%     { transform: scaleX(1); }
+  45.7%   { transform: scaleX(1); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  49.6%   { transform: scaleX(1.04); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  53.5%   { transform: scaleX(1); }
+  90%     { transform: scaleX(1); }
+  100%    { transform: scaleX(0); }
+}
+
+/* --- 9. Чип прироста: появляется только когда неделя закрылась --------------- */
+@keyframes s08-delta {
+  0%, 43.2% { opacity: 0; transform: translateX(-4px) scale(0.9);
+              animation-timing-function: cubic-bezier(0.34, 1.4, 0.64, 1); }
+  45.5%     { opacity: 1; transform: none; }
+  90%       { opacity: 1; transform: none; }
+  100%      { opacity: 0; transform: translateX(-4px) scale(0.9); }
+}
+
+/* --- 10. Флажок значения ----------------------------------------------------
+   Отдельного «провала обновления» флажку не нужно: он и так гаснет к 95 %,
+   ровно там, где его тикер щёлкает обратно на первую строку. */
+@keyframes s08-flag {
+  0%, 43.2% { opacity: 0; transform: translate(var(--s08-flag-x), 6px) scale(0.92);
+              animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+  45.5%     { opacity: 1; transform: translate(var(--s08-flag-x), 0) scale(1); }
+  90%       { opacity: 1; transform: translate(var(--s08-flag-x), 0) scale(1); }
+  95%       { opacity: 0; transform: translate(var(--s08-flag-x), 0) scale(1); }
+  100%      { opacity: 0; transform: translate(var(--s08-flag-x), 0) scale(1); }
+}
+
+/* --- 11. Лента заказов ------------------------------------------------------
+   Окна соседних строк перекрываются (уходящая начинает исчезать за 1.2 %
+   до прихода следующей): на стыке идёт перекрёстное затухание, а не
+   пустой слот — та же техника, что в ленте тостов s-06. */
+@keyframes s08-order1 {
+  0%          { opacity: 0; transform: translateY(9px); }
+  8.2%        { opacity: 0; transform: translateY(9px); animation-timing-function: ease-in-out; }
+  8.8%        { opacity: 1; transform: none; }
+  19.1%       { opacity: 1; transform: none; animation-timing-function: ease-in-out; }
+  21.1%, 100% { opacity: 0; transform: translateY(-7px); }
+}
+@keyframes s08-order2 {
+  0%          { opacity: 0; transform: translateY(9px); }
+  19.7%       { opacity: 0; transform: translateY(9px); animation-timing-function: ease-in-out; }
+  20.3%       { opacity: 1; transform: none; }
+  30.5%       { opacity: 1; transform: none; animation-timing-function: ease-in-out; }
+  32.5%, 100% { opacity: 0; transform: translateY(-7px); }
+}
+@keyframes s08-order3 {
+  0%          { opacity: 0; transform: translateY(9px); }
+  31.1%       { opacity: 0; transform: translateY(9px); animation-timing-function: ease-in-out; }
+  31.7%       { opacity: 1; transform: none; }
+  42%         { opacity: 1; transform: none; animation-timing-function: ease-in-out; }
+  44%, 100%   { opacity: 0; transform: translateY(-7px); }
+}
+@keyframes s08-order4 {
+  0%          { opacity: 0; transform: translateY(9px); }
+  42.6%       { opacity: 0; transform: translateY(9px); animation-timing-function: ease-in-out; }
+  43.2%       { opacity: 1; transform: none; }
+  56.8%       { opacity: 1; transform: none; animation-timing-function: ease-in-out; }
+  58.8%, 100% { opacity: 0; transform: translateY(-7px); }
+}
+@keyframes s08-order5 {
+  0%          { opacity: 0; transform: translateY(9px); }
+  57.4%       { opacity: 0; transform: translateY(9px); animation-timing-function: ease-in-out; }
+  58%         { opacity: 1; transform: none; }
+  71.8%       { opacity: 1; transform: none; animation-timing-function: ease-in-out; }
+  73.8%, 100% { opacity: 0; transform: translateY(-7px); }
+}
+@keyframes s08-order6 {
+  0%          { opacity: 0; transform: translateY(9px); }
+  72.4%       { opacity: 0; transform: translateY(9px); animation-timing-function: ease-in-out; }
+  73%         { opacity: 1; transform: none; }
+  93.8%       { opacity: 1; transform: none; animation-timing-function: ease-in-out; }
+  95.8%, 100% { opacity: 0; transform: translateY(-7px); }
+}
+
+@keyframes s08-tint1 {
+  0%          { opacity: 0; }
+  8.2%        { opacity: 0; animation-timing-function: ease-out; }
+  8.8%        { opacity: 1; }
+  17.1%       { opacity: 1; animation-timing-function: ease-in-out; }
+  22.7%, 100% { opacity: 0; }
+}
+@keyframes s08-tint2 {
+  0%          { opacity: 0; }
+  19.7%       { opacity: 0; animation-timing-function: ease-out; }
+  20.3%       { opacity: 1; }
+  28.6%       { opacity: 1; animation-timing-function: ease-in-out; }
+  34.2%, 100% { opacity: 0; }
+}
+@keyframes s08-tint3 {
+  0%          { opacity: 0; }
+  31.1%       { opacity: 0; animation-timing-function: ease-out; }
+  31.7%       { opacity: 1; }
+  40%         { opacity: 1; animation-timing-function: ease-in-out; }
+  45.6%, 100% { opacity: 0; }
+}
+@keyframes s08-tint4 {
+  0%          { opacity: 0; }
+  42.6%       { opacity: 0; animation-timing-function: ease-out; }
+  43.2%       { opacity: 1; }
+  51.5%       { opacity: 1; animation-timing-function: ease-in-out; }
+  57.1%, 100% { opacity: 0; }
+}
+@keyframes s08-tint5 {
+  0%          { opacity: 0; }
+  57.4%       { opacity: 0; animation-timing-function: ease-out; }
+  58%         { opacity: 1; }
+  66.3%       { opacity: 1; animation-timing-function: ease-in-out; }
+  71.9%, 100% { opacity: 0; }
+}
+@keyframes s08-tint6 {
+  0%          { opacity: 0; }
+  72.4%       { opacity: 0; animation-timing-function: ease-out; }
+  73%         { opacity: 1; }
+  81.3%       { opacity: 1; animation-timing-function: ease-in-out; }
+  86.9%, 100% { opacity: 0; }
+}
+
+/* --- 12. Скелетон ----------------------------------------------------------- */
+@keyframes s08-skel {
+  0%, 8.2%   { opacity: 1; }
+  9%         { opacity: 0; }
+  90%        { opacity: 0; }
+  95%, 100%  { opacity: 1; }
+}
+
+@keyframes s08-sheen {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(220%); }
+}
+
+/* --- 13. Ambient ------------------------------------------------------------ */
+@keyframes s08-pulse {
+  0%   { transform: scale(1);   opacity: 0.5; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* 100 % повторяет 0 %, поэтому схлопывание в последний кадр безвредно */
+@keyframes s08-live-dot {
+  0%, 100% { transform: scale(1);
+             box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-green) 45%, transparent); }
+  50%      { transform: scale(1.35);
+             box-shadow: 0 0 0 5px color-mix(in srgb, var(--c-green) 0%, transparent); }
+}
+
+@keyframes s08-glow {
+  50% {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--c-sand) 40%, transparent),
+      0 14px 36px rgba(89, 61, 28, 0.12);
+  }
+}
+
+/* --- 14. Два одноразовых прихода --------------------------------------------
+   Сетка и прошлая неделя приходят один раз и остаются навсегда: это
+   единственные элементы вне мастер-часов. fill: both делает последний
+   кадр их состоянием покоя, поэтому reduced-motion им ничего не ломает.
+   Срез, а не stroke-dashoffset: пунктир прошлой недели должен остаться
+   пунктиром, а dashoffset на нём дал бы бегущие штрихи вместо прорисовки. */
+.s-08__grid {
+  animation: s08-grid 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes s08-grid {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+.s-08__compare {
+  animation: s08-compare 1.4s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes s08-compare {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* --- Адаптив --------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-08 { padding-block: 96px; }
+
+  .s-08__inner { gap: 56px; }
+
+  .s-08__visual { padding-inline-start: 0; }
+
+  .s-08__title { font-size: 48px; line-height: 56px; letter-spacing: -1.2px; }
+}
+
+/* 901–1120: правая колонка сетки сжимается до 180–410px, и панель в ней
+   нечитаема — герой-число обрезается собственным окном тикера, а строка
+   заказа не влезает в слот. Раскладываем секцию в одну колонку раньше,
+   чем меняется типографика текстовой колонки: та остаётся как была. */
+@media (max-width: 1120px) {
+  .s-08__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+
+  .s-08__visual { justify-content: center; }
+}
+
+@media (max-width: 900px) {
+  .s-08 { padding-block: 72px; }
+
+  .s-08__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+
+  .s-08__block { max-width: 560px; }
+
+  .s-08__num { font-size: 76px; letter-spacing: -3px; }
+
+  .s-08__title { font-size: 40px; line-height: 48px; letter-spacing: -1px; }
+
+  .s-08__visual { justify-content: center; }
+}
+
+@media (max-width: 600px) {
+  .s-08 {
+    --s08-slot: 56px;   /* строка заказа с меткой канала уходит в две строки */
+    --s08-row-hero: 34px;
+    --s08-row-tile: 24px;
+
+    padding-block: 56px;
+  }
+
+  .s-08__inner { gap: 36px; }
+
+  .s-08__text { gap: 24px; }
+
+  .s-08__num { font-size: 60px; letter-spacing: -2.2px; }
+
+  .s-08__title { font-size: 32px; line-height: 40px; letter-spacing: -0.7px; }
+
+  .s-08__stats { gap: 20px 24px; }
+
+  .s-08__stat-value { font-size: 24px; line-height: 28px; }
+
+  .s-08__panel { padding: 18px; border-radius: 14px; }
+
+  /* Горизонтальной легенде нужно ~304px против 299 доступных на 375 —
+     она обязана перестроиться, иначе панель даёт горизонтальный скролл. */
+  .s-08__hero {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .s-08__ticker--hero .s-08__ticker-track > span { font-size: 28px; }
+
+  /* Точка + название с процентом на первой строке, полоса во всю
+     ширину колонки на второй. Отдельная колонка под процент здесь
+     уже не помещается. */
+  .s-08__legend {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+
+  .s-08__legend-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, auto) auto;
+    gap: 5px 4px;
+    height: auto;
+  }
+
+  .s-08__legend-dot { grid-row: 1; align-self: center; }
+
+  .s-08__legend-name { grid-row: 1; width: auto; }
+
+  .s-08__legend-pct { grid-row: 1; width: auto; text-align: left; }
+
+  .s-08__legend-bar { grid-row: 2; grid-column: 1 / -1; width: 100%; }
+
+  .s-08__plot { height: 118px; }
+
+  .s-08__day { font-size: 9px; letter-spacing: 0.3px; }
+
+  /* Иначе флажок свисает за правый край поля примерно на 7px */
+  .s-08__flag {
+    --s08-flag-x: -85%;
+    --s08-flag-tail: 85%;
+  }
+
+  .s-08__tile { padding: 10px; }
+
+  .s-08__tile-label { font-size: 9px; }
+
+  .s-08__ticker--tile .s-08__ticker-track > span { font-size: 18px; }
+
+  .s-08__order { gap: 10px; }
+
+  .s-08__avatar { width: 28px; height: 28px; border-radius: 8px; font-size: 12px; }
+
+  .s-08__order-text { font-size: 11px; line-height: 16px; }
+
+  .s-08__sk-avatar { width: 28px; height: 28px; border-radius: 8px; }
+}
+
+/* --- Уважение к prefers-reduced-motion --------------------------------------
+   Сброс в 00-base.css схлопывает каждую анимацию в ПОСЛЕДНИЙ кадр. Здесь
+   на opacity: 0 или на пустом срезе заканчиваются одиннадцать элементов —
+   без этого блока панель отрисовалась бы пустой карточкой. Состояние покоя
+   собрано намеренно: это кадр 88 % цикла — законченная неделя, все цифры на
+   финальных значениях, свежий заказ приколот и подсвечен.
+   Приколот именно последний (Noor, $19), а не первый: тикеры стоят на
+   значениях, куда уже вошли +$39 и +$19 от заказов 5 и 6, и только
+   последняя строка арифметически согласована с видимыми числами. */
+@media (prefers-reduced-motion: reduce) {
+  /* график: дорисован полностью, ничего не срезано */
+  .s-08__chart-live { animation: none !important; clip-path: none; }
+  .s-08__grid,
+  .s-08__compare { animation: none !important; clip-path: none; }
+  .s-08__pt { animation: none !important; transform: scale(1); opacity: 1; }
+
+  /* курсор и его кольцо — это процесс, а не данные: убираем */
+  .s-08__cursor-x,
+  .s-08__cursor-y { animation: none !important; opacity: 0; }
+  .s-08__pulse { animation: none !important; opacity: 0; }
+
+  /* воскресенье остаётся активной колонкой */
+  .s-08__daymark {
+    animation: none !important;
+    opacity: 1;
+    transform: translateX(600%);
+  }
+
+  /* каждый тикер припаркован на ПОСЛЕДНЕЙ строке: панель читается как
+     $13,042 / 24.2K / 416 / 3.8% / $2,795 */
+  .s-08__ticker-track { animation: none !important; }
+  .s-08__ticker--hero   .s-08__ticker-track { transform: translateY(calc(var(--s08-row-hero) * -8)); }
+  .s-08__ticker--flag   .s-08__ticker-track { transform: translateY(-28px); }
+  .s-08__tile--impressions .s-08__ticker-track { transform: translateY(calc(var(--s08-row-tile) * -4)); }
+  .s-08__tile--clicks   .s-08__ticker-track { transform: translateY(calc(var(--s08-row-tile) * -5)); }
+  .s-08__tile--ctr      .s-08__ticker-track { transform: translateY(calc(var(--s08-row-tile) * -2)); }
+  /* счётчик пилюли остаётся на строке 0 — она и есть «47» */
+  .s-08__ticker--live   .s-08__ticker-track { transform: translateY(0); }
+
+  /* провал обновления выключен — ничто не притушено */
+  .s-08__hero-metric,
+  .s-08__tile { animation: none !important; opacity: 1; }
+
+  /* элементы, у которых последний кадр — opacity: 0 */
+  .s-08__delta { animation: none !important; opacity: 1; transform: none; }
+
+  /* флажку нельзя ставить transform: none — в трансформе живёт
+     центрирование над точкой воскресенья */
+  .s-08__flag {
+    animation: none !important;
+    opacity: 1;
+    transform: translate(var(--s08-flag-x), 0);
+  }
+
+  .s-08__spark path { animation: none !important; stroke-dashoffset: 0; }
+  .s-08__legend-fill { animation: none !important; transform: scaleX(1); }
+
+  /* лента: все шесть строк погашены, свежая приколота и несёт
+     осевшую подсветку — статичный кадр всё ещё читается как «только что» */
+  .s-08__order { animation: none !important; opacity: 0; transform: none; }
+  .s-08__order::before { animation: none !important; opacity: 0; }
+  .s-08__order:last-child { opacity: 1; }
+  .s-08__order:last-child::before { opacity: 1; }
+
+  .s-08__skeleton { animation: none !important; opacity: 0; }
+  .s-08__sk-sheen { animation: none !important; }
+
+  /* ambient: базовое свечение остаётся в статической тени, просто
+     перестаёт дышать */
+  .s-08__panel { animation: none !important; }
+  .s-08__live-dot { animation: none !important; transform: none; box-shadow: none; }
+}

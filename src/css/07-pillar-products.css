@@ -1,0 +1,473 @@
+/* ==========================================================================
+   07 · Pillar 02 — Products
+   Figma: HoPojxNiFElmltha1NOl3N, node 511:429
+   Слева — сетка карточек-пруфов (2×3), справа — текстовый блок пилона.
+   ========================================================================== */
+
+.s-07 {
+  /* Тёплый серо-бежевый из макета: светлее --c-text-muted, своего токена нет */
+  --s07-muted: #6b645a;
+
+  padding-block: 120px;
+  background: var(--c-bg);
+}
+
+.s-07__content {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+/* --- Левая колонка: сетка карточек ----------------------------------------
+   В разметке текстовый блок идёт первым (h2 должен предшествовать h3 карточек
+   и стоять первым на мобильном), поэтому визуал переносится влево через order. */
+.s-07__visual {
+  order: -1;
+  flex: 1 1 560px;
+  min-width: 0;
+}
+
+/* --- Левая колонка: список каталога ----------------------------------------
+   Раньше здесь была сетка из шести карточек, каждая тащила обложку, отзыв,
+   автора, звёзды, категорию, название, цену и маржу — восемь блоков в боксе
+   272×271. Теперь строки каталога, а отзывы вынесены под список. */
+/* --- Витрина каталога ------------------------------------------------------
+   Шесть строк стояли неподвижно, хотя секция заявляет полмиллиона товаров.
+   Теперь лента едет: аргумент показан, а не написан.
+
+   Высота строки зафиксирована — на ней держится вся арифметика. Дорожка
+   уезжает ровно на высоту одного набора (6 строк) за такт, поэтому смена
+   строки в полосе фокуса совпадает со сменой реплики внизу: 24s / 6 = 4s
+   на строку, ровно как у отзывов.
+   -------------------------------------------------------------------------- */
+.s-07 {
+  --s07-row: 84px;    /* 56 миниатюра + 14 сверху + 14 снизу */
+  --s07-seen: 5;      /* строк в окне */
+  --s07-focus: 2;     /* индекс строки, стоящей в полосе фокуса */
+}
+
+.s-07__window {
+  position: relative;
+  max-width: 560px;
+  height: calc(var(--s07-row) * var(--s07-seen));
+  overflow: hidden;
+  border-top: 1px solid var(--c-line);
+  border-bottom: 1px solid var(--c-line);
+  /* Края растворяются — иначе строки обрубались бы по прямой, и лента
+     читалась бы обрезанным списком, а не потоком без конца. */
+  mask-image: linear-gradient(180deg,
+              transparent 0, #000 13%, #000 87%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg,
+              transparent 0, #000 13%, #000 87%, transparent 100%);
+}
+
+/* Ход появляется только вместе с копией набора: без неё лента уехала бы
+   в пустоту. Класс ставит скрипт после клонирования. */
+.s-07__track.is-live {
+  animation: s07-scroll 24s cubic-bezier(0.4, 0.08, 0.3, 1) infinite;
+}
+
+/* Ход шагами, а не сплошной прокруткой.
+
+   При непрерывной прокрутке строка совпадает с полосой фокуса ровно на
+   мгновение и тут же уезжает — подсветка не успевает ни на чём сойтись.
+   Здесь лента продвигается на один товар примерно за секунду и замирает
+   на три: строка стоит в полосе, её видно, и реплика внизу успевает
+   прочитаться.
+
+   Шесть шагов на 24s такта — те же 4s на товар, что у отзывов.
+
+   Соотношение хода и паузы подобрано на глаз, а не «чтобы строка стояла
+   подольше». При паузе в три четверти шага список три секунды из четырёх
+   стоит намертво — взглядом попадаешь почти всегда в паузу и решаешь, что
+   анимации нет вовсе. Теперь ход занимает почти две трети: ~2,5s едет,
+   ~1,5s стоит, и этого хватает, чтобы строка в полосе прочиталась. */
+/* Отсчёт идёт от ВТОРОГО набора, отсюда −6 в каждом шаге. Если поставить
+   в полосу первую строку первого набора, над ней в окне не окажется
+   ничего — верхняя половина витрины пустая. Начиная с копии, сверху идут
+   строки предыдущего круга, и окно полное с первого кадра.
+
+   На стыке кадр совпадает сам с собой: содержимое повторяется каждые
+   шесть строк, а уезжаем мы ровно на шесть. */
+@keyframes s07-scroll {
+  0%,     6%      { transform: translateY(calc(var(--s07-row) * (var(--s07-focus) - 6))); }
+  16.67%, 22.67%  { transform: translateY(calc(var(--s07-row) * (var(--s07-focus) - 7))); }
+  33.33%, 39.33%  { transform: translateY(calc(var(--s07-row) * (var(--s07-focus) - 8))); }
+  50%,    56%     { transform: translateY(calc(var(--s07-row) * (var(--s07-focus) - 9))); }
+  66.67%, 72.67%  { transform: translateY(calc(var(--s07-row) * (var(--s07-focus) - 10))); }
+  83.33%, 89.33%  { transform: translateY(calc(var(--s07-row) * (var(--s07-focus) - 11))); }
+  100%            { transform: translateY(calc(var(--s07-row) * (var(--s07-focus) - 12))); }
+}
+
+.s-07__list { max-width: 560px; }
+
+/* --- Полоса фокуса ---------------------------------------------------------
+   Стоит на месте, строки едут сквозь неё. Подсветке не нужны задержки на
+   каждую строку: подсвечена всегда та, что сейчас в полосе.
+   -------------------------------------------------------------------------- */
+.s-07__focus {
+  position: absolute;
+  z-index: 0;
+  top: calc(var(--s07-row) * var(--s07-focus));
+  right: 0;
+  left: 0;
+  height: var(--s07-row);
+  pointer-events: none;
+  /* Засечки слева нет: полосу держат заливка и блик, а вертикальная черта
+     при едущей ленте читалась как край обрезки, а не как метка. */
+  background: linear-gradient(90deg,
+              rgba(61, 143, 99, 0.12), rgba(61, 143, 99, 0.03) 62%, transparent);
+}
+
+/* Блик проходит по полосе на каждой смене строки — движение внутри
+   движения, иначе полоса читается статичной подложкой. */
+.s-07__focus::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg,
+              transparent 40%, rgba(61, 143, 99, 0.28) 50%, transparent 60%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  animation: s07-sweep 4s ease-out infinite;
+}
+
+@keyframes s07-sweep {
+  0%        { opacity: 0; background-position: -60% 0; }
+  12%       { opacity: 1; }
+  70%       { opacity: 1; }
+  88%, 100% { opacity: 0; background-position: 160% 0; }
+}
+
+/* Строка в фокусе: зеленеет цена. Раньше подсвечивалась сумма «you keep» —
+   её со страницы убрали вместе с остальными обещаниями дохода, и подсветке
+   нужен был другой якорь. Класс ставит js/07-products.js — по фактическому
+   положению дорожки, а не по таймеру. */
+.s-07__row.is-focus .s-07__price {
+  color: var(--c-green-text);
+}
+
+.s-07__row.is-focus .s-07__price { transform: scale(1.1); }
+.s-07__row.is-focus .s-07__thumb { transform: scale(1.07); }
+
+.s-07__thumb { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Лента останавливается, но окно остаётся окном: показываем первые
+     строки от начала набора, а не случайный кадр посреди прокрутки. */
+  .s-07__track { animation: none !important; transform: none; }
+  .s-07__focus::after { animation: none !important; opacity: 0; }
+  .s-07__focus { display: none; }
+}
+
+.s-07__row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: var(--s07-row);   /* высота фиксирована: на ней держится арифметика ленты */
+  padding: 0 4px;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.s-07__thumb {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.s-07__row-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.s-07__cat {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  letter-spacing: 1px;
+  color: var(--c-gold);
+}
+
+.s-07__name {
+  font-family: var(--f-body);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: -0.16px;
+  color: var(--c-text);
+}
+
+.s-07__row-money {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.s-07__price {
+  display: inline-block;
+  font-family: var(--f-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--c-text);
+  transition: color 0.35s ease, transform 0.35s ease;
+}
+
+/* Держит мысль о размере каталога, которую заявляет заголовок */
+.s-07__more {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 16px 4px 0;
+  font-size: 14px;
+  color: var(--s07-muted);
+}
+
+.s-07__more-num {
+  font-family: var(--f-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--c-gold);
+}
+
+/* --- Отзыв под списком: шесть реплик сменяются по кругу -------------------- */
+.s-07__proof {
+  position: relative;
+  min-height: 82px;
+  margin-top: 28px;
+  padding-left: 18px;
+  border-left: 2px solid var(--c-sand);
+}
+
+/* Реплику показывает js/07-products.js — ту, что соответствует строке,
+   стоящей сейчас в полосе фокуса. Прежде она крутилась своей CSS-анимацией
+   с задержками по nth-child, но лента теперь едет непрерывно, и две
+   независимые анимации разъезжались бы: подпись переставала бы совпадать
+   с товаром. Ведущая теперь одна — положение ленты. */
+.s-07__proof-item {
+  position: absolute;
+  inset: 0 0 auto 18px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.s-07__proof-item.is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+.s-07__proof-text {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--c-text-body);
+}
+
+.s-07__proof-by {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.s-07__cite {
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--s07-muted);
+}
+
+.s-07__stars {
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--c-gold);
+  white-space: nowrap;
+}
+
+/* --- Правая колонка: текст ------------------------------------------------ */
+.s-07__text {
+  display: flex;
+  flex: 0 1 520px;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
+.s-07__block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 480px;
+}
+
+.s-07__numeral {
+  font-family: var(--f-display);
+  font-size: 96px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -3.8px;
+  color: var(--c-gold);
+}
+
+/* .kicker + пилюля на песочном фоне — как в 06/08 */
+.s-07__pillar-label {
+  padding: 5px 14px;
+  border-radius: var(--r-pill);
+  /* Подложка зелёная, а не песочная. Цвет текста тут ни при чём: он и был
+     --c-green-text, тот же #2f6b4a, что у цены в фокусе ленты. Коричневой
+     мульку делала песочная плашка — на 12 px с трекингом 1.44 буквы тонкие,
+     и тёплая подложка перекрашивала их на глаз. Зелёный тинт в 10 % даёт
+     контраст выше порога 4.5.
+
+     Здесь тинт 7 %, а не 10 как в 06 и 08: подложка этой секции темнее, и
+     на десяти процентах контраст падал до 4.47 — под порог. */
+  background: color-mix(in srgb, var(--c-green) 7%, transparent);
+  line-height: 16px;
+  letter-spacing: 1.44px;
+  color: var(--c-green-text);
+}
+
+/* Заголовок пилона крупнее общего .h2 (56 против 44).
+   Двойной селектор — чтобы перебить .h2 из 00-base.css во всех брейкпоинтах. */
+.s-07 .s-07__title {
+  font-size: 56px;
+  line-height: 62px;
+  letter-spacing: -1.5px;
+}
+
+.s-07__lead {
+  max-width: 480px;
+}
+
+/* --- Список фич ----------------------------------------------------------- */
+.s-07__features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.s-07__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 24px;
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--s07-muted);
+}
+
+/* Галочка выровнена по верху строки — как в макете, чуть выше центра текста */
+.s-07__check {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Строка цифр ---------------------------------------------------------- */
+.s-07__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+/* В разметке dt — подпись (термин), dd — значение; визуально значение сверху */
+.s-07__stat {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+}
+
+.s-07__stat-value {
+  font-family: var(--f-display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 30px;
+  color: var(--c-text);
+  white-space: nowrap;
+}
+
+.s-07__stat-label {
+  font-size: 11px;
+  line-height: 15px;
+  letter-spacing: 0.55px;
+  color: var(--s07-muted);
+  white-space: nowrap;
+}
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-07 { padding-block: 96px; }
+  .s-07__content { gap: 56px; }
+  .s-07__numeral { font-size: 80px; letter-spacing: -3px; }
+  .s-07 .s-07__title { font-size: 48px; line-height: 56px; letter-spacing: -1.2px; }
+}
+
+@media (max-width: 900px) {
+  .s-07 { padding-block: 72px; }
+
+  /* Текст поднимается над сеткой карточек — он и так первый в разметке */
+  .s-07__content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 48px;
+  }
+
+  .s-07__visual { order: 0; flex: none; }
+  .s-07__list { max-width: none; }
+
+  .s-07__text { flex: none; }
+  .s-07__block,
+  .s-07__lead { max-width: 640px; }
+
+  .s-07__numeral { font-size: 64px; letter-spacing: -2.2px; }
+  .s-07 .s-07__title { font-size: 38px; line-height: 46px; letter-spacing: -0.9px; }
+}
+
+@media (max-width: 600px) {
+  .s-07 { padding-block: 56px; }
+  .s-07__content { gap: 40px; }
+
+  .s-07__thumb { width: 48px; height: 48px; }
+  .s-07__row { gap: 12px; padding: 12px 2px; }
+  .s-07__name { font-size: 15px; line-height: 21px; }
+  .s-07__price { font-size: 18px; line-height: 22px; }
+  .s-07__proof { min-height: 104px; }
+
+  .s-07__numeral { font-size: 54px; letter-spacing: -1.8px; }
+  .s-07__pillar-label { letter-spacing: 1.2px; }
+  .s-07 .s-07__title { font-size: 31px; line-height: 38px; letter-spacing: -0.7px; }
+
+  .s-07__feature { font-size: 14px; line-height: 22px; }
+
+  .s-07__stats { gap: 20px 24px; }
+  .s-07__stat-value { font-size: 24px; line-height: 27px; }
+}
+
+/* --- Уважение к prefers-reduced-motion ------------------------------------
+   Сброс в 00-base.css схлопывает анимацию в последний кадр (opacity: 0),
+   поэтому без этого блока все отзывы исчезли бы. Оставляем первый. */
+@media (prefers-reduced-motion: reduce) {
+  /* Подсветку строк гасим вместе с ротацией: без смены реплик подсвеченная
+     строка залипла бы навсегда и читалась бы выбранной. */
+  .s-07__row::before,
+  .s-07__row::after { animation: none !important; opacity: 0; }
+
+  .s-07__thumb,
+  .s-07__price { animation: none !important; transform: none; }
+
+  .s-07__proof-item {
+    animation: none !important;
+    opacity: 0;
+    transform: none;
+  }
+
+  .s-07__proof-item:first-child { opacity: 1; }
+}

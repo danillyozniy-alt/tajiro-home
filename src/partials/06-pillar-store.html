@@ -1,0 +1,144 @@
+<section class="section s-06" id="pillar-store">
+  <div class="container s-06__inner">
+
+    <div class="s-06__text reveal">
+      <div class="s-06__block">
+        <p class="s-06__numeral">01</p>
+
+        <p class="kicker s-06__label">YOUR STORE</p>
+
+        <h2 class="h2 s-06__title">A professional storefront. Ready in 60 seconds.</h2>
+
+        <p class="lead s-06__lead">Other platforms give you a blank canvas and say &ldquo;figure it out.&rdquo; We give you a fully designed, mobile-optimized online store with your brand &mdash; live and ready to sell before your coffee gets cold.</p>
+      </div>
+
+      <ul class="s-06__features">
+        <li class="s-06__feature">
+          <img class="s-06__check" src="assets/img/icons/check-green.svg" alt="" width="16" height="16">
+          <span>Custom URL &mdash; yourname.com</span>
+        </li>
+        <li class="s-06__feature">
+          <img class="s-06__check" src="assets/img/icons/check-green.svg" alt="" width="16" height="16">
+          <span>Beautiful design &mdash; zero coding required</span>
+        </li>
+        <li class="s-06__feature">
+          <img class="s-06__check" src="assets/img/icons/check-green.svg" alt="" width="16" height="16">
+          <span>Works on any phone, tablet, or computer</span>
+        </li>
+        <li class="s-06__feature">
+          <img class="s-06__check" src="assets/img/icons/check-green.svg" alt="" width="16" height="16">
+          <span>SSL encrypted checkout built in</span>
+        </li>
+      </ul>
+
+      <dl class="s-06__stats">
+        <div class="s-06__stat">
+          <dt class="s-06__stat-label">Monthly fee</dt>
+          <dd class="s-06__stat-value">$0</dd>
+        </div>
+        <div class="s-06__stat">
+          <dt class="s-06__stat-label">Setup time</dt>
+          <dd class="s-06__stat-value">60s</dd>
+        </div>
+        <div class="s-06__stat">
+          <dt class="s-06__stat-label">Mobile optimized</dt>
+          <dd class="s-06__stat-value">100%</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="s-06__visual">
+      <div class="s-06__stage">
+
+        <!-- Слой вокруг телефона. До правки телефон стоял в пустоте, и блок
+             читался плоским; на экомзи вокруг него живёт целая сцена
+             (pv-aurora / pv-rays / pv-orbit / pv-float-card). Здесь то же
+             самое в фирменном зелёном.
+
+             Всё декоративное и скрыто от скринридеров: смысл блока несёт
+             текст слева и сам экран телефона. -->
+        <div class="s-06__aurora" aria-hidden="true"></div>
+
+        <!-- Решётка гириха — тот же мотив, что лежит подложкой первого
+             экрана, только здесь он живой: js/06-store.js на каждый заказ
+             пускает по ней волну от телефона наружу.
+
+             Ромбы рисует скрипт: их под две сотни, и держать такую простыню
+             в разметке ради декора незачем. Без скрипта секция остаётся с
+             сиянием и кольцами — пустой она не выглядит. -->
+        <svg class="s-06__lattice" viewBox="0 0 900 900" aria-hidden="true" focusable="false">
+          <g class="s-06__lattice-grid" id="s06-grid"></g>
+          <!-- Блик — та же решётка через <use>: один элемент вместо второй
+               сотни ромбов. По нему едет градиентная маска, а не каждый ромб
+               по отдельности, поэтому постоянное движение стоит одного слоя
+               композитора, а не 172 перерисовок на кадр. -->
+          <use class="s-06__sheen" href="#s06-grid"></use>
+        </svg>
+
+        <div class="s-06__rings" aria-hidden="true">
+          <span class="s-06__ring s-06__ring--1"></span>
+          <span class="s-06__ring s-06__ring--2"></span>
+          <span class="s-06__ring s-06__ring--3"></span>
+        </div>
+
+        <div class="s-06__orbits" aria-hidden="true">
+          <span class="s-06__orbit s-06__orbit--1"><i></i><i></i></span>
+          <span class="s-06__orbit s-06__orbit--2"><i></i><i></i><i></i></span>
+          <span class="s-06__orbit s-06__orbit--3"><i></i><i></i></span>
+        </div>
+
+        <div class="s-06__motes" aria-hidden="true">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+
+        <figure class="s-06__phone">
+          <div class="s-06__screen">
+            <img class="s-06__shot" src="assets/img/screens/store-hero.jpg" alt="" width="768" height="1344" loading="lazy" decoding="async">
+            <span class="s-06__scrim" aria-hidden="true"></span>
+
+            <div class="s-06__store-hero">
+              <p class="s-06__store-title">Elevate Your<br>Daily Ritual</p>
+              <p class="s-06__store-sub">Begin your journey to a<br>healthier, happier life</p>
+              <p class="s-06__store-cta">&#10022; SHOP NOW</p>
+            </div>
+
+            <!-- Лента заказов пустая: плашки создаёт js/06-store.js.
+                 Так же, как на экомзи, — это не карусель из четырёх зашитых
+                 карточек по кругу, а поток событий: пришёл заказ, и он же
+                 двигает корзину, выручку и число заказов. -->
+            <img class="s-06__toast-proto" id="s06-toast-icon"
+                 src="assets/img/icons/bag.svg" alt="" width="16" height="16" hidden>
+            <div class="s-06__toasts" id="s06-toasts" aria-hidden="true"></div>
+          </div>
+        </figure>
+
+        <dl class="s-06__float s-06__float--catalog">
+          <dt class="s-06__float-label">CATALOG VALUE</dt>
+          <dd class="s-06__float-row">
+            <span class="s-06__float-value" id="s06-revenue">$2,340</span>
+            <span class="s-06__float-note">&uarr; 18%</span>
+          </dd>
+        </dl>
+
+        <dl class="s-06__float s-06__float--rating">
+          <dt class="s-06__float-label">STORE RATING</dt>
+          <dd class="s-06__float-row">
+            <span class="s-06__float-value">4.9</span>
+            <span class="s-06__float-note">Top rated</span>
+          </dd>
+        </dl>
+
+        <dl class="s-06__float s-06__float--orders">
+          <dt class="s-06__float-label">ORDERS THIS MONTH</dt>
+          <dd class="s-06__float-row">
+            <span class="s-06__float-value" id="s06-orders">187</span>
+            <span class="s-06__float-note">&uarr; 24%</span>
+          </dd>
+        </dl>
+
+      </div>
+    </div>
+
+  </div>
+</section>

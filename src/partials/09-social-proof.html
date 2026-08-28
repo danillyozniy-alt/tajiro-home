@@ -1,0 +1,121 @@
+<section class="section s-09" id="social-proof">
+  <!-- Фон. Тёмная секция была плоской заливкой: на ней свечение читается
+       так же хорошо, как на экомзи, и не пользоваться этим было странно. -->
+  <div class="s-09__glow" aria-hidden="true"></div>
+  <div class="s-09__orbs" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="container s-09__inner">
+
+    <header class="s-09__head reveal">
+      <p class="kicker s-09__kicker">
+        <span class="rule s-09__kicker-rule" aria-hidden="true"></span>
+        STORE OWNERS
+      </p>
+      <h2 class="h2 s-09__title">People like you, building real businesses</h2>
+    </header>
+
+    <!-- Карусель, а не колода. Раньше три истории лежали в одной ячейке
+         грида и подменялись на месте: карточка возникала из ниоткуда, и
+         понять, что это лента, было нельзя.
+
+         Теперь соседние истории видны по краям — приглушённые и уменьшенные.
+         Смена читается как сдвиг ленты, а не как подмена.
+
+         Копию набора для бесшовной петли делает js/09-stories.js: в
+         разметке она вшила бы те же три портрета повторно. -->
+    <div class="s-09__deck">
+      <div class="s-09__track">
+
+      <figure class="s-09__card s-09__card--1">
+        <div class="s-09__photo">
+          <img class="s-09__shot" src="assets/img/people/testimonial-yasmin.jpg" alt="Yasmin H."
+               width="864" height="1184" loading="lazy" decoding="async">
+        </div>
+
+        <div class="s-09__body">
+          <div class="s-09__card-head">
+            <h3 class="s-09__card-title">It fits around my day</h3>
+            <p class="s-09__stars">
+              <span aria-hidden="true">★★★★★</span>
+              <span class="visually-hidden">Rated 5 out of 5</span>
+            </p>
+          </div>
+
+          <blockquote class="s-09__quote">
+            <p>“I teach all week, so I needed something that didn’t want me at a desk every evening. Setting the store up took one sitting, at this table, after the marking was done. Now I pack whatever came in before the children are up, and the rest of the day still belongs to my class.”</p>
+          </blockquote>
+
+          <figcaption class="s-09__author">
+            <cite class="s-09__author-name">Yasmin H.</cite>
+            <span class="s-09__author-role">Primary school teacher, Dubai 🇦🇪</span>
+          </figcaption>
+        </div>
+      </figure>
+
+      <figure class="s-09__card s-09__card--2">
+        <div class="s-09__photo">
+          <img class="s-09__shot" src="assets/img/people/testimonial-tariq.jpg" alt="Tariq A."
+               width="864" height="1184" loading="lazy" decoding="async">
+        </div>
+
+        <div class="s-09__body">
+          <div class="s-09__card-head">
+            <h3 class="s-09__card-title">I was sure I’d break it</h3>
+            <p class="s-09__stars">
+              <span aria-hidden="true">★★★★★</span>
+              <span class="visually-hidden">Rated 5 out of 5</span>
+            </p>
+          </div>
+
+          <blockquote class="s-09__quote">
+            <p>“I’m the one in my family who calls somebody else when the router blinks. I put off starting for weeks because I was certain I’d break something. There was nothing to break — the store arrived finished and I only chose what went in it. The hardest part of my week now is not running out of tape.”</p>
+          </blockquote>
+
+          <figcaption class="s-09__author">
+            <cite class="s-09__author-name">Tariq A.</cite>
+            <span class="s-09__author-role">Logistics supervisor, Sharjah 🇦🇪</span>
+          </figcaption>
+        </div>
+      </figure>
+
+      <figure class="s-09__card s-09__card--3">
+        <div class="s-09__photo">
+          <img class="s-09__shot" src="assets/img/people/testimonial-saeed.jpg" alt="Saeed R."
+               width="864" height="1184" loading="lazy" decoding="async">
+        </div>
+
+        <div class="s-09__body">
+          <div class="s-09__card-head">
+            <h3 class="s-09__card-title">My name on it</h3>
+            <p class="s-09__stars">
+              <span aria-hidden="true">★★★★★</span>
+              <span class="visually-hidden">Rated 5 out of 5</span>
+            </p>
+          </div>
+
+          <blockquote class="s-09__quote">
+            <p>“I spent twenty-eight years running somebody else’s plant. When I retired everyone assumed I’d sit down for good. My son set the store up with me in one evening, and now I look in on it over morning tea, before the street gets hot. It is small and it is mine, and at my age that turns out to matter more than I expected.”</p>
+          </blockquote>
+
+          <figcaption class="s-09__author">
+            <cite class="s-09__author-name">Saeed R.</cite>
+            <span class="s-09__author-role">Retired engineer, Dammam 🇸🇦</span>
+          </figcaption>
+        </div>
+      </figure>
+      </div>
+    </div>
+
+    <!-- Индикаторы: показывают, что историй три и какая идёт сейчас -->
+    <ol class="s-09__dots" aria-hidden="true">
+      <li class="s-09__dot s-09__dot--1"></li>
+      <li class="s-09__dot s-09__dot--2"></li>
+      <li class="s-09__dot s-09__dot--3"></li>
+    </ol>
+
+    <p class="s-09__note">Individual results vary and depend on the work you put in.</p>
+
+  </div>
+</section>

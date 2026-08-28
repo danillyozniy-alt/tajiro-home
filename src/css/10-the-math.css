@@ -1,0 +1,719 @@
+/* ==========================================================================
+   tajiro — Home · 10 · The Math
+   Figma: HoPojxNiFElmltha1NOl3N — node 511:536
+   Интерактивный калькулятор маржи: слайдер «заказов в день» → дневная
+   выручка, дневная доля продавца и месячная маржа.
+   ========================================================================== */
+
+.s-10 {
+  overflow: hidden;   /* кольца орбит шире сцены — режем по краю секции */
+  /* Подписи внутри калькулятора — в токенах базы такого оттенка нет */
+  --s10-text-soft: #6e675c;
+  --s10-tint:      rgba(212, 163, 115, 0.14);
+  --s10-tint-line: rgba(212, 163, 115, 0.40);
+  --s10-tint-rail: rgba(212, 163, 115, 0.20);
+
+  padding-block: 120px;
+  background: var(--c-bg-plain);
+}
+
+.s-10__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+}
+
+/* --- Шапка секции --------------------------------------------------------- */
+.s-10__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 8px;
+  text-align: center;
+}
+
+.s-10__kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 1.3px;
+  color: var(--c-green-text);
+}
+
+.s-10__kicker-rule {
+  flex: none;
+  width: 24px;
+  border-radius: 2px;
+}
+
+.s-10__title {
+  font-size: 64px;
+  line-height: 70px;
+  letter-spacing: -2px;
+  color: var(--c-ink-surface-2);
+}
+
+.s-10__lead {
+  max-width: 640px;
+  color: var(--s10-text-soft);
+}
+
+/* --- Карточка калькулятора ------------------------------------------------ */
+.s-10__calc {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 720px;
+  padding: 40px 48px;
+  /* Граница прозрачна и работает распоркой: в её толщину видно нижний
+     слой фона — градиентную кромку, обрезанную по border-box. Слои
+     поверхности обрезаны по padding-box и внутрь границы не заходят. */
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+
+  /* Ровно один пиксель, а не полтора: дробную границу браузер округляет до
+     целого, и заявленные 1.5 всё равно превращались в 1. Лучше задать то,
+     что действительно нарисуется. */
+  border: 1px solid transparent;
+  border-radius: 24px;
+  background-image: var(--glass-bg), var(--glass-edge);
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+
+  /* Фон секции стал почти белым, и одной светлой рамки карточке мало —
+     она переставала читаться отдельной плашкой. Мягкая тень поднимает её
+     над фоном, не добавляя ни линий, ни цвета. */
+  box-shadow: var(--glass-shadow);
+}
+
+.s-10__calc-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.s-10__calc-title {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: -0.2px;
+  color: var(--c-ink-surface-2);
+}
+
+.s-10__calc-sub {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--s10-text-soft);
+}
+
+/* --- Поле со слайдером ---------------------------------------------------- */
+.s-10__field {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.s-10__field-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.s-10__field-label {
+  flex: 1 1 auto;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--s10-text-soft);
+  cursor: pointer;
+}
+
+.s-10__field-value {
+  flex: none;
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  font-variant-numeric: tabular-nums;
+  /* Чип прижат к правому краю строки — эмфаза обязана расти от него,
+     иначе цифра на всплеске уползает вправо от собственного места. */
+  transform-origin: right center;
+  color: var(--c-green-text);
+}
+
+/* Дорожка: подложка (::before) + золотая заливка + прозрачный нативный input */
+.s-10__track {
+  position: relative;
+  /* Высота — это зона захвата, а не толщина дорожки: сама дорожка рисуется
+     псевдоэлементом в 8 px и центрируется внутри. Двадцати пикселей мало,
+     мимо кружка промахиваешься; двадцать восемь дают палец. */
+  height: 28px;
+}
+
+.s-10__track::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 0;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--s10-tint-rail);
+  transform: translateY(-50%);
+}
+
+.s-10__track-fill {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0;
+  /* центр бегунка ходит от 10px до (100% − 10px) — заливка идёт ровно под него */
+  width: calc(10px + var(--s10-p, 0.2632) * (100% - 20px));
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--c-green-bright);
+  transform: translateY(-50%);
+}
+
+/* Ореол у бегунка — само приглашение к захвату. Позиция считается от того
+   же --s10-p, что и заливка, поэтому ореол физически не может разъехаться
+   с бегунком. По умолчанию он погашен: живёт только пока идёт демо
+   (.is-demo), и исчезает навсегда вместе с классом, когда человек берёт
+   управление. Анимируются только transform и opacity — «left» пересчитывает
+   не анимация, а тот же render(), что двигает бегунок. */
+.s-10__track::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: calc(10px + var(--s10-p, 0.2632) * (100% - 20px));
+  width: 20px;   /* = внешний диаметр бегунка: кольцо стартует ровно с его канта */
+  height: 20px;
+  margin-block-start: -10px;
+  margin-inline-start: -10px;
+  border: 1.5px solid var(--c-green-bright);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.s-10__calc.is-demo .s-10__track::after {
+  animation: s10-halo 2s linear infinite;   /* смягчение — внутри кейфреймов */
+}
+
+.s-10__slider {
+  position: relative;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.s-10__slider::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.s-10__slider::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.s-10__slider::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  margin-block-start: 4px;   /* (28 − 20) / 2: Chrome кладёт бегунок по верху дорожки */
+  border: 0;
+  background: url("../assets/img/ui/slider-thumb.svg") center / 20px 20px no-repeat;
+  transition: transform 0.16s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.s-10__slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 0;
+  background: url("../assets/img/ui/slider-thumb.svg") center / 20px 20px no-repeat;
+  transition: transform 0.16s ease;
+}
+
+.s-10__slider:hover::-webkit-slider-thumb,
+.s-10__slider:focus-visible::-webkit-slider-thumb { transform: scale(1.12); }
+
+.s-10__slider:hover::-moz-range-thumb,
+.s-10__slider:focus-visible::-moz-range-thumb { transform: scale(1.12); }
+
+/* Пока «рука» ведёт бегунок, он выглядит захваченным — тем же масштабом и
+   через тот же готовый transition, что и при живом hover. Отдельными
+   правилами: один невалидный вендорный селектор убил бы всю группу. */
+.s-10__calc.is-drag .s-10__slider::-webkit-slider-thumb { transform: scale(1.12); }
+.s-10__calc.is-drag .s-10__slider::-moz-range-thumb { transform: scale(1.12); }
+
+.s-10__slider:active { cursor: grabbing; }
+
+/* --- Результаты ----------------------------------------------------------- */
+.s-10__results {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.s-10__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.s-10__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.s-10__stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 14px;
+  letter-spacing: 0.6px;
+  color: var(--s10-text-soft);
+}
+
+.s-10__stat-value {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 34px;
+  letter-spacing: -0.6px;
+  font-variant-numeric: tabular-nums;
+  transform-origin: left center;   /* цифры выключены влево — растут оттуда же */
+  color: var(--c-ink-surface-2);
+}
+
+.s-10__total {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 26px 28px;
+  border: 1px solid var(--s10-tint-line);
+  border-radius: 16px;
+  background: var(--s10-tint);
+  text-align: center;
+}
+
+/* Кольцо-эмфаза на приезде. Это ТОЛЬКО рамка на прозрачном фоне: подложка
+   под текстом не меняется ни на кадр, поэтому пиковый контраст итоговой
+   суммы остаётся тем же, что в покое. Радиус 17 = 16 карточки + 1 вылет
+   inset, иначе на скруглениях кольцо срезало бы угол. */
+.s-10__total::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--c-line-green);
+  border-radius: 17px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.s-10__total-label {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.8px;
+  color: var(--c-text-muted);
+}
+
+.s-10__total-value {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 54px;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text);
+}
+
+.s-10__total-note {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--s10-text-soft);
+}
+
+/* --- Дисклеймер ----------------------------------------------------------- */
+/* Без opacity: 0.8 — она примешивала кремовый фон к #6e675c и роняла контраст
+   до 3.34:1 на 12px (AA требует 4.5:1). Приглушённость держит размер, а не
+   прозрачность: 12px против 20px лида — иерархия и так однозначная. 4.94:1. */
+.s-10__note {
+  max-width: 560px;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: var(--s10-text-soft);
+}
+
+/* ==========================================================================
+   МОТОРИКА
+
+   Мастер-цикл — 18s, ровно как у флагманской панели s-08: две самые «живые»
+   области страницы идут на общих часах и никогда не бьются друг о друга.
+   Ход бегунка считает inline-скрипт секции (единственный на странице), CSS
+   держит две вещи, которые скриптом делать незачем: ambient-ореол и
+   одноразовый каскад-эмфазу на приезде.
+
+   Делители 18s:
+     · ореол у бегунка   2s  ×9  — один вдох ровно на каждый бит демо;
+     · каскад-эмфаза   900ms ×20 — короче паузы между ходами (≥1240ms),
+                                   поэтому всегда доигрывает до старта
+                                   следующего хода и не рвётся на полуслове.
+
+   КАУЗАЛЬНОСТЬ. Каскад — не набор вспышек, а произнесённая вслух формула.
+   Звенья загораются в том порядке, в котором считается арифметика:
+     0 %  чип «заказов в день»   — то, что изменилось;
+    15 %  DAILY SALES            = $40 × заказы;
+    30 %  DAILY CUT              = ×65 %;
+    45 %  MONTHLY MARGIN + кольцо = ×30 дней.
+   Зритель за один приезд видит цепочку вывода, а не просто «цифры мигнули».
+
+   ПОЧЕМУ ПРОЦЕНТЫ, А НЕ animation-delay. Четыре звена — разные элементы, но
+   одна хореография с общей длительностью 900ms. Разложить их задержками
+   выглядит очевидной уборкой и молча ломает синхрон: delay сдвигает не
+   только начало, но и хвост, и на перезапуске (calc.is-settled снимается и
+   ставится заново) звенья разъезжаются. Здесь — тот же приём, что у s08-ptN.
+
+   ЛИНЕЙНОСТЬ. На уровне элемента везде linear: любое element-level ease
+   переразметило бы весь цикл и убило сегменты-паузы. Каждое смягчение
+   объявлено внутри кейфрейма через animation-timing-function.
+   ========================================================================== */
+
+/* --- 1. Ореол: приглашение к захвату --------------------------------------
+   Расходится от канта бегунка и гаснет полностью к 62 %. Кадр 100 %
+   (opacity 0) и кадр 0 % (scale 1) визуально совпадают — возврат к
+   единичному масштабу происходит на нулевой прозрачности, шва не видно. */
+@keyframes s10-halo {
+  0%   { opacity: 0.55; transform: scale(1);
+         animation-timing-function: cubic-bezier(0.16, 0.8, 0.4, 1); }
+  62%  { opacity: 0; transform: scale(2.3); }
+  100% { opacity: 0; transform: scale(2.3); }
+}
+
+/* --- 2. Каскад-эмфаза ------------------------------------------------------
+   Одна длительность на все четыре звена — разъехаться не могут.
+   Ни одно из них не трогает цвет и не трогает подложку: анимируются только
+   transform и (у кольца) opacity, поэтому контраст текста в пике ровно тот
+   же, что в покое, и AA держится без оговорок.
+   Цифры при этом НЕ твинятся: текст меняет render() мгновенно, эмфаза лишь
+   отмечает факт приезда. Во время живой протяжки человека 'change' ещё не
+   наступил — счётчики идут детент в детент с бегунком, без отставания. */
+.s-10__calc.is-settled .s-10__field-value,
+.s-10__calc.is-settled .s-10__stat-value,
+.s-10__calc.is-settled .s-10__total-value,
+.s-10__calc.is-settled .s-10__total::after {
+  animation-duration: 900ms;
+  animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
+  animation-iteration-count: 1;
+}
+
+.s-10__calc.is-settled .s-10__field-value { animation-name: s10-pop-orders; }
+/* nth-child здесь только выбирает роль: сам стаггер живёт в кейфреймах */
+.s-10__calc.is-settled .s-10__stat:nth-child(1) .s-10__stat-value { animation-name: s10-pop-sales; }
+.s-10__calc.is-settled .s-10__stat:nth-child(2) .s-10__stat-value { animation-name: s10-pop-cut; }
+.s-10__calc.is-settled .s-10__total-value { animation-name: s10-pop-total; }
+.s-10__calc.is-settled .s-10__total::after { animation-name: s10-ring; }
+
+@keyframes s10-pop-orders {
+  0%        { transform: scale(1);
+              animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  8%        { transform: scale(1.09);
+              animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1); }
+  22%, 100% { transform: scale(1); }
+}
+
+@keyframes s10-pop-sales {
+  0%, 15%   { transform: scale(1);
+              animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  23%       { transform: scale(1.07);
+              animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1); }
+  37%, 100% { transform: scale(1); }
+}
+
+@keyframes s10-pop-cut {
+  0%, 30%   { transform: scale(1);
+              animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  38%       { transform: scale(1.07);
+              animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1); }
+  52%, 100% { transform: scale(1); }
+}
+
+/* Итог держат дольше и мягче остальных: это единственное число, ради
+   которого секцию читают, и ему положена не вспышка, а вдох. */
+@keyframes s10-pop-total {
+  0%, 45%   { transform: scale(1);
+              animation-timing-function: cubic-bezier(0.34, 1.7, 0.64, 1); }
+  57%       { transform: scale(1.055);
+              animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1); }
+  78%, 100% { transform: scale(1); }
+}
+
+@keyframes s10-ring {
+  0%, 45% { opacity: 0; transform: scale(0.99);
+            animation-timing-function: cubic-bezier(0.16, 0.8, 0.4, 1); }
+  53%     { opacity: 0.9; transform: scale(1);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1); }
+  100%    { opacity: 0; transform: scale(1.035); }
+}
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-10 { padding-block: 96px; }
+  .s-10__title { font-size: 56px; line-height: 62px; letter-spacing: -1.6px; }
+}
+
+@media (max-width: 900px) {
+  .s-10 { padding-block: 72px; }
+  .s-10__inner { gap: 44px; }
+  .s-10__title { font-size: 40px; line-height: 46px; letter-spacing: -1px; }
+  .s-10__calc { padding: 32px 28px; }
+  .s-10__stat-value { font-size: 26px; line-height: 32px; }
+  .s-10__total-value { font-size: 38px; line-height: 44px; }
+}
+
+@media (max-width: 600px) {
+  .s-10 { padding-block: 56px; }
+  .s-10__inner { gap: 36px; }
+  .s-10__title { font-size: 30px; line-height: 36px; letter-spacing: -0.6px; }
+  .s-10__calc { gap: 20px; padding: 24px 18px; border-radius: 18px; }
+  .s-10__stats { gap: 10px; }
+  .s-10__stat { padding: 14px 16px; }
+  .s-10__stat-value { font-size: 22px; line-height: 28px; letter-spacing: -0.4px; }
+  .s-10__total { padding: 20px 16px; }
+  .s-10__total-label { letter-spacing: 0.6px; }
+  .s-10__total-value { font-size: 32px; line-height: 38px; letter-spacing: -0.6px; }
+}
+
+/* --- Уважение к prefers-reduced-motion --------------------------------------
+   Скрипт секции проверяет тот же медиазапрос и демонстрацию не запускает
+   вовсе: классов .is-demo / .is-drag / .is-settled на карточке не появляется,
+   бегунок остаётся на 6, а панель — на $240 / $156 / $4,680, то есть ровно
+   на том состоянии, которое называет копия секции. Это и есть задуманный
+   статический кадр.
+
+   Блок ниже — не страховка «на всякий случай», а разбор каждого
+   анимируемого элемента по отдельности, как требует дом. Сброс в
+   00-base.css схлопывает анимацию в ПОСЛЕДНИЙ кадр, поэтому важно, чем
+   каждая из них заканчивается:
+     · s10-halo   → opacity 0. Схлопывание безвредно, но кольцо-приглашение
+                    без пульса — просто шум вокруг бегунка, поэтому гасим
+                    его явно и насовсем.
+     · s10-pop-*  → transform: scale(1), то есть покой. Безвредно, но
+                    обнуляем явно: 'change' от живого человека повесил бы
+                    .is-settled и при выключенной анимации (например, если
+                    системная настройка сменилась при открытой странице —
+                    скрипт в этом случае зовёт stopDemo, но класс эмфазы
+                    снимать не станет).
+     · s10-ring   → opacity 0, кольцо невидимо. Обнуляем в паре с pop-ами.
+   Масштаб бегунка на :hover / :focus-visible трогать не нужно: это
+   transition, его 00-base.css и так схлопывает в мгновенный отклик, а сам
+   отклик на наведение при reduced-motion уместен. */
+@media (prefers-reduced-motion: reduce) {
+  .s-10__track::after {
+    animation: none !important;
+    opacity: 0;
+    transform: none;
+  }
+
+  .s-10__field-value,
+  .s-10__stat-value,
+  .s-10__total-value {
+    animation: none !important;
+    transform: none;
+  }
+
+  .s-10__total::after {
+    animation: none !important;
+    opacity: 0;
+    transform: none;
+  }
+}
+
+/* --- Планета ---------------------------------------------------------------
+   Стоит под калькулятором и во всю ширину. Раньше они делили строку в две
+   колонки, и планете доставалась половина — при её задаче («заказы идут
+   отовсюду») это была миниатюра, на которой ничего не разобрать.
+
+   Подложка тёмная намеренно. На кремовом фоне зелёная сетка не читалась
+   вовсе: светлая графика на светлом требует такой плотности, при которой
+   она перестаёт быть фоном. На тёмном та же графика работает сама.
+
+   Сам шар рисуется в <canvas>, а не в SVG: точек под тысячу, и каждая на
+   каждом кадре меняет размер и прозрачность. Тысяча узлов DOM с этим не
+   справится, canvas справляется не замечая.
+   -------------------------------------------------------------------------- */
+/* Отдельной подложки нет: планета живёт прямо в секции. Тёмная плашка
+   отрезала её от страницы и читалась вставкой из другого макета. Вместо
+   неё шар перекрашен под светлый фон — тёмные точки по светлому. */
+/* Планета слева, калькулятор справа. Калькулятор не ужимаем: это рабочий
+   инструмент со слайдером и тремя суммами, а планета — иллюстрация к нему.
+   Поэтому у него фиксированная доля, а планета берёт остаток. */
+.s-10__layout {
+  display: grid;
+  /* Ширина обязательна: .s-10__inner — флекс-колонка с align-items: center,
+     и без неё раскладка сжимается по содержимому, а колонка 1fr схлопывается
+     до минимума. Планета от этого выходила втрое меньше положенного. */
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 580px);
+  gap: 36px;
+  align-items: center;
+  margin-top: 56px;
+}
+
+.s-10__stage {
+  position: relative;
+}
+
+/* Атмосфера: мягкое кольцо света вокруг шара. Без неё шар выглядит
+   наклейкой на прямоугольнике, а не телом в пространстве. */
+.s-10__halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 118%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -54%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+              rgba(61, 143, 99, 0.09) 0%,
+              rgba(212, 163, 115, 0.06) 44%,
+              transparent 68%);
+  filter: blur(52px);
+  pointer-events: none;
+}
+
+.s-10__scene {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+.s-10__globe {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Ярлыки городов ------------------------------------------------------- */
+.s-10__tags {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.s-10__tag {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 1px solid var(--c-line-green);
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  box-shadow: 0 8px 22px rgba(43, 38, 33, 0.12);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+  color: var(--c-text);
+  transform: translate(-50%, -50%);
+  animation: s10-tag 4.2s ease forwards;
+}
+
+.s-10__tag-sum {
+  font-family: var(--f-display);
+  font-weight: 700;
+  color: var(--c-green-text);
+}
+
+@keyframes s10-tag {
+  0%       { opacity: 0; transform: translate(-50%, calc(-50% + 10px)) scale(0.92); }
+  10%, 76% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100%     { opacity: 0; transform: translate(-50%, calc(-50% - 12px)) scale(1); }
+}
+
+/* --- Счётчик заказов ------------------------------------------------------ */
+.s-10__live {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 28px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--c-text-muted);
+}
+
+.s-10__live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-green-bright);
+  animation: s10-live 2s ease-in-out infinite;
+}
+
+@keyframes s10-live {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 0 0 rgba(61, 143, 99, 0.5); }
+  50%      { opacity: 0.6; box-shadow: 0 0 0 7px rgba(61, 143, 99, 0); }
+}
+
+.s-10__live-num {
+  font-family: var(--f-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--c-green-text);
+}
+
+/* --- Калькулятор наверху -------------------------------------------------- */
+.s-10__calc { margin-inline: auto; }
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .s-10__layout { grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 44px; }
+  .s-10__stage { order: 2; }
+  .s-10__scene { max-width: 420px; }
+  .s-10__scene { width: min(460px, 86%); }
+  .s-10__tag   { font-size: 11px; padding: 5px 10px; }
+}
+
+@media (max-width: 600px) {
+  .s-10__layout { gap: 32px; margin-top: 32px; }
+  .s-10__scene { max-width: 300px; }
+  .s-10__scene { width: 88%; }
+  .s-10__tag   { font-size: 10px; padding: 4px 9px; gap: 5px; }
+  .s-10__live  { font-size: 13px; margin-top: 20px; }
+}
+
+/* Без движения шар остаётся нарисованным — просто не вращается, ярлыки
+   не всплывают. Статичный кадр здесь осмыслен сам по себе. */
+@media (prefers-reduced-motion: reduce) {
+  .s-10__live-dot { animation: none !important; }
+  .s-10__tag      { animation: none !important; opacity: 1; }
+}

@@ -1,0 +1,621 @@
+/* ==========================================================================
+   12 · Trust & security — «Your trust is our foundation.»
+   Figma: HoPojxNiFElmltha1NOl3N, node 511:625
+   ========================================================================== */
+
+.s-12 {
+  --s12-ink:         #1f1c1a;                  /* заголовки карточек и секции */
+  --s12-soft:        #6e675c;                  /* лид, даты — text/on-dark-soft */
+  --s12-icon-bg:     rgba(201, 169, 106, 0.12);
+  --s12-icon-line:   rgba(201, 169, 106, 0.24);
+  --s12-press-line:  rgba(217, 209, 199, 0.6);
+  --s12-badge-line:  rgba(217, 209, 199, 0.5);
+
+  padding-block: 120px;
+  background: var(--c-bg-plain);
+}
+
+/* --- Подложка под стекло ----------------------------------------------------
+   Два мягких цветовых пятна и решётка гириха. Существует ровно затем, чтобы
+   плашкам было что искажать: на ровной заливке стекло не читается вовсе.
+   Контраст низкий намеренно — под плашками не должно быть ничего, что
+   спорит с их текстом.
+   -------------------------------------------------------------------------- */
+.s-12 {
+  position: relative;
+  isolation: isolate;
+}
+
+.s-12::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(52% 44% at 18% 22%, rgba(212, 163, 115, 0.24) 0%, transparent 68%),
+    radial-gradient(46% 40% at 84% 74%, rgba(61, 143, 99, 0.16) 0%, transparent 66%),
+    url("../assets/img/decor/girih-pattern.svg") center / 620px repeat;
+  opacity: 0.55;
+}
+
+
+.s-12__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+}
+
+/* --- Надзаголовки с линейкой ---------------------------------------------- */
+.s-12__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  letter-spacing: 1.3px;
+  line-height: 18px;
+  color: var(--c-green-text);
+}
+
+.s-12__kicker-rule {
+  width: 24px;
+  border-radius: 2px;
+}
+
+/* --- Шапка секции --------------------------------------------------------- */
+.s-12__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding-bottom: 8px;
+  text-align: center;
+}
+
+.s-12__title {
+  max-width: 900px;
+  font-size: 64px;
+  line-height: 70px;
+  letter-spacing: -2px;
+  color: var(--s12-ink);
+}
+
+.s-12__lead {
+  max-width: 640px;
+  color: var(--s12-soft);
+}
+
+/* --- Сетка доверия -------------------------------------------------------- */
+.s-12__trust {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.s-12__trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  min-height: 155px;
+  padding: 28px;
+  /* Граница прозрачна и работает распоркой: в её толщину видно нижний
+     слой фона — градиентную кромку, обрезанную по border-box. Слои
+     поверхности обрезаны по padding-box и внутрь границы не заходят. */
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+
+  /* Ровно один пиксель, а не полтора: дробную границу браузер округляет до
+     целого, и заявленные 1.5 всё равно превращались в 1. Лучше задать то,
+     что действительно нарисуется. */
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background-image: var(--glass-bg), var(--glass-edge);
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  box-shadow: var(--glass-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.s-12__trust-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--c-line-gold);
+  box-shadow: var(--sh-card);
+}
+
+.s-12__trust-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.s-12__trust-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.18px;
+  color: var(--s12-ink);
+}
+
+.s-12__trust-text {
+  font-size: 14px;
+  line-height: 23px;
+  color: var(--c-text-muted);
+}
+
+/* Изразец вместо плоской иконки — тот же приём, что в секции 11: там
+   керамическая плитка уже заменила линейный значок, и блок доверия должен
+   говорить с ней одним языком, иначе две соседние секции читаются собранными
+   из разных наборов.
+
+   Подложка плитке не нужна: кадр снят так, что глина занимает его целиком,
+   и сама плитка и есть подложка знака. */
+.s-12__tile {
+  display: block;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  object-fit: fill;
+  box-shadow:
+    0 1px 2px rgba(43, 38, 33, 0.06),
+    0 4px 12px -8px rgba(43, 38, 33, 0.26);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.3s ease;
+}
+
+.s-12__trust-item:hover .s-12__tile {
+  transform: translateY(-2px);
+  box-shadow:
+    0 2px 4px rgba(43, 38, 33, 0.08),
+    0 9px 18px -10px rgba(43, 38, 33, 0.32);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-12__tile { transition: none; }
+  .s-12__trust-item:hover .s-12__tile { transform: none; }
+}
+
+.s-12__trust-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.s-12__trust-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.18px;
+  color: var(--s12-ink);
+}
+
+.s-12__trust-text {
+  font-size: 14px;
+  line-height: 23px;
+  color: var(--c-text-muted);
+}
+
+.s-12__trust-icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--s12-icon-line);
+  border-radius: 14px;
+  background: var(--s12-icon-bg);
+}
+
+.s-12__trust-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.s-12__trust-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.s-12__trust-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.18px;
+  color: var(--s12-ink);
+}
+
+.s-12__trust-text {
+  font-size: 14px;
+  line-height: 23px;
+  color: var(--c-text-muted);
+}
+
+/* --- Доказательство --------------------------------------------------------
+   Не панель и не виджет: рамки нет, заливка едва намечена. Зона обозначена
+   ровно настолько, чтобы глаз понял «здесь показывают», и ни на каплю
+   больше — вес обязан остаться за заголовком и абзацем.
+
+   Итоговый кадр лежит в обычных правилах, исходный — под классом .is-armed,
+   который вешает скрипт. Договор тот же, что в 00-reveal.css: нет скрипта —
+   нет класса — читатель сразу видит готовое доказательство.
+   -------------------------------------------------------------------------- */
+.s-12__proof {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  height: 92px;
+  padding: 0 16px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--c-sand) 7%, transparent);
+}
+
+/* Подпись под фигурой: короткая, человеческая, без служебной лексики.
+   Она называет то, что показано, а не пересказывает абзац. */
+.s-12__proof-note {
+  position: relative;
+  display: block;
+  height: 18px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--c-text-muted);
+}
+
+/* --- 1. Регистрация --------------------------------------------------------- */
+.s-12__proof--registry { flex-direction: row; align-items: center; gap: 16px; }
+
+.s-12__state { position: relative; display: inline-flex; align-items: center; }
+
+.s-12__state-line {
+  fill: color-mix(in srgb, var(--c-sand) 16%, transparent);
+  stroke: var(--c-gold);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Печать садится с запозданием: сначала место, потом отметка. */
+.s-12__stamp {
+  position: absolute;
+  right: -11px;
+  bottom: 2px;
+  color: var(--c-green-text);
+  transition: opacity 0.4s ease 0.42s,
+              transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) 0.42s;
+}
+
+.s-12__stamp circle { fill: var(--c-bg-plain); stroke: currentColor; stroke-width: 1.1; }
+.s-12__stamp path {
+  fill: none; stroke: currentColor; stroke-width: 1.9;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.s-12__proof--registry .s-12__proof-note {
+  height: auto;
+  transition: opacity 0.5s ease 0.56s;
+}
+
+.is-armed .s-12__state-line { opacity: 0; transform: translateY(4px); }
+.is-armed .s-12__stamp      { opacity: 0; transform: scale(1.5); }
+.is-armed .s-12__proof--registry .s-12__proof-note { opacity: 0; }
+
+/* --- 2. Шифрование ---------------------------------------------------------
+   Двумя clip-path навстречу: слева от бегущей черты строка уже зашифрована,
+   справа ещё нет. Обе половины и черта едут на одном тайминге, поэтому
+   разъехаться не могут — синхронизация не поручена скрипту.
+   -------------------------------------------------------------------------- */
+.s-12__cipher { position: relative; display: block; height: 21px; }
+
+.s-12__cipher-plain,
+.s-12__cipher-code {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 21px;
+  color: var(--s12-ink);
+  transition: clip-path 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
+}
+
+.s-12__cipher-code {
+  letter-spacing: 0.4px;
+  color: var(--c-text-muted);
+  clip-path: inset(0 0 0 0);
+}
+
+.s-12__cipher-plain { clip-path: inset(0 0 0 100%); }
+
+/* Черта волосяная и без свечения: отмечает границу, а не празднует её. */
+.s-12__cipher-edge {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: 100%;
+  width: 1px;
+  background: var(--c-gold);
+  opacity: 0;
+  transition: left 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.15s,
+              opacity 0.3s ease 1.1s;
+}
+
+.s-12__note-a,
+.s-12__note-b { position: absolute; inset: 0; transition: opacity 0.4s ease 0.7s; }
+.s-12__note-a { opacity: 0; }
+.s-12__note-b { opacity: 1; }
+
+.is-armed .s-12__cipher-code  { clip-path: inset(0 100% 0 0); }
+.is-armed .s-12__cipher-plain { clip-path: inset(0 0 0 0); }
+.is-armed .s-12__cipher-edge  { left: 0; opacity: 1; }
+.is-armed .s-12__note-a       { opacity: 1; }
+.is-armed .s-12__note-b       { opacity: 0; }
+
+/* --- 3. Мелкий шрифт --------------------------------------------------------
+   Петит уходит, на его месте встаёт одна короткая фраза. Длинная спорила
+   с абзацем под панелью — эта помещается в один взгляд.
+   -------------------------------------------------------------------------- */
+.s-12__proof--print { justify-content: center; }
+
+.s-12__petit,
+.s-12__plain {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.s-12__petit {
+  font-size: 4px;
+  line-height: 7px;
+  text-align: justify;
+  color: var(--c-text-muted);
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.s-12__plain {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--s12-ink);
+  opacity: 1;
+  transition-delay: 0.5s;
+}
+
+.is-armed .s-12__petit { opacity: 0.45; transform: none; }
+.is-armed .s-12__plain { opacity: 0; transform: scale(1.04); transition-delay: 0s; }
+
+/* --- 4. Тридцать дней ------------------------------------------------------- */
+.s-12__ruler {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 24px;
+}
+
+.s-12__ruler i {
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--c-green) 62%, transparent);
+  transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 24ms),
+              background-color 0.4s ease calc(var(--i) * 24ms);
+}
+
+/* Каждое седьмое выше — недельные засечки. Без них это индикатор загрузки. */
+.s-12__ruler i:nth-child(7n) { height: 24px; }
+
+.s-12__ruler-ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--c-text-muted);
+  transition: opacity 0.5s ease 0.72s;
+}
+
+.is-armed .s-12__ruler i {
+  height: 9px;
+  background: color-mix(in srgb, var(--c-green) 14%, transparent);
+}
+
+.is-armed .s-12__ruler i:nth-child(7n) { height: 13px; }
+.is-armed .s-12__ruler-ends { opacity: 0; }
+
+/* Меньше движения — сразу итоговый кадр, ничего не взводится. */
+@media (prefers-reduced-motion: reduce) {
+  .s-12__proof * { transition: none !important; }
+}
+
+.s-12__trust-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.s-12__trust-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.18px;
+  color: var(--s12-ink);
+}
+
+.s-12__trust-text {
+  font-size: 14px;
+  line-height: 23px;
+  color: var(--c-text-muted);
+}
+
+.s-12__trust-icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--s12-icon-line);
+  border-radius: 14px;
+  background: var(--s12-icon-bg);
+}
+
+.s-12__trust-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+/* --- Пресса --------------------------------------------------------------- */
+.s-12__press {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.s-12__press-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 26px;
+  border: 1px solid var(--s12-press-line);
+  border-radius: 16px;
+  background: var(--c-surface);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.s-12__press-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--c-line);
+  box-shadow: var(--sh-card);
+}
+
+.s-12__press-source {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  line-height: 16px;
+  color: var(--c-text-muted);
+}
+
+.s-12__press-title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 23px;
+  letter-spacing: -0.16px;
+  color: var(--s12-ink);
+}
+
+/* margin-top:auto заменяет распорку из макета и ровняет подвалы карточек.
+   В Figma между заголовком и подвалом: 12 (gap) + 1 (пустая распорка) + 12 (gap) = 25px,
+   поэтому к колоночному gap:12 добавляем padding-top:13px → карточка ровно 167px.
+   gap внутри подвала = 0: дата растягивается (flex:1), ссылка прижата вправо. */
+.s-12__press-foot {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: auto;
+  padding-top: 13px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.s-12__press-date {
+  flex: 1 1 auto;
+  color: var(--s12-soft);
+}
+
+.s-12__press-link {
+  flex: none;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--c-text-muted);
+  transition: color 0.18s ease;
+}
+
+.s-12__press-link:hover {
+  color: var(--c-gold);
+}
+
+/* --- Способы оплаты ------------------------------------------------------- */
+.s-12__payments {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.s-12__payments-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  line-height: 14px;
+  text-transform: uppercase;
+  color: var(--s12-soft);
+}
+
+.s-12__payments-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.s-12__payment {
+  padding: 8px 14px;
+  border: 1px solid var(--s12-badge-line);
+  border-radius: 8px;
+  background: var(--c-surface);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  color: var(--c-text-muted);
+  white-space: nowrap;
+}
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-12 { padding-block: 96px; }
+  .s-12__title { font-size: 56px; line-height: 62px; letter-spacing: -1.6px; }
+}
+
+@media (max-width: 900px) {
+
+
+  .s-12 { padding-block: 80px; }
+  .s-12__inner { gap: 44px; }
+  .s-12__title { font-size: 42px; line-height: 50px; letter-spacing: -1.1px; }
+  .s-12__trust { grid-template-columns: minmax(0, 1fr); }
+  .s-12__trust-item { min-height: 0; }
+  .s-12__press { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .s-12 { padding-block: 64px; }
+  .s-12__inner { gap: 36px; }
+  .s-12__title { font-size: 32px; line-height: 38px; letter-spacing: -0.8px; }
+  .s-12__trust { gap: 16px; }
+  .s-12__trust-item { gap: 14px; padding: 22px; }
+  .s-12__trust-icon { width: 46px; height: 46px; border-radius: 12px; }
+  .s-12__trust-icon img { width: 22px; height: 22px; }
+  .s-12__trust-title { font-size: 17px; line-height: 23px; }
+  .s-12__press { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .s-12__press-item { padding: 22px; }
+  .s-12__payments { gap: 10px; }
+  .s-12__payments-list { gap: 8px; }
+  .s-12__payment { padding: 7px 12px; font-size: 12px; }
+}

@@ -1,0 +1,181 @@
+/* ==========================================================================
+   13 · Footer CTA — «Ready to start your online business?»
+   Figma: HoPojxNiFElmltha1NOl3N, node 511:701
+   ========================================================================== */
+
+.s-13 {
+  --s13-ink:       #f5f1e8;                      /* заголовок на тёмном */
+  --s13-ink-soft:  rgba(245, 241, 232, 0.8);     /* подзаголовок */
+  --s13-ink-muted: rgba(245, 241, 232, 0.7);     /* строка доверия */
+  --s13-edge:      rgba(212, 163, 115, 0.2);     /* нижняя граница секции */
+
+  overflow: hidden;                              /* световые пятна уходят за край */
+  padding-block: 120px;
+  border-bottom: 1px solid var(--s13-edge);
+  /* Ровный тёмный, а не градиент слева направо: с градиентом правое пятно
+     боролось с фоном, который и без него светлел к краю. На ровном фоне свет
+     дают только сами пятна. Чуть светлее подвала — граница секций остаётся
+     читаемой. */
+  background: #1f1b17;
+}
+
+/* --- Световые пятна --------------------------------------------------------
+   Два мягких круга на тёмном фоне. Стоят на месте и пульсируют — больше на
+   этом экране ничего и не нужно, он закрывающий.
+
+   Раньше это были два неподвижных SVG из макета. Второе пятно, тёмно-зелёное
+   при непрозрачности 5%, на тёмном фоне не давало вообще ничего — секция
+   читалась пустой. Теперь оба пятна тёплые: зелёный из фонов со страницы
+   вычищен намеренно.
+
+   Рисуем градиентом, а не картинкой: цвет и мягкость правятся здесь же, край
+   остаётся гладким на любом экране, и в цельный файл нечего вшивать.
+
+   Дышим через transform и opacity: обе эти вещи браузер отдаёт видеокарте и
+   не перекладывает из-за них страницу заново на каждом кадре. */
+.s-13__glow {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.s-13__glow--sand {
+  top: -180px;
+  left: -240px;
+  width: 780px;
+  height: 780px;
+  /* Плотное ядро с быстрым спадом, а не ровная размазня до нуля. Прежний
+     градиент не имел края вообще, поэтому и увеличивать было нечего:
+     масштаб менялся, а видимой границы, которая бы поехала, не было. */
+  background: radial-gradient(circle closest-side,
+              rgba(212, 163, 115, 0.34),
+              rgba(212, 163, 115, 0.17) 30%,
+              rgba(212, 163, 115, 0.05) 58%,
+              rgba(212, 163, 115, 0) 78%);
+  animation: s13-pulse-a 5s ease-in-out infinite;
+}
+
+.s-13__glow--warm {
+  right: -260px;
+  bottom: -320px;
+  width: 940px;
+  height: 940px;
+  background: radial-gradient(circle closest-side,
+              rgba(245, 241, 232, 0.26),
+              rgba(245, 241, 232, 0.13) 30%,
+              rgba(245, 241, 232, 0.04) 58%,
+              rgba(245, 241, 232, 0) 78%);
+  animation: s13-pulse-b 7s ease-in-out -2.6s infinite;
+}
+
+/* Пульс, а не перемещение: пятна стоят на месте и дышат.
+
+   Первый заход был на 9 и 13 секунд с размахом непрозрачности от 0.55 —
+   и не читался вовсе. Причина не в размахе, а в скорости: яркость менялась
+   примерно на пять уровней в секунду, а такое медленное и размытое изменение
+   глаз не ловит. Он видит края и движение, а не плавный общий подсвет.
+
+   Поэтому период вдвое короче, а размах глубже: теперь ядро пятна проходит
+   около двадцати уровней в секунду — это уже выше порога заметности. Плюс
+   заметно больший масштаб: у градиента появилось ядро, и его границе есть
+   куда ехать.
+
+   Периоды 5 и 7 секунд не кратны друг другу: пятна расходятся по фазе и в
+   такт не сходятся. Размах у них разный, иначе это выглядит одним эффектом,
+   продублированным дважды. */
+@keyframes s13-pulse-a {
+  0%, 100% { transform: scale(0.78); opacity: 0.34; }
+  50%      { transform: scale(1.14); opacity: 1; }
+}
+
+@keyframes s13-pulse-b {
+  0%, 100% { transform: scale(0.84); opacity: 0.46; }
+  50%      { transform: scale(1.10); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-13__glow { animation: none; }
+}
+
+/* --- Контент -------------------------------------------------------------- */
+.s-13__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+}
+
+/* Селекторы намеренно с двойным классом (.s-13 .s-13__…): они перебивают
+   .h2 / .lead из 00-base независимо от порядка склейки файлов в styles.css. */
+.s-13 .s-13__title {
+  max-width: 760px;
+  font-size: 72px;
+  line-height: 76px;
+  letter-spacing: -2.5px;
+  color: var(--s13-ink);
+}
+
+.s-13 .s-13__lead {
+  max-width: 600px;
+  color: var(--s13-ink-soft);
+}
+
+/* --- Кнопка --------------------------------------------------------------- */
+.s-13__cta-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.18s ease;
+}
+
+.s-13__cta:hover .s-13__cta-icon { transform: translateX(3px); }
+
+/* --- Строка доверия ------------------------------------------------------- */
+.s-13__trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--s13-ink-muted);
+}
+
+.s-13__trust-icon {
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-13 { padding-block: 96px; }
+  .s-13 .s-13__title { font-size: 60px; line-height: 66px; letter-spacing: -2px; }
+}
+
+@media (max-width: 900px) {
+  .s-13 { padding-block: 80px; }
+  .s-13__inner { gap: 26px; }
+  .s-13 .s-13__title { font-size: 46px; line-height: 52px; letter-spacing: -1.4px; }
+
+  .s-13__glow--sand { top: -150px; left: -200px; width: 620px; height: 620px; }
+  .s-13__glow--warm { right: -200px; bottom: -240px; width: 720px; height: 720px; }
+}
+
+@media (max-width: 600px) {
+  .s-13 { padding-block: 64px; }
+
+  /* На узком экране прежние круги вылезали далеко за секцию и от них в кадр
+     попадал только тусклый край. */
+  .s-13__glow--sand { top: -110px; left: -150px; width: 460px; height: 460px; }
+  .s-13__glow--warm { right: -150px; bottom: -170px; width: 540px; height: 540px; }
+
+  .s-13__inner { gap: 22px; }
+  .s-13 .s-13__title { font-size: 34px; line-height: 40px; letter-spacing: -1px; }
+  .s-13__trust { font-size: 12px; }
+}

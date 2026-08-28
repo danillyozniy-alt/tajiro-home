@@ -1,0 +1,749 @@
+/* ==========================================================================
+   tajiro — Home · Dark accents
+   03-ai-influencers.css — секция «03 · AI influencers»
+   Источник: Figma HoPojxNiFElmltha1NOl3N, node 511:314
+
+   Телефон играет ленту: скриншот видеофида, который стоит на месте, спорит
+   с самим утверждением секции («они постят каждую неделю»). Здесь он идёт.
+   Вся моторика — в блоке МОТОРИКА внизу файла.
+   ========================================================================== */
+
+.s-03 {
+  /* фирменный тёплый тон секции — между --c-bg и --c-bg-alt, отдельного токена нет */
+  background: var(--c-bg-plain);
+  padding-block: 120px;
+
+  /* Высота строки счётчиков в рейле. Держим в переменной: от неё считаются
+     и кейфреймы тикеров, и парковка в reduced-motion — зашитые пиксели
+     разъехались бы с line-height при правке типографики. */
+  --s03-row: 14px;
+
+  /* Сдвиг фазы мастер-цикла. Цикл начинается кадром «первый клип въезжает
+     снизу», то есть в момент 0 экран телефона ещё пуст. Отматываем часы
+     на 0.6s назад — и страница открывается на уже въехавшем клипе.
+     Сдвиг ОДИН на все анимации секции: относительная синхронность не
+     меняется, меняется только точка, с которой цикл стартует. */
+  --s03-phase: -0.6s;
+}
+
+.s-03__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+}
+
+/* --- Текстовая колонка ---------------------------------------------------- */
+.s-03__text {
+  flex: 0 1 520px;
+  min-width: 0;
+}
+
+.s-03__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.s-03__eyebrow-line {
+  flex: none;
+  width: 24px;
+  border-radius: 2px;
+}
+
+.s-03__eyebrow .kicker {
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 1.3px;
+  color: var(--c-green-text);
+}
+
+.s-03__title {
+  margin-bottom: 16px;
+  font-size: 64px;
+  line-height: 70px;
+  letter-spacing: -2px;
+}
+
+.s-03__lead {
+  margin-bottom: 28px;
+}
+
+.s-03__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.s-03__cta img {
+  flex: none;
+  transition: transform 0.18s ease;
+}
+
+.s-03__cta:hover img { transform: translateX(3px); }
+
+.s-03__note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--c-text-muted);
+}
+
+.s-03__note img { flex: none; }
+
+/* --- Телефон -------------------------------------------------------------- */
+/* Тёплый ореол — тот же приём, что у телефона в s-06: два телефона на
+   странице должны рифмоваться. Базовое свечение живёт в статической тени,
+   анимация только качает её силу, поэтому при выключенной анимации
+   подсветка остаётся — просто перестаёт дышать.
+   box-shadow тут анимировать можно: элемент один, не повторяющийся. */
+.s-03__phone {
+  flex: none;
+  width: 280px;
+  height: 572px;
+  padding: 4px;               /* рамка корпуса */
+  border-radius: 48px;
+  background: #080808;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--c-sand) 22%, transparent),
+    0 0 30px -8px color-mix(in srgb, var(--c-sand) 40%, transparent),
+    0 30px 60px rgba(89, 61, 28, 0.16);
+  animation: s03-glow 8s var(--s03-phase) ease-in-out infinite;
+}
+
+.s-03__screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 44px;
+  overflow: hidden;
+  background: #080808;   /* подложка на первый кадр, пока грузится картинка */
+}
+
+/* --- Видео ленты -----------------------------------------------------------
+   Заменило стопку статичных кадров: в рамке телефона играет настоящий mp4,
+   как на экомзи. Постер держит кадр до загрузки и остаётся единственным
+   кадром, если файла ещё нет, — секция не разваливается ни в одном случае.
+   -------------------------------------------------------------------------- */
+.s-03__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* --- Клипы ленты -----------------------------------------------------------
+   Четыре слоя, смена — свайпом вверх, а не наплывом. Наплыв тут пробовался
+   и был отвергнут по делу: во всех четырёх клипах один и тот же человек, и
+   на середине растворения в кадре оказываются два его лица разного масштаба
+   друг на друге — читается как дефект, а не как монтаж. Свайп этой проблемы
+   лишён вовсе: слои не смешиваются, а стыкуются.
+   Уходящий клип едет на translateY(-100%), приходящий — со 100% к нулю, по
+   одной и той же кривой. В любой момент перехода уходящий занимает верхние
+   (1−p) экрана, приходящий — нижние p: сумма ровно экран, ни щели, ни
+   наложения. Порядок слоёв поэтому неважен, и петля 4→1 работает так же,
+   как 1→2 — без особого случая на шве.
+   Возврат слоя под нижнюю кромку (с −100 % на 100 %) пересёк бы кадр, и его
+   прячем: opacity 0 на 27.5 %, обратно 1 на 60.5 %, когда слой уже внизу.
+
+   Планы съёмки: 1 — общий (продукт, лицо, комната), 2 — крупный на лицо,
+   3 — врезка на продукт в руках, 4 — три четверти со светом слева.
+
+   Геометрия наездки. Экран 272×564, снимок 768×1344, object-fit: cover →
+   при scale(1) картинка отрисована 322×564 по центру. transform читается
+   как scale(S) translate(t): точка со смещением d от центра уезжает в
+   S·(d+t), поэтому композиционная точка держится центром при любом S —
+   наездка получается чистым зумом, без сползания кадра. Запас на сдвиг:
+   по X (322·S − 272)/2, по Y 282·(S − 1) — все значения ниже внутри него,
+   так что кадр нигде не открывает пустого края. Самый тугой — клип 3:
+   чтобы лицо ушло из кадра целиком и остались только руки с продуктом,
+   нужен зум 2.10 и сдвиг вниз на 25.4 % (запас до нижней кромки ~9px).
+   Меньший зум лицо не убирает — режет его посередине, а это выглядит
+   ошибкой кадрирования, а не другим планом. */
+/* backwards обязателен. Клипы 2–4 первые 4/8/12 секунд стоят в фазе
+   animation-delay, а там действует обычный вычисленный стиль — то есть
+   translateY(0) и opacity 1. Без fill-mode три слоя лежали бы поверх
+   первого, и до 12-й секунды телефон показывал бы неподвижный кадр.
+   backwards подставляет им кадр 0 % — «жду под нижней кромкой». */
+.s-03__clip {
+  position: absolute;
+  inset: 0;
+  /* linear на уровне элемента: в цикле есть длинные удержания, любое ease
+     здесь переразметило бы их. Кривая свайпа — внутри кейфреймов. */
+  animation: s03-swipe 16s linear infinite backwards;
+  animation-delay: var(--s03-phase);
+}
+
+.s-03__clip--1 { --s03-z0: 1.08; --s03-x0: 0%;    --s03-y0: 0%;
+                 --s03-z1: 1.15; --s03-x1: 0%;    --s03-y1: -0.6%; }
+.s-03__clip--2 { --s03-z0: 1.75; --s03-x0: -2.5%; --s03-y0: 11.31%;
+                 --s03-z1: 1.84; --s03-x1: -2.5%; --s03-y1: 10.6%; }
+.s-03__clip--3 { --s03-z0: 2.10; --s03-x0: 2%;    --s03-y0: -25.4%;
+                 --s03-z1: 2.18; --s03-x1: -1%;   --s03-y1: -25.4%; }
+.s-03__clip--4 { --s03-z0: 1.25; --s03-x0: 9%;    --s03-y0: 4%;
+                 --s03-z1: 1.34; --s03-x1: 8%;    --s03-y1: 3.2%; }
+
+/* Наездка живёт на самой картинке, а свайп — на обёртке: у них разные
+   кривые (наездка строго линейна, свайп смягчён), и на одном элементе
+   они бы дрались за transform. */
+.s-03__frame {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+  animation: s03-ken 16s linear infinite backwards;
+  animation-delay: var(--s03-phase);
+}
+
+/* Домашний приём: одинаковые сиблинги разводятся задержкой, а не копиями
+   кейфреймов. Обёртка и картинка одного клипа обязаны идти в такт. */
+.s-03__clip--2, .s-03__clip--2 .s-03__frame { animation-delay: calc(4s  + var(--s03-phase)); }
+.s-03__clip--3, .s-03__clip--3 .s-03__frame { animation-delay: calc(8s  + var(--s03-phase)); }
+.s-03__clip--4, .s-03__clip--4 .s-03__frame { animation-delay: calc(12s + var(--s03-phase)); }
+
+
+/* Интерфейс поверх видео — раскладка потоком, без магических координат */
+.s-03__ui {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 17px 26px 18px;
+  /* Интерфейс лежит прямо на кадре. Прежняя лёгкая тень была рассчитана на
+     четыре тёмных статичных снимка; у живого видео кадры бывают засвеченные
+     — небо, стена на солнце, — и белый текст на них пропадал целиком.
+
+     Две тени вместо одной: узкая держит контур глифа, широкая подкладывает
+     под него пятно. Так надпись читается и на небе, и на белой стене, не
+     превращаясь в обводку. */
+  color: var(--c-on-dark);
+  /* Затемнений поверх кадра нет ни одного: они лезли на собственные
+     подписи ролика. Вся читаемость держится на тенях, поэтому их три —
+     узкая под контур глифа, средняя под пятно, широкая под ореол. */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75),
+               0 2px 8px rgba(0, 0, 0, 0.6),
+               0 0 20px rgba(0, 0, 0, 0.45);
+}
+
+/* Ширина колонки задана иконкой (26px), а не самой длинной подписью, —
+   иначе «Share» растягивает колонку и сдвигает иконки влево. */
+.s-03__rail {
+  position: relative;
+  display: flex;
+  margin-top: auto;   /* распорка вместо снятых вкладок: рейл держится внизу */
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  align-self: flex-end;
+  width: 26px;
+  margin-bottom: 28px;
+}
+
+
+.s-03__rail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 14px;
+  white-space: nowrap;
+}
+
+.s-03__rail-item--like { position: relative; }
+
+/* Кольцо-всплеск: рождается в центре сердца и разлетается. Центрируем
+   марджинами, а не transform, — transform занят самой анимацией.
+   Максимум scale(2.2) выбран по краю экрана: центр рейла в 30px от правой
+   кромки, 26px·2.2/2 = 28.6px — кольцо не срезается. */
+.s-03__rail-item--like::after {
+  content: '';
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: 1.5px solid var(--c-sand);
+  border-radius: 50%;
+  opacity: 0;
+  animation: s03-burst 16s var(--s03-phase) linear infinite;
+}
+
+.s-03__heart {
+  transform-origin: center;
+  animation: s03-heart 16s var(--s03-phase) linear infinite;
+}
+
+/* Окно тикера шире колонки рейла (48 против 26): «142.3K» не должен
+   обрезаться, а элемент центрирован — свес симметричный, ровно как у
+   надписи «Share», которая свешивается тут с самого начала. */
+/* Рейл — единственная часть интерфейса вне шторок: он висит на середине
+   кадра, а там может оказаться что угодно, от неба до белой стены. Тень
+   ему нужна плотнее общей, иначе цифры пропадают на светлых кадрах. */
+.s-03__rail {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7),
+               0 2px 10px rgba(0, 0, 0, 0.65),
+               0 0 22px rgba(0, 0, 0, 0.4);
+}
+
+/* text-shadow не красит SVG — иконкам рейла нужна своя тень. Рейл висит
+   на середине кадра, где скримов нет вовсе, так что без неё белые глифы
+   пропадали на светлом так же, как надписи. */
+.s-03__rail img,
+.s-03__heart {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.65))
+          drop-shadow(0 2px 10px rgba(0, 0, 0, 0.5));
+}
+
+.s-03__count {
+  display: block;
+  width: 48px;
+  height: var(--s03-row);
+  overflow: hidden;
+  text-align: center;
+}
+
+.s-03__count-track { display: block; }
+
+.s-03__count-track > span {
+  display: block;
+  height: var(--s03-row);
+  line-height: var(--s03-row);
+  font-variant-numeric: tabular-nums;
+}
+
+/* steps(1, end) — счётчик щёлкает, а не плывёт: цифры не должны
+   «проезжать» между значениями. Приём взят из тикера заказов s-06. */
+.s-03__count-track--likes    { animation: s03-likes    16s var(--s03-phase) steps(1, end) infinite; }
+.s-03__count-track--comments { animation: s03-comments 16s var(--s03-phase) steps(1, end) infinite; }
+
+/* --- Подпись поста -------------------------------------------------------- */
+.s-03__meta {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 5px;
+}
+
+.s-03__handle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 18px;
+}
+
+/* Высота слота задана явно (17 подпись + 4 зазор + 15 ниша): дети
+   абсолютные, сами высоту не держат, а прыгать разметке нельзя.
+   overflow: hidden — потому что подписи листаются тем же свайпом, что и
+   видео: на переходе в окне видно низ старого поста и верх нового, как
+   в настоящей ленте. */
+.s-03__posts {
+  position: relative;
+  height: 36px;
+  overflow: hidden;
+}
+
+/* Та же анимация, что у клипа: translateY(100 %) здесь — это 36px, а не
+   564, но нормированная кривая одна, поэтому подпись едет синхронно
+   со своим видео, а не живёт отдельной жизнью.
+   backwards — по той же причине, что и у клипов: иначе первые 12 секунд
+   все четыре подписи лежали бы друг на друге в нулевой позиции. */
+.s-03__post {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: s03-swipe 16s linear infinite backwards;
+  animation-delay: var(--s03-phase);
+}
+
+.s-03__post--2 { animation-delay: calc(4s  + var(--s03-phase)); }
+.s-03__post--3 { animation-delay: calc(8s  + var(--s03-phase)); }
+.s-03__post--4 { animation-delay: calc(12s + var(--s03-phase)); }
+
+/* flex, а не inline: бейдж «NEW» тогда не растягивает строку выше 17px и
+   слот подписи остаётся ровно 36px */
+.s-03__caption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 17px;
+  white-space: nowrap;
+}
+
+/* Тёмный текст по песочному: 7.35:1. Тень интерфейса тут вредна — сбрасываем */
+.s-03__new {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: var(--r-pill);
+  background: var(--c-sand);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 12px;
+  letter-spacing: 0.8px;
+  color: var(--c-ink-surface-2);
+  text-shadow: none;
+}
+
+.s-03__niche {
+  font-size: 11px;
+  line-height: 15px;
+}
+
+/* --- Полоса проигрывания -------------------------------------------------- */
+.s-03__progress {
+  margin-top: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--c-on-dark) 26%, transparent);
+  overflow: hidden;
+}
+
+.s-03__progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--c-sand);
+  width: var(--s03-progress, 0%);
+}
+
+/* ==========================================================================
+   МОТОРИКА. Мастер-цикл — 16s: четыре клипа по 4s.
+
+   Почему 16s. Это цикл телефона из s-06 (четыре тоста, шаг 25%), а тут тоже
+   телефон и тоже четыре сменяющихся карточки — два телефона на странице
+   обязаны идти в одном темпе. 4s на клип — честная длина короткого видео.
+
+   Причинность (её и должен прочитать зритель). Каскад одной смены клипа:
+     24.4 %  полоса проигрывания дошла до края — клип кончился
+     25 %    лента листается вверх: клип уезжает, снизу приходит следующий,
+             вместе с ним едет и его подпись
+     26 %    новое видео наполовину в кадре — счётчики рейла переписываются
+             под него
+     27 %    свайп закончился, полоса пошла с нуля
+   Внутри клипа лайки прибавляются сами (2 щелчка, у нового видео — 3,
+   оно набирает быстрее), и на каждый щелчок сердце отвечает импульсом.
+   Дважды за цикл щелчок крупный — тогда же разлетается кольцо.
+   Что зритель должен из этого узнать: инфлюенсер выкладывает не один ролик,
+   а библиотеку, ролики продолжают набирать реакции, и свежий (бейдж NEW,
+   51-е видео) разгоняется быстрее старых.
+
+   Правила:
+   1) animation-delay ненулевой только там, где сменяются одинаковые
+      сиблинги (клипы и подписи) — это домашний приём. Стаггер ВНУТРИ одного
+      элемента (импульсы сердца, сегменты полосы) живёт в процентах
+      кейфреймов, иначе хвост цикла уехал бы вместе с началом.
+   2) На уровне элемента — linear (или steps там, где нужен щелчок). Любое
+      ease на элементе переразмечает весь цикл и рушит удержания. Каждое
+      смягчение объявлено внутри кейфрейма через animation-timing-function.
+   3) Ambient-петля свечения — 8s, целый делитель 16s: фазируется с мастером.
+   4) Наездка внутри клипа строго линейна: это движение камеры, у него нет
+      ни разгона, ни торможения.
+
+   Биты (%): 24.4/49.4/74.4/99.4 — полоса дошла до края;
+   0/25/50/75 — начался свайп (кончился через 2 %);
+   1/26/51/76 — щёлкнули счётчики;
+   7.5 · 17 · 32.5 · 42 · 57.5 · 67 · 80 · 86 · 92 — прилетел лайк
+   (17 и 92 — крупные, с кольцом).
+   ========================================================================== */
+
+/* --- 1. Свайп ленты ---------------------------------------------------------
+   Локальное время слоя: 0 % — он снизу за кромкой, 0→2 % въезжает, 2→25 %
+   стоит (это и есть его клип), 25→27 % уезжает вверх. Дальше он за кадром,
+   и там прячется возврат: гаснет на 27.5 %, тихо возвращается под нижнюю
+   кромку к 60 %, зажигается обратно на 60.5 %. На 100 % состояние ровно
+   то же, что на 0 %, — шов петли не существует как событие.
+
+   Ту же анимацию носит подпись поста: у неё translateY(100 %) — 36px, но
+   кривая та же, поэтому текст листается синхронно со своим видео.
+
+   Кривая свайпа объявлена на кадрах 0 % и 25 %: обе стороны перехода
+   обязаны ехать по ОДНОЙ кривой, иначе слои перестанут стыковаться и на
+   границе мигнёт подложка. */
+@keyframes s03-swipe {
+  0%     { opacity: 1; transform: translateY(100%);
+           animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+  2%     { opacity: 1; transform: translateY(0); }
+  25%    { opacity: 1; transform: translateY(0);
+           animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+  27%    { opacity: 1; transform: translateY(-100%); }
+  27.5%  { opacity: 0; transform: translateY(-100%); }
+  60%    { opacity: 0; transform: translateY(100%); }
+  60.5%,
+  100%   { opacity: 1; transform: translateY(100%); }
+}
+
+/* --- 1b. Наездка ------------------------------------------------------------
+   Идёт всё время, пока клип на экране (локальные 0→27 %), и возвращается
+   к началу на 27→60 %, когда слой уже за кадром и погашен. Кроп у каждого
+   клипа свой — он приходит переменными с обёртки, поэтому кейфрейм один
+   на все четыре слоя. */
+@keyframes s03-ken {
+  0%   { transform: scale(var(--s03-z0)) translate(var(--s03-x0), var(--s03-y0)); }
+  27%  { transform: scale(var(--s03-z1)) translate(var(--s03-x1), var(--s03-y1)); }
+  60%,
+  100% { transform: scale(var(--s03-z0)) translate(var(--s03-x0), var(--s03-y0)); }
+}
+
+/* --- 1c. Вуаль движения -----------------------------------------------------
+   Держится на четырёх окнах свайпа (0–2, 25–27, 50–52, 75–77 %). Набегает
+   за 0.6 % ДО начала свайпа и уходит за 0.6 % после: края приходятся на
+   моменты, когда лента ещё (или уже) стоит, а там фон обычный и по контрасту
+   проходит — полупрозрачная вуаль никого не подводит.
+   Полная сила достигается ровно на 24.4/49.4/74.4/99.4 % — там же, где
+   полоса проигрывания дошла до края. Кадр темнеет — и только потом едет.
+   Ramp последнего окна закончен к 99.4 %, поэтому на 99.9 % вуаль уже
+   на единице, ровно как на 0 %: шов петли не читается и здесь. */
+@keyframes s03-veil {
+  0%, 2%       { opacity: 1; }
+  2.6%, 23.8%  { opacity: 0; }
+  24.4%, 27%   { opacity: 1; }
+  27.6%, 48.8% { opacity: 0; }
+  49.4%, 52%   { opacity: 1; }
+  52.6%, 73.8% { opacity: 0; }
+  74.4%, 77%   { opacity: 1; }
+  77.6%, 98.8% { opacity: 0; }
+  99.4%, 100%  { opacity: 1; }
+}
+
+/* --- 2. Полоса проигрывания -------------------------------------------------
+   Четыре одинаковых пробега в одном элементе, поэтому стаггер — в процентах.
+   Каждый: 24.4 % цикла (3.9s) на заполнение, 0.3 % (48ms) на сброс — это
+   читается как мгновенный, — и пауза до старта следующего клипа. Полоса
+   доходит до края на 24.4 %, свайп начинается на 25 %: сначала причина,
+   через 96 мс следствие. На 99.9 % полоса пуста, как и на 0 %. */
+@keyframes s03-progress {
+  0%     { transform: scaleX(0); }
+  24.4%  { transform: scaleX(1); }
+  24.7%  { transform: scaleX(0); }
+  25%    { transform: scaleX(0); }
+  49.4%  { transform: scaleX(1); }
+  49.7%  { transform: scaleX(0); }
+  50%    { transform: scaleX(0); }
+  74.4%  { transform: scaleX(1); }
+  74.7%  { transform: scaleX(0); }
+  75%    { transform: scaleX(0); }
+  99.4%  { transform: scaleX(1); }
+  99.7%  { transform: scaleX(0); }
+  100%   { transform: scaleX(0); }
+}
+
+/* --- 3. Счётчик лайков ------------------------------------------------------
+   Щелчки на 1/26/51/76 % — это следующий пост принёс своё число. Момент —
+   середина свайпа: новое видео уже наполовину в кадре, и рейл под него
+   переписывается. Свайпы стоят на 0/25/50/75, поэтому первый щелчок цикла
+   приходится на 1 %, а не на 0 %: строка 0 — ещё хвост четвёртого клипа.
+   Она же продублирована последней строкой, так что на 100 % лента встаёт
+   на то же число и кадр 99.9 % неотличим от кадра 0 %.
+   Щелчки между сменами — пришедшие лайки текущего клипа. У нового видео
+   (76–100 %) их три, и шаг крупнее: свежий ролик разгоняется быстрее. */
+@keyframes s03-likes {
+  0%    { transform: translateY(0); }                                /* 3,329 — хвост клипа 4 */
+  1%    { transform: translateY(calc(var(--s03-row) * -1));  }       /* 142.3K — пришёл клип 1 */
+  7.5%  { transform: translateY(calc(var(--s03-row) * -2));  }
+  17%   { transform: translateY(calc(var(--s03-row) * -3));  }
+  26%   { transform: translateY(calc(var(--s03-row) * -4));  }       /* клип 2 */
+  32.5% { transform: translateY(calc(var(--s03-row) * -5));  }
+  42%   { transform: translateY(calc(var(--s03-row) * -6));  }
+  51%   { transform: translateY(calc(var(--s03-row) * -7));  }       /* клип 3 */
+  57.5% { transform: translateY(calc(var(--s03-row) * -8));  }
+  67%   { transform: translateY(calc(var(--s03-row) * -9));  }
+  76%   { transform: translateY(calc(var(--s03-row) * -10)); }       /* клип 4 — новое видео */
+  80%   { transform: translateY(calc(var(--s03-row) * -11)); }
+  86%   { transform: translateY(calc(var(--s03-row) * -12)); }
+  92%   { transform: translateY(calc(var(--s03-row) * -13)); }       /* = строка 0 */
+  100%  { transform: translateY(calc(var(--s03-row) * -13)); }
+}
+
+/* Комментарии меняются только вместе с постом — внутри клипа им расти незачем */
+@keyframes s03-comments {
+  0%   { transform: translateY(0); }
+  1%   { transform: translateY(calc(var(--s03-row) * -1)); }
+  26%  { transform: translateY(calc(var(--s03-row) * -2)); }
+  51%  { transform: translateY(calc(var(--s03-row) * -3)); }
+  76%  { transform: translateY(calc(var(--s03-row) * -4)); }
+  100% { transform: translateY(calc(var(--s03-row) * -4)); }
+}
+
+/* --- 4. Сердце: импульс на каждый прилетевший лайк ---------------------------
+   Девять импульсов внутри одного элемента — значит, все девять в процентах.
+   Пружина на взлёте, мягкий возврат. Два импульса (17 % и 92 %) крупнее:
+   это те же биты, на которых разлетается кольцо.
+   Смены поста (1/26/51/76 %) импульса НЕ получают: там не прилетел лайк,
+   там просто другой пост принёс свои числа. */
+@keyframes s03-heart {
+  0%    { transform: scale(1); }
+
+  7.5%  { transform: scale(1);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  8.2%  { transform: scale(1.26); animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1); }
+  9.7%  { transform: scale(1); }
+
+  17%   { transform: scale(1);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  17.7% { transform: scale(1.42); animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1); }
+  19.2% { transform: scale(1); }
+
+  32.5% { transform: scale(1);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  33.2% { transform: scale(1.26); animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1); }
+  34.7% { transform: scale(1); }
+
+  42%   { transform: scale(1);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  42.7% { transform: scale(1.26); animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1); }
+  44.2% { transform: scale(1); }
+
+  57.5% { transform: scale(1);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  58.2% { transform: scale(1.26); animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1); }
+  59.7% { transform: scale(1); }
+
+  67%   { transform: scale(1);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  67.7% { transform: scale(1.26); animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1); }
+  69.2% { transform: scale(1); }
+
+  80%   { transform: scale(1);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  80.7% { transform: scale(1.26); animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1); }
+  82.2% { transform: scale(1); }
+
+  86%   { transform: scale(1);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  86.7% { transform: scale(1.26); animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1); }
+  88.2% { transform: scale(1); }
+
+  92%   { transform: scale(1);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  92.7% { transform: scale(1.42); animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1); }
+  94.2% { transform: scale(1); }
+
+  100%  { transform: scale(1); }
+}
+
+/* --- 5. Кольцо-всплеск ------------------------------------------------------
+   Только на двух крупных щелчках. Между вспышками кольцо возвращается к
+   исходному размеру при opacity: 0 — сброс не виден, 100 % совпадает с 0 %. */
+@keyframes s03-burst {
+  0%,
+  17%   { opacity: 0;    transform: scale(0.55);
+          animation-timing-function: cubic-bezier(0.16, 0.84, 0.44, 1); }
+  17.4% { opacity: 0.85; transform: scale(0.7); }
+  22%   { opacity: 0;    transform: scale(2.2); }
+
+  92%   { opacity: 0;    transform: scale(0.55);
+          animation-timing-function: cubic-bezier(0.16, 0.84, 0.44, 1); }
+  92.4% { opacity: 0.85; transform: scale(0.7); }
+  97%   { opacity: 0;    transform: scale(2.2); }
+
+  100%  { opacity: 0;    transform: scale(0.55); }
+}
+
+/* --- 7. Ambient: дыхание рамки ---------------------------------------------
+   Сегментов-удержаний нет, поэтому ease-in-out на элементе безопасен. */
+@keyframes s03-glow {
+  50% {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--c-sand) 45%, transparent),
+      0 0 56px -4px color-mix(in srgb, var(--c-sand) 62%, transparent),
+      0 30px 60px rgba(89, 61, 28, 0.16);
+  }
+}
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-03 { padding-block: 96px; }
+  .s-03__content { gap: 64px; }
+  .s-03__title { font-size: 56px; line-height: 62px; letter-spacing: -1.6px; }
+}
+
+@media (max-width: 900px) {
+  .s-03__content {
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+  }
+  .s-03__text {
+    flex: 0 1 auto;
+    width: 100%;
+    max-width: 560px;
+  }
+  .s-03__title { font-size: 44px; line-height: 52px; letter-spacing: -1.2px; }
+}
+
+@media (max-width: 600px) {
+  .s-03 { padding-block: 72px; }
+  .s-03__content { gap: 44px; }
+  .s-03__title { font-size: 34px; line-height: 42px; letter-spacing: -0.8px; }
+  .s-03__lead { margin-bottom: 24px; }
+  .s-03__note { align-items: flex-start; }
+  .s-03__note img { margin-top: 2px; }
+}
+
+/* --- Уважение к prefers-reduced-motion ------------------------------------
+   Сброс в 00-base.css схлопывает каждую анимацию в ПОСЛЕДНИЙ кадр. У свайпа
+   последний кадр — translateY(100 %), то есть «слой ждёт под нижней кромкой»:
+   без этого блока и все четыре клипа, и все четыре подписи оказались бы за
+   кадром, а экран телефона — пустым чёрным прямоугольником.
+   Статичный кадр собран намеренно: это первый клип в начале наездки — общий
+   план, его подпись, его счётчики, полоса на 42 %. Кадр честен сам по себе:
+   числа рейла принадлежат ровно тому посту, который виден, а полоса на
+   середине говорит, что ролик идёт, а не кончился.
+   Тикеры паркуются на строке 1, а не 0: строка 0 — хвост четвёртого клипа
+   (3,329 / 214), и рядом с подписью первого поста она бы врала. */
+@media (prefers-reduced-motion: reduce) {
+  .s-03__clip,
+  .s-03__post {
+    animation: none !important;
+    opacity: 0;
+    transform: none;
+  }
+
+  .s-03__clip--1,
+  .s-03__post--1 { opacity: 1; }
+
+  .s-03__frame {
+    animation: none !important;
+    transform: scale(var(--s03-z0)) translate(var(--s03-x0), var(--s03-y0));
+  }
+
+  /* вуаль нужна только на ходу; последний её кадр — opacity 1, поэтому
+     без явного сброса статичный кадр вышел бы затемнённым без причины */
+  .s-03__veil { animation: none !important; opacity: 0; }
+
+  .s-03__progress-fill { animation: none !important; transform: scaleX(0.42); }
+
+  .s-03__count-track {
+    animation: none !important;
+    transform: translateY(calc(var(--s03-row) * -1));
+  }
+
+  .s-03__heart { animation: none !important; transform: none; }
+  .s-03__rail-item--like::after { animation: none !important; opacity: 0; }
+
+  /* свечение остаётся в статической тени, просто перестаёт дышать */
+  .s-03__phone { animation: none !important; }
+}
+
+/* Проявление подписи на стыке сегментов. Мгновенная подмена читалась
+   как глитч: имя дёргалось, хотя человек в кадре менялся плавно. */
+.s-03__meta.is-switching .s-03__handle,
+.s-03__meta.is-switching .s-03__niche {
+  animation: s03-meta-in 0.42s ease both;
+}
+
+@keyframes s03-meta-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-03__meta.is-switching .s-03__handle,
+  .s-03__meta.is-switching .s-03__niche { animation: none; }
+}

@@ -1,0 +1,360 @@
+#!/usr/bin/env node
+/* ==========================================================================
+   Tajiro — сборка страницы из исходников.
+
+   Из одного источника (src/) получаются две вещи, и лежат они в РАЗНЫХ
+   папках — чтобы «что можно отправлять» было видно по расположению, а не
+   по памяти:
+
+     dist/    рабочая версия. index.html плюс папки css, js, assets: страница
+              разобрана на части. Это то, что заливается на хостинг и что
+              открываешь в браузере во время работы. Отправлять нельзя —
+              без соседних папок index.html откроется голым текстом.
+
+     send/    то, что отправляют. Всё вшито внутрь одного файла:
+
+                Tajiro-home.html       стили, скрипты, шрифты, картинки
+                Tajiro-home-full.html  то же плюс видео
+
+              Полный тяжелее втрое, зато работает вообще без сети.
+
+   Собираются обе всегда и вместе. Раньше полный файл требовал отдельного
+   ключа — и после любой правки молча оставался старым, потому что watcher
+   про него не знал. Лишние сто миллисекунд на сборку дешевле, чем отправить
+   устаревший файл и не заметить.
+
+   Команды:
+     node tools/build.mjs            — собрать всё
+     node tools/build.mjs --watch    — пересобирать при изменении src/
+     node tools/build.mjs --serve    — собрать, поднять сервер и следить
+
+   Никаких зависимостей: только то, что уже есть в Node.
+   ========================================================================== */
+
+import fs from 'node:fs';
+import path from 'node:path';
+import http from 'node:http';
+import url from 'node:url';
+
+const HERE = path.dirname(url.fileURLToPath(import.meta.url));
+const ROOT = path.resolve(HERE, '..');
+const SRC  = path.join(ROOT, 'src');
+const DIST = path.join(ROOT, 'dist');
+const SEND = path.join(ROOT, 'send');
+
+const SINGLE_FILE = 'Tajiro-home.html';
+const PORT = 4173;
+
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.css' : 'text/css; charset=utf-8',
+  '.js'  : 'text/javascript; charset=utf-8',
+  '.svg' : 'image/svg+xml',
+  '.jpg' : 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png' : 'image/png',
+  '.webp': 'image/webp',
+  '.ico' : 'image/x-icon',
+  '.woff2': 'font/woff2',
+  '.woff' : 'font/woff',
+
+  /* Без этой строки .mp4 уезжал в application/octet-stream. На дев-сервере
+     это сходило с рук — браузер угадывал тип по содержимому. А вот в
+     data-URI гадать не по чему: видео вшивалось как поток байтов, и плеер
+     отказывался его открывать. */
+  '.mp4' : 'video/mp4'
+};
+
+const STYLE_SLOT = '<!--STYLE-SLOT-->';
+
+/* ------------------------------------------------------------------ helpers */
+
+const read = p => fs.readFileSync(p, 'utf8');
+const mime = p => MIME[path.extname(p).toLowerCase()] || 'application/octet-stream';
+
+function dataUri(absPath) {
+  return 'data:' + mime(absPath).split(';')[0] + ';base64,'
+       + fs.readFileSync(absPath).toString('base64');
+}
+
+function size(bytes) {
+  return bytes > 1024 * 1024
+    ? (bytes / 1024 / 1024).toFixed(2) + ' MB'
+    : Math.round(bytes / 1024) + ' KB';
+}
+
+/* --------------------------------------------------------- 1. сборка разметки
+   Раскрываем <!--#include partials/xx.html -->. Маркер секции остаётся в
+   разметке: по нему готовую страницу всегда можно разобрать обратно. */
+
+function assemble() {
+  const template = read(path.join(SRC, 'index.html'));
+  const missing = [];
+
+  const html = template.replace(
+    /^([ \t]*)<!--#include\s+(\S+)\s*-->[ \t]*\r?\n?/gm,
+    (_all, indent, rel) => {
+      const abs = path.join(SRC, rel);
+      if (!fs.existsSync(abs)) { missing.push(rel); return ''; }
+      const body = read(abs).replace(/\s+$/, '');
+      const name = path.basename(rel, '.html');
+      const mark = name === 'head' ? '' : indent + '<!-- ===== ' + name + ' ===== -->\n';
+      return mark + body + '\n';
+    }
+  );
+
+  if (missing.length) throw new Error('нет партиалов: ' + missing.join(', '));
+
+  /* Комментарии вида <!--# ... --> — записка разработчику, а не часть
+     страницы: до сборок они не доезжают. */
+  return html.replace(/^[ \t]*<!--#[\s\S]*?-->[ \t]*\r?\n?/gm, '');
+}
+
+/* ------------------------------------------------------- 2. подключённый сайт */
+
+/* Копируем поверх и только потом убираем осиротевшее.
+
+   Сносить каталог перед копированием нельзя: watcher живёт в процессе
+   сервера, ручной запуск — в своём, и две сборки встречаются на живом
+   dist/. На Windows это либо ENOTEMPTY на открытом файле, либо пачка 404
+   у страницы, которая грузится ровно между rm и copy. */
+function syncDir(from, to) {
+  fs.mkdirSync(to, { recursive: true });
+  const keep = new Set();
+
+  for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
+    keep.add(entry.name);
+    const a = path.join(from, entry.name);
+    const b = path.join(to, entry.name);
+    if (entry.isDirectory()) { syncDir(a, b); continue; }
+
+    /* Копируем только изменившееся. Безусловный copyFileSync ронял сборку
+       на EBUSY: браузер стримит dist/assets/video/ai-team.mp4 и держит на
+       нём хэндл, а watcher переписывал файл при каждой правке где угодно. */
+    const src = fs.statSync(a);
+    let dst = null;
+    try { dst = fs.statSync(b); } catch {}
+
+    if (dst && dst.size === src.size && dst.mtimeMs >= src.mtimeMs) continue;
+
+    fs.copyFileSync(a, b);
+  }
+
+  for (const entry of fs.readdirSync(to, { withFileTypes: true })) {
+    if (keep.has(entry.name)) continue;
+    fs.rmSync(path.join(to, entry.name), {
+      recursive: true, force: true, maxRetries: 5, retryDelay: 60
+    });
+  }
+}
+
+function buildLinked(html) {
+  fs.mkdirSync(DIST, { recursive: true });
+  for (const dir of ['css', 'js', 'assets']) {
+    syncDir(path.join(SRC, dir), path.join(DIST, dir));
+  }
+  fs.writeFileSync(path.join(DIST, 'index.html'), html);
+  return Buffer.byteLength(html);
+}
+
+/* ------------------------------------------------------- 3. один файл в почту
+   Порядок операций важен: сначала стили и скрипты становятся текстом внутри
+   документа, и только потом внутри этого текста ищутся ссылки на ассеты. */
+
+function buildSingle(html, withVideo) {
+  let out = html;
+
+  /* --- стили: весь блок <link> схлопывается в один <style> --------------- */
+  const sheets = [];
+  out = out.replace(
+    /^[ \t]*<link rel="stylesheet" href="([^"]+)">[ \t]*\r?\n?/gm,
+    (_all, href) => {
+      sheets.push(href);
+      /* место под <style> держит первая ссылка, остальные исчезают:
+         порядок правил обязан остаться тем же, что в подключённой сборке */
+      return sheets.length === 1 ? STYLE_SLOT + '\n' : '';
+    }
+  );
+
+  if (sheets.length) {
+    const css = sheets.map(href => {
+      const body = read(path.join(SRC, href)).replace(/\s+$/, '');
+      return '/* ===== ' + path.basename(href) + ' ===== */\n' + body;
+    }).join('\n\n');
+    out = out.replace(STYLE_SLOT, '<style>\n' + css + '\n</style>');
+  }
+
+  /* --- скрипты: каждый остаётся на своём месте --------------------------- */
+  out = out.replace(/<script src="([^"]+)"><\/script>/g, (_all, src) => {
+    const body = read(path.join(SRC, src)).replace(/\s+$/, '');
+    return '<script>\n' + body + '\n</script>';
+  });
+
+  /* --- ассеты: и в разметке, и внутри уже вшитых стилей ------------------ */
+  let inlined = 0;
+  /* Видео вшивается только по просьбе: без него файл 3,5 МБ, с ним 12,7 —
+     см. комментарий ниже. */
+  const kinds = withVideo ? 'fonts|img|video' : 'fonts|img';
+
+  out = out.replace(new RegExp('(?:\\.\\./)*assets/(?:' + kinds + ')/[A-Za-z0-9._/-]+', 'g'), ref => {
+    const rel = ref.replace(/^(?:\.\.\/)+/, '');
+    const abs = path.join(SRC, rel);
+    if (!fs.existsSync(abs)) throw new Error('нет ассета: ' + rel);
+    inlined++;
+    return dataUri(abs);
+  });
+
+  /* По умолчанию видео НЕ вшивается: ai-team.mp4 весит 7 МБ, в base64 это
+     ~9,2 МБ поверх остального — файл раздувается с 3,5 МБ до 12,7. В обычном
+     цельном файле остаётся постер, на сайте ролик играет.
+
+     Молчать об этом нельзя: снаружи пропавшее видео выглядит как поломка, а
+     не как решение. Поэтому невшитое всегда перечисляется в отчёте сборки.
+
+     Кому нужен файл, который играет всё и без сети, — node tools/build.mjs
+     --with-video, он кладёт рядом Tajiro-home-full.html. */
+  const external = [...new Set(
+    (out.match(/(?:\.\.\/)*assets\/[A-Za-z0-9._/-]+/g) || [])
+      .map(r => r.replace(/^(?:\.\.\/)+/, ''))
+  )];
+
+  const name = withVideo ? SINGLE_FILE.replace(/\.html$/, '-full.html') : SINGLE_FILE;
+
+  fs.mkdirSync(SEND, { recursive: true });
+  fs.writeFileSync(path.join(SEND, name), out);
+  return { name, bytes: Buffer.byteLength(out), sheets: sheets.length, inlined, external };
+}
+
+/* --------------------------------------------------------------- 4. прогон */
+
+/* Ключи читаем здесь, а не у самого запуска: buildOnce обращается к ним, а
+   объявление const ниже по файлу до него не дотягивается. */
+const argv = process.argv.slice(2);
+
+/* Сборки идут по одной: параллельные проходы syncDir по одному и тому же
+   dist/ спорят за файлы — один удаляет осиротевшее ровно тогда, когда
+   другой это же копирует. */
+let busy = false;
+let queued = false;
+
+function build() {
+  if (busy) { queued = true; return; }
+  busy = true;
+  try { buildOnce(); }
+  finally {
+    busy = false;
+    if (queued) { queued = false; build(); }
+  }
+}
+
+function buildOnce() {
+  const t0 = process.hrtime.bigint();
+  const html = assemble();
+  const linked = buildLinked(html);
+  const single = buildSingle(html, false);
+  const full = buildSingle(html, true);
+  const ms = Number(process.hrtime.bigint() - t0) / 1e6;
+
+  /* Старые цельные файлы из dist убираем: пока они там лежат, в папке две
+     пары одинаковых на вид html, и непонятно, какую брать. */
+  for (const stale of [SINGLE_FILE, SINGLE_FILE.replace(/\.html$/, '-full.html')]) {
+    fs.rmSync(path.join(DIST, stale), { force: true });
+  }
+
+  const line = r => '  send/' + r.name.padEnd(21) + size(r.bytes).padStart(9) +
+                    '   ' + r.inlined + ' ассетов вшито';
+
+  console.log(
+    'built in ' + ms.toFixed(0) + ' ms\n' +
+    '  dist/index.html      ' + size(linked).padStart(9) +
+      '   + ' + single.sheets + ' css, ассеты файлами  (рабочая версия)\n' +
+    line(single)
+    + (single.external.length
+        ? '\n  ! ссылкой, не вшито: ' + single.external.join(', ')
+        : '')
+    + '\n' + line(full)
+    + (full.external.length
+        ? '\n  ! ссылкой, не вшито: ' + full.external.join(', ')
+        : '\n    всё внутри — работает без сети')
+  );
+}
+
+/* ---------------------------------------------------------------- 5. сервер */
+
+function serve() {
+  http.createServer((req, res) => {
+    const rel = decodeURIComponent(req.url.split('?')[0]);
+
+    /* Цельные файлы лежат вне dist, но смотреть их надо тем же сервером —
+       иначе проверить отправляемую версию можно только открыв её с диска. */
+    const send = rel === '/send' || rel.startsWith('/send/');
+    const base = send ? SEND : DIST;
+    const tail = send ? (rel.slice(5) || '/') : rel;
+
+    let file = path.join(base, tail === '/' ? 'index.html' : tail);
+    if (!file.startsWith(base)) { res.writeHead(403).end('forbidden'); return; }
+    if (fs.existsSync(file) && fs.statSync(file).isDirectory()) {
+      file = path.join(file, 'index.html');
+    }
+    if (!fs.existsSync(file)) { res.writeHead(404).end('not found'); return; }
+
+    /* Range обязателен для видео: без 206 браузер не умеет перематывать —
+       любой seek отбрасывает ролик на начало. Отдаём кусок, если попросили. */
+    const size = fs.statSync(file).size;
+    const range = req.headers.range;
+    const head = { 'Content-Type': mime(file), 'Cache-Control': 'no-store', 'Accept-Ranges': 'bytes' };
+
+    if (range) {
+      /* \d, а не d: без обратной косой это искало букву «d», ни один
+         заголовок не совпадал, и перемотка видео молча не работала —
+         сервер каждый раз отдавал файл целиком. */
+      const m = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+      if (m) {
+        const start = m[1] ? Number(m[1]) : 0;
+        const end = m[2] ? Math.min(Number(m[2]), size - 1) : size - 1;
+        if (start >= size || start > end) {
+          res.writeHead(416, { 'Content-Range': 'bytes */' + size }).end();
+          return;
+        }
+        res.writeHead(206, {
+          ...head,
+          'Content-Range': 'bytes ' + start + '-' + end + '/' + size,
+          'Content-Length': end - start + 1
+        });
+        fs.createReadStream(file, { start, end }).pipe(res);
+        return;
+      }
+    }
+
+    res.writeHead(200, { ...head, 'Content-Length': size });
+    fs.createReadStream(file).pipe(res);
+  }).listen(PORT, () => {
+    console.log('http://localhost:' + PORT + '  — Ctrl+C, чтобы остановить');
+  });
+}
+
+/* ----------------------------------------------------------------- 6. watch */
+
+function watch() {
+  let timer = null;
+  fs.watch(SRC, { recursive: true }, (_event, name) => {
+    if (!name || /(^|[\\/])\./.test(name)) return;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      try { build(); }
+      catch (err) { console.error('build failed: ' + err.message); }
+    }, 80);
+  });
+  console.log('слежу за src/ …');
+}
+
+/* ------------------------------------------------------------------- запуск */
+
+try {
+  build();
+} catch (err) {
+  console.error('build failed: ' + err.message);
+  process.exit(1);
+}
+if (argv.includes('--serve')) { serve(); watch(); }
+else if (argv.includes('--watch')) { watch(); }

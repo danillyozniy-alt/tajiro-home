@@ -1,0 +1,173 @@
+/* ==========================================================================
+   05 · What you get — центрированный интро-блок на тёмной плашке
+   Источник: Figma HoPojxNiFElmltha1NOl3N, node 511:369
+   ========================================================================== */
+
+.s-05 {
+  /* Плашка темнее --c-ink-surface-2, текст мягче --c-on-dark: точных токенов нет */
+  --s05-bg:    #1a1714;
+  --s05-title: #f2ede5;
+  --s05-lead:  #d9d1c7;
+
+  padding-block: 120px;
+  background: var(--s05-bg);
+  color: var(--s05-lead);
+}
+
+.s-05__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+}
+
+/* --- Надзаголовок: штрих + WHAT YOU GET ----------------------------------- */
+.s-05__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 1.3px;
+  color: var(--c-green-on-dark);
+}
+
+.s-05__kicker-rule {
+  flex: none;
+  width: 24px;
+  border-radius: 2px;
+}
+
+/* --- Заголовок ------------------------------------------------------------ */
+.s-05__title {
+  font-size: 64px;
+  line-height: 70px;
+  letter-spacing: -2px;
+  color: var(--s05-title);
+  text-wrap: balance;
+}
+
+/* --- Подзаголовок --------------------------------------------------------- */
+.s-05__lead {
+  max-width: 640px;
+  color: var(--s05-lead);
+  text-wrap: pretty;
+}
+
+/* --- Финальный штрих ------------------------------------------------------ */
+.s-05__rule {
+  flex: none;
+  width: 60px;
+  border-radius: 2px;
+}
+
+/* --- Оглавление к пилларам --------------------------------------------------
+   Три пункта, которые идут дальше отдельными секциями (06/07/08): те же
+   номера, те же слова. Появляются один раз, лесенкой, через общую систему
+   (`.reveal-set` в 00-reveal.css) — зацикливать оглавление нельзя, его
+   читают, а петля половину времени держала бы список неполным.
+   Волосяные связи между колонками статичны: это структура, а не движение. */
+.s-05__index {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.s-05__item { position: relative; }
+
+/* Связь между колонками — три пункта читаются как одно оглавление */
+.s-05__item + .s-05__item::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: 1px;
+  background: rgba(212, 163, 115, 0.34);
+}
+
+.s-05__link {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  height: 100%;
+  padding: 6px 32px;
+  transition: transform 0.22s ease;
+}
+
+.s-05__link:hover { transform: translateY(-3px); }
+
+.s-05__num {
+  flex: none;
+  font-family: var(--f-display);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -1.4px;
+  color: var(--c-sand);
+}
+
+.s-05__item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.s-05__item-title {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 25px;
+  letter-spacing: -0.2px;
+  color: var(--s05-title);
+}
+
+.s-05__item-text {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--s05-lead);
+  text-wrap: pretty;
+}
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-05 { padding-block: 104px; }
+  .s-05__title { font-size: 56px; line-height: 63px; letter-spacing: -1.6px; }
+}
+
+@media (max-width: 900px) {
+  .s-05 { padding-block: 88px; }
+  .s-05__link { gap: 14px; padding: 6px 18px; }
+  .s-05__num { font-size: 34px; }
+  .s-05__item-title { font-size: 17px; line-height: 23px; }
+  .s-05__item-text { font-size: 13px; line-height: 20px; }
+  .s-05__inner { gap: 26px; }
+  .s-05__title { font-size: 42px; line-height: 48px; letter-spacing: -1.2px; }
+}
+
+@media (max-width: 600px) {
+  .s-05 { padding-block: 64px; }
+
+  /* Одна колонка: связь между пунктами становится горизонтальной */
+  .s-05__index { grid-template-columns: minmax(0, 1fr); max-width: 420px; }
+  .s-05__link { gap: 16px; padding: 14px 0; }
+  .s-05__num { font-size: 32px; letter-spacing: -1px; }
+  .s-05__item-title { font-size: 17px; line-height: 23px; }
+
+  .s-05__item + .s-05__item::before {
+    top: 0;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    width: auto;
+    height: 1px;
+  }
+  .s-05__inner { gap: 22px; }
+  .s-05__kicker { font-size: 12px; letter-spacing: 1.1px; }
+  .s-05__kicker-rule { width: 18px; }
+  .s-05__title { font-size: 32px; line-height: 38px; letter-spacing: -0.8px; }
+}

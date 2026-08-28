@@ -1,0 +1,403 @@
+/* ==========================================================================
+   09 · Social proof — тёмная секция с одним отзывом
+   Figma: HoPojxNiFElmltha1NOl3N, node 511:518
+   ========================================================================== */
+
+.s-09 {
+  overflow: hidden;   /* карточка уезжает на 44px в свайпе — режем по краю секции */
+  /* значения, которых нет в токенах 00-base */
+  --s09-bg:          #1a1714;
+  --s09-headline:    #f2ede5;
+  --s09-star:        #8a6a2e;
+  --s09-avatar-bg:   rgba(201, 169, 106, 0.2);   /* = --s09-star @ 20% */
+  --s09-author:      #6b645a;
+  --s09-card-line:   rgba(224, 217, 207, 0.5);
+  --s09-card-shadow: 0 14px 36px rgba(89, 61, 28, 0.12);
+
+  padding-block: 120px;
+  background: var(--s09-bg);
+}
+
+.s-09__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+
+/* --- Шапка секции --------------------------------------------------------- */
+.s-09__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.s-09__kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 1.3px;
+  color: var(--c-green-on-dark);
+}
+
+.s-09__kicker-rule {
+  flex: none;
+  width: 24px;
+  border-radius: 2px;
+}
+
+.s-09__title {
+  max-width: 1200px;
+  font-size: 64px;
+  line-height: 70px;
+  letter-spacing: -2px;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--s09-headline);
+}
+
+/* --- Карточка отзыва ------------------------------------------------------ */
+/* --- Карусель --------------------------------------------------------------
+   Соседние истории видны по краям. Раньше все три лежали в одной ячейке
+   грида и подменялись на месте — карточка возникала из ниоткуда, и понять,
+   что это лента, было нельзя.
+
+   Ширина карточки задана в переменной: на ней держится и раскладка ленты,
+   и шаг сдвига. Ширину окна намеренно не ограничиваем шириной карточки —
+   соседи обязаны попадать в кадр.
+   -------------------------------------------------------------------------- */
+.s-09__deck {
+  /* Ширина близка к прежней (840): 620 съедали карточку ради соседей, а
+     соседям хватает и намёка — их всё равно перекрывает маска. */
+  --s09-card: min(880px, 80vw);
+  --s09-gap: 36px;
+
+  width: 100%;
+  overflow: hidden;
+  /* Края растворяются: соседи должны уходить в темноту, а не обрубаться
+     по вертикали — иначе видно рамку окна, а не продолжение ленты.
+
+     Растворение идёт РОВНО по полю рядом с карточкой, а не по фиксированным
+     16%. С процентами маска залезала на саму карточку: её ширина 74vw, то
+     есть поле по краям всего 13% — меньше зоны растворения. Активная
+     карточка теряла собственные края в темноте, и заметнее всего это было
+     на телефоне. По расчёту так происходило на любой ширине окна до 1150 px. */
+  --s09-fade: calc((100% - var(--s09-card)) / 2);
+
+  mask-image: linear-gradient(90deg,
+              transparent 0, #000 var(--s09-fade),
+              #000 calc(100% - var(--s09-fade)), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg,
+              transparent 0, #000 var(--s09-fade),
+              #000 calc(100% - var(--s09-fade)), transparent 100%);
+}
+
+.s-09__track {
+  display: flex;
+  gap: var(--s09-gap);
+  align-items: center;
+  /* Отступ ставит первую карточку по центру окна, дальше лента едет
+     шагами по одной карточке. */
+  padding-inline: calc(50% - var(--s09-card) / 2);
+  /* Второе слагаемое — палец: во время перетаскивания лента идёт за ним,
+     а не ждёт отпускания. */
+  transform: translateX(calc(
+    -1 * var(--s09-i, 0) * (var(--s09-card) + var(--s09-gap)) + var(--s09-drag, 0px)
+  ));
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  /* pan-y оставляет вертикальную прокрутку странице, а горизонтальный жест
+     забирает себе: иначе на телефоне лента и страница тянут палец вдвоём. */
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.s-09__track.is-dragging {
+  transition: none;
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* Пока тянут, карточки не должны переливаться из приглушённых в активные
+   на каждом пикселе — приглушение замирает до отпускания. */
+.s-09__track.is-dragging .s-09__card { transition: none; }
+
+/* На перескоке через шов петли ленту двигаем без хода — иначе она
+   промотала бы весь набор обратно на глазах. */
+.s-09__track.is-jumping { transition: none; }
+
+/* Портрет слева, история справа — как в саксессах на экомзи. Раньше от
+   человека была только аватарка в 44 px, хотя фотография лежала в 1024:
+   лицо на такой крохе всё равно не читается, и история выходила безликой.
+
+   Отступы переехали с карточки внутрь .s-09__body: портрет обязан доходить
+   до самого края и до верха с низом, иначе он читается вставленной
+   картинкой, а не стороной карточки. */
+.s-09__card {
+  flex: none;
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  width: var(--s09-card);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--c-surface);
+  /* обводка внутренней тенью: в Figma штрих не занимает место в боксе,
+     обычный border съедал бы 2px ширины контента (712 → 710) */
+  box-shadow: inset 0 0 0 1px var(--s09-card-line), var(--s09-card-shadow);
+}
+
+.s-09__photo {
+  position: relative;
+  overflow: hidden;
+  background: var(--c-bg);
+}
+
+/* Высоту задаёт соседняя колонка с текстом, поэтому здесь только cover:
+   кадр 1024×1024 обрезается по бокам, лицо в нём по центру. */
+.s-09__shot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Медленный наезд у активной истории. Девять секунд — движение заметно,
+   только если смотреть, и не спорит с чтением цитаты. */
+.s-09__card.is-active .s-09__shot { transform: scale(1.06); }
+
+.s-09__body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 48px 52px;
+}
+
+.s-09__card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.s-09__card-title {
+  font-family: var(--f-body);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.18px;
+  color: var(--c-text);
+}
+
+.s-09__stars {
+  flex: none;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--s09-star);
+}
+
+.s-09__quote {
+  font-size: 22px;
+  line-height: 34px;
+  text-wrap: pretty;
+  color: var(--c-text-body);
+}
+
+/* --- Автор ---------------------------------------------------------------- */
+/* Подпись стала простым столбиком: обёртка .s-09__author-text была нужна,
+   пока рядом стояла аватарка и строку приходилось класть в ряд. Аватарки
+   больше нет — человек смотрит с портрета во всю высоту карточки. */
+.s-09__author {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  color: var(--s09-author);
+}
+
+.s-09__author-name {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+  font-style: normal;
+}
+
+.s-09__author-role {
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* --- Дисклеймер ----------------------------------------------------------- */
+.s-09__note {
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: var(--c-on-dark-soft);   /* секция тёмная — приглушённый тёмный тут нечитаем */
+  opacity: 0.8;
+}
+
+/* --- Смена историй ---------------------------------------------------------
+   Ведёт js/09-stories.js: он двигает ленту и метит активную карточку.
+   Прежде это была CSS-анимация с задержками по карточкам — она умела
+   подменять, но не умела показывать соседей.
+
+   Соседи приглушены и уменьшены: это фон для текущей истории, а не три
+   равнозначные карточки в ряд.
+   -------------------------------------------------------------------------- */
+.s-09__card {
+  opacity: 0.28;
+  transform: scale(0.93);
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.s-09__card.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --- Индикаторы ------------------------------------------------------------ */
+.s-09__dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: -32px;   /* съедает часть 64px гэпа колонки */
+}
+
+.s-09__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-pill);
+  background: var(--s09-author);
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease;
+}
+
+.s-09__dot.is-active {
+  width: 22px;
+  background: var(--c-sand);
+}
+
+/* --- Уважение к prefers-reduced-motion ------------------------------------
+   Лента стоит на первой истории. Скрипт всё равно метит активную карточку
+   и точку, поэтому кадр остаётся осмысленным, просто не двигается. */
+@media (prefers-reduced-motion: reduce) {
+  .s-09__track,
+  .s-09__card,
+  .s-09__dot { transition: none !important; }
+}
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-09 { padding-block: 100px; }
+  .s-09__title { font-size: 54px; line-height: 62px; letter-spacing: -1.6px; }
+  .s-09__body { padding: 44px 46px; }
+}
+
+@media (max-width: 900px) {
+  .s-09 { padding-block: 80px; }
+
+  /* На узком экране колонки не помещаются: портрет уходит наверх, история
+     под него. Высота фиксированная — иначе квадратный кадр съедал бы пол-экрана. */
+  .s-09__card { grid-template-columns: minmax(0, 1fr); }
+  .s-09__photo { height: 260px; }
+  .s-09__inner { gap: 48px; }
+  .s-09__title { font-size: 40px; line-height: 48px; letter-spacing: -1.1px; }
+  .s-09__card { border-radius: 18px; }
+  .s-09__body { gap: 20px; padding: 36px 32px; }
+  .s-09__quote { font-size: 19px; line-height: 30px; }
+}
+
+@media (max-width: 600px) {
+  .s-09 { padding-block: 64px; }
+
+  /* На телефоне маску снимаем совсем: от соседа в кадре остаётся полоска
+     в десяток пикселей, растворять там нечего, а любая зона растворения
+     неизбежно достаёт до края активной карточки. */
+  .s-09__deck { mask-image: none; -webkit-mask-image: none; }
+  .s-09__inner { gap: 36px; }
+  .s-09__kicker { font-size: 12px; letter-spacing: 1.1px; }
+  .s-09__title { font-size: 30px; line-height: 38px; letter-spacing: -0.7px; }
+  /* Отступ держим заметно крупнее внутреннего шага карточки (20px): на
+     26/22 рамка сравнивалась с ним по весу и текст читался вываливающимся.
+     Шаг от брейкпоинта 900px (36/32) взят по той же пропорции, что и кегль
+     цитаты (19 → 17). */
+  .s-09__deck { --s09-card: min(880px, 88vw); }
+  .s-09__card { border-radius: 14px; }
+  .s-09__body { padding: 28px 24px; }
+  .s-09__photo { height: 230px; }
+  .s-09__card-head { gap: 10px; }
+  .s-09__card-title { font-size: 17px; }
+  .s-09__quote { font-size: 17px; line-height: 28px; }
+  .s-09__avatar { width: 40px; height: 40px; font-size: 16px; }
+}
+
+/* --- Фон -------------------------------------------------------------------
+   Секция была плоской тёмной заливкой. На тёмном свечение читается так же
+   хорошо, как у экомзи, — не пользоваться этим было странно.
+
+   Два слоя: неподвижное тёплое зарево за карточкой и три медленных пятна,
+   расходящихся по своим орбитам. Оба живут за содержимым и ничего не
+   перекрывают.
+   -------------------------------------------------------------------------- */
+.s-09__inner { position: relative; z-index: 1; }
+
+.s-09__glow {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: 1100px;
+  height: 700px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%,
+              rgba(61, 143, 99, 0.16) 0%,
+              rgba(212, 163, 115, 0.10) 45%,
+              transparent 72%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.s-09__orbs {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.s-09__orbs span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.5;
+}
+
+.s-09__orbs span:nth-child(1) {
+  top: -8%;  left: 6%;  width: 380px; height: 380px;
+  background: rgba(61, 143, 99, 0.30);
+  animation: s09-orb 26s ease-in-out infinite;
+}
+
+.s-09__orbs span:nth-child(2) {
+  right: 4%; bottom: -12%; width: 440px; height: 440px;
+  background: rgba(212, 163, 115, 0.22);
+  animation: s09-orb 34s ease-in-out infinite reverse;
+}
+
+.s-09__orbs span:nth-child(3) {
+  top: 30%; right: 26%; width: 300px; height: 300px;
+  background: rgba(127, 201, 160, 0.16);
+  animation: s09-orb 44s ease-in-out infinite;
+}
+
+@keyframes s09-orb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(6%, -5%) scale(1.12); }
+  66%      { transform: translate(-5%, 4%) scale(0.94); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-09__orbs span { animation: none !important; }
+}

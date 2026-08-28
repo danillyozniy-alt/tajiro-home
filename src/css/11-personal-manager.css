@@ -1,0 +1,310 @@
+/* ==========================================================================
+   11 · Personal manager — «You'll never do this alone.»
+   Figma: HoPojxNiFElmltha1NOl3N, node 511:566
+   ========================================================================== */
+
+.s-11 {
+  --s11-card-line: rgba(224, 217, 207, 0.5);
+  --s11-card-text: #6b645a;
+  --s11-icon-bg:   rgba(212, 163, 115, 0.1);
+  --s11-pill-bg:   #f7f2e8;
+  --s11-pill-line: rgba(212, 163, 115, 0.2);
+
+  padding-block: 120px;
+  background: var(--c-bg);
+}
+
+/* --- Подложка под стекло ----------------------------------------------------
+   Два мягких цветовых пятна и решётка гириха. Существует ровно затем, чтобы
+   плашкам было что искажать: на ровной заливке стекло не читается вовсе.
+   Контраст низкий намеренно — под плашками не должно быть ничего, что
+   спорит с их текстом.
+   -------------------------------------------------------------------------- */
+.s-11 {
+  position: relative;
+  isolation: isolate;
+}
+
+.s-11::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(52% 44% at 18% 22%, rgba(61, 143, 99, 0.16) 0%, transparent 68%),
+    radial-gradient(46% 40% at 84% 74%, rgba(212, 163, 115, 0.28) 0%, transparent 66%),
+    url("../assets/img/decor/girih-pattern.svg") center / 620px repeat;
+  opacity: 0.55;
+}
+
+
+.s-11__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+}
+
+/* --- Шапка секции --------------------------------------------------------- */
+.s-11__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding-bottom: 8px;
+  text-align: center;
+}
+
+.s-11__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  letter-spacing: 1.3px;
+  line-height: 18px;
+  color: var(--c-green-text);
+}
+
+.s-11__kicker-rule {
+  width: 24px;
+  border-radius: 2px;
+}
+
+.s-11__title {
+  max-width: 900px;
+  font-size: 64px;
+  line-height: 70px;
+  letter-spacing: -2px;
+}
+
+.s-11__lead {
+  max-width: 640px;
+}
+
+/* --- Сетка карточек ------------------------------------------------------- */
+.s-11__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.s-11__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* 20 px между плиткой и заголовком: у крупного знака своя оптическая
+     тяжесть, прежние 14 читались слипшимися. */
+  gap: 14px;
+  min-height: 266px;
+  padding: 32px 28px;
+  /* Граница прозрачна и работает распоркой: в её толщину видно нижний
+     слой фона — градиентную кромку, обрезанную по border-box. Слои
+     поверхности обрезаны по padding-box и внутрь границы не заходят. */
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+
+  /* Ровно один пиксель, а не полтора: дробную границу браузер округляет до
+     целого, и заявленные 1.5 всё равно превращались в 1. Лучше задать то,
+     что действительно нарисуется. */
+  border: 1px solid transparent;
+  border-radius: 18px;
+  background-image: var(--glass-bg), var(--glass-edge);
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  box-shadow: var(--glass-shadow);
+  /* Figma-макет тени на карточках не имеет — только 1px обводка. */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.s-11__card:hover {
+  transform: translateY(-2px);
+  border-color: var(--c-line);
+  box-shadow: var(--sh-card);
+}
+
+/* Изразец вместо нарисованного знака.
+
+   До этого знак был вектором в плашке 56 px. Снятую плитку на таком размере
+   не видно: замер по лесенке 160 / 120 / 96 / 56 показал, что материал
+   рассыпается уже к 96, а на 56 от него остаётся пятно. Поэтому знаку отдано
+   128 px, и подложка ему больше не нужна — плитка сама и есть подложка.
+
+   Кадрирование сделано по кромке глины, так что серого фона съёмки в файле
+   нет и скруглению нечего резать, кроме самой плитки. */
+.s-11__tile {
+  display: block;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  /* Кадр снят так, что плитка занимает его целиком: обрезать нечего,
+     и подгонять тоже. Три захода на вычисление границ плитки в кадре
+     провалились каждый по-своему — проще оказалось переснять. */
+  object-fit: fill;
+  box-shadow:
+    0 1px 2px rgba(43, 38, 33, 0.06),
+    0 4px 12px -8px rgba(43, 38, 33, 0.26);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.3s ease;
+}
+
+.s-11__card:hover .s-11__tile {
+  transform: translateY(-2px);
+  box-shadow:
+    0 2px 4px rgba(43, 38, 33, 0.08),
+    0 9px 18px -10px rgba(43, 38, 33, 0.32);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-11__tile { transition: none; }
+  .s-11__card:hover .s-11__tile { transform: none; }
+}
+
+.s-11__card-title {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 26px;
+  letter-spacing: -0.2px;
+  color: var(--c-text-body);
+}
+
+.s-11__card-text {
+  font-size: 15px;
+  line-height: 25px;
+  color: var(--s11-card-text);
+}
+
+/* --- Каналы связи --------------------------------------------------------- */
+.s-11__channels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.s-11__channel {
+  /* 8+1px рамки = 9px и 17+1 = 18px, как в Figma (высота пилюли ровно 36px). */
+  padding: 8px 17px;
+  border: 1px solid var(--s11-pill-line);
+  border-radius: var(--r-pill);
+  background: var(--s11-pill-bg);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--s11-card-text);
+  white-space: nowrap;
+}
+
+/* --- Отзыв ---------------------------------------------------------------- */
+/* Фото менеджера слева, реплика клиента справа */
+.s-11__quote {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  max-width: 940px;
+  text-align: left;
+}
+
+/* Карточка менеджера: снимок + подпись, кто на нём. Иначе фото стоит
+   вплотную к имени автора цитаты и читается как его портрет. */
+.s-11__manager-card {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.s-11__manager-label {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.s-11__manager-name {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19px;
+  color: var(--c-text);
+}
+
+.s-11__manager-role {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--s11-card-text);
+}
+
+.s-11__manager {
+  width: 300px;
+  height: auto;              /* без этого атрибут height из разметки бьёт aspect-ratio */
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-card);
+}
+
+.s-11__quote-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.s-11__quote-text {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 34px;
+  letter-spacing: -0.22px;
+  color: var(--c-text-body);
+}
+
+.s-11__quote-author {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--s11-card-text);
+}
+
+.s-11__quote-author cite { font-style: normal; }
+
+/* --- Адаптив -------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .s-11 { padding-block: 96px; }
+  .s-11__title { font-size: 56px; line-height: 62px; letter-spacing: -1.6px; }
+}
+
+@media (max-width: 900px) {
+  .s-11 { padding-block: 80px; }
+  .s-11__inner { gap: 44px; }
+  .s-11__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .s-11__card { min-height: 0; }
+  .s-11__title { font-size: 42px; line-height: 50px; letter-spacing: -1.1px; }
+  .s-11__quote-text { font-size: 20px; line-height: 31px; }
+
+  /* Фото над репликой, всё по центру */
+  .s-11__quote {
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    text-align: center;
+  }
+
+  .s-11__manager-card { align-items: center; }
+  .s-11__manager { width: min(100%, 420px); }
+  .s-11__manager-label { align-items: center; }
+  .s-11__quote-body { align-items: center; }
+}
+
+@media (max-width: 600px) {
+  .s-11 { padding-block: 64px; }
+  .s-11__inner { gap: 36px; }
+  .s-11__grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  /* На узком экране карточка идёт в одну колонку и высоту ей диктует текст —
+     минимум снимаем, иначе внизу повисает пустота. */
+  .s-11__card { min-height: 0; gap: 14px; padding: 26px 22px; }
+  .s-11__title { font-size: 32px; line-height: 38px; letter-spacing: -0.8px; }
+  .s-11__card-title { font-size: 18px; line-height: 24px; }
+  .s-11__channels { gap: 8px; }
+  .s-11__channel { padding: 7px 13px; font-size: 13px; }
+  .s-11__quote-text { font-size: 18px; line-height: 28px; }
+}

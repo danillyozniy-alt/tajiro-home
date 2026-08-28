@@ -1,0 +1,77 @@
+<section class="section s-10" id="the-math">
+  <div class="container s-10__inner">
+
+    <header class="s-10__head reveal">
+      <p class="kicker s-10__kicker">
+        <span class="rule s-10__kicker-rule" aria-hidden="true"></span>
+        THE MATH
+      </p>
+      <h2 class="h2 s-10__title">Simple economics. Real numbers.</h2>
+      <p class="lead s-10__lead">Average product price of $40. You keep about 65% of each sale. Drag the slider to see the numbers.</p>
+    </header>
+
+    <div class="s-10__layout">
+
+        <!-- Планета слева от калькулятора. Ширину калькулятора держим:
+             это рабочий инструмент со слайдером и тремя суммами, ужимать
+             его ради картинки нельзя. Планете достаётся остаток. -->
+      <div class="s-10__stage">
+        <div class="s-10__scene">
+          <div class="s-10__halo" aria-hidden="true"></div>
+          <canvas class="s-10__globe" id="s10-globe" aria-hidden="true"></canvas>
+          <div class="s-10__tags" id="s10-tags" aria-hidden="true"></div>
+        </div>
+
+        <p class="s-10__live">
+          <span class="s-10__live-dot" aria-hidden="true"></span>
+          <span class="s-10__live-num" id="s10-order-count">0</span> orders worldwide
+        </p>
+
+      </div>
+
+      <div class="s-10__calc">
+
+        <div class="s-10__calc-head">
+          <h3 class="h3 s-10__calc-title">Potential Margin Calculator</h3>
+          <p class="s-10__calc-sub">Move the slider to see how the math works</p>
+        </div>
+
+        <div class="s-10__field">
+          <div class="s-10__field-row">
+            <label class="s-10__field-label" for="s10-orders">Orders per day</label>
+            <output class="s-10__field-value" id="s10-orders-out" for="s10-orders">6</output>
+          </div>
+          <div class="s-10__track">
+            <span class="s-10__track-fill" aria-hidden="true"></span>
+            <input class="s-10__slider" id="s10-orders" type="range" min="1" max="20" step="1" value="6">
+          </div>
+        </div>
+
+        <div class="s-10__results" aria-live="polite">
+          <dl class="s-10__stats">
+            <div class="s-10__stat">
+              <dt class="s-10__stat-label">DAILY SALES</dt>
+              <dd class="s-10__stat-value" id="s10-daily-sales">$240</dd>
+            </div>
+            <div class="s-10__stat">
+              <dt class="s-10__stat-label">DAILY CUT</dt>
+              <dd class="s-10__stat-value" id="s10-daily-cut">$156</dd>
+            </div>
+          </dl>
+
+          <div class="s-10__total">
+            <p class="s-10__total-label">POTENTIAL MONTHLY MARGIN</p>
+            <p class="s-10__total-value" id="s10-monthly">$4,680</p>
+            <p class="s-10__total-note">Based on 30 days × <span id="s10-note-orders">6</span> orders/day</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p class="s-10__note">Based on average order value of $40 and 65% revenue share. Individual results vary.</p>
+
+  </div>
+
+</section>
