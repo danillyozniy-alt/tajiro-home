@@ -22,27 +22,129 @@
         </a>
       </div>
 
-      <p class="meta s-01__note">Free 14-day trial &nbsp;·&nbsp; No inventory &nbsp;·&nbsp; No experience needed</p>
+      <!-- Строка каталога. Меняется в такт с колодой справа: пока карточка
+           выезжает, здесь подставляется её название. Связка нужна, чтобы
+           левая колонка не стояла мёртвой рядом с движущейся правой. -->
+      <p class="s-01__now">
+        <span class="s-01__now-label">In your store now</span>
+        <span class="s-01__now-value" id="s01-now">Career Reboot System</span>
+      </p>
     </div>
 
-    <!-- Портрет из песка.
+    <!-- Колода товаров.
 
-         Снимок пересобирается в поле точек, левый и нижний края осыпаются
-         и уходят в фон. Считает это js/01-hero-sand.js — прямо по пикселям
-         фотографии, второго файла под эффект не нужно.
+         Первый экран должен двигаться сам, а не носить анимацию поверх
+         фотографии. Поэтому справа не кадр, а витрина, которая непрерывно
+         раздаёт карточки: передняя уезжает влево и гаснет, стопка подаётся
+         вперёд, сзади встаёт следующая. Круг замкнут — товары идут по
+         кольцу и не кончаются.
 
-         Сама фотография остаётся в разметке и никуда не девается: пока
-         холст не готов — а если скрипт не доехал, то и вовсе всегда —
-         на экране обычный кадр. Класс is-sand ставит скрипт и только
-         после того, как первый кадр нарисован. -->
+         Видно три карточки, дальше стопка уходит в тень. Порядок ведёт
+         js/01-hero.js классами is-1…is-4, сама раздача — переходы в CSS. -->
     <div class="s-01__visual">
-      <div class="s-01__glow" aria-hidden="true"></div>
-      <figure class="s-01__portrait">
-        <img class="s-01__shot" src="assets/img/people/hero-sand.jpg"
-             alt="A Tajiro store owner"
-             width="900" height="900" fetchpriority="high" decoding="async">
-        <canvas class="s-01__sand" aria-hidden="true"></canvas>
-      </figure>
+      <div class="s-01__aurora" aria-hidden="true"></div>
+
+      <div class="s-01__deck" id="s01-deck" aria-hidden="true">
+
+        <article class="s-01__card">
+          <div class="s-01__card-shot">
+            <img src="assets/img/products/career-portfolio.jpg" alt="" width="640" height="400" fetchpriority="high" decoding="async">
+            <span class="s-01__card-live">LIVE</span>
+          </div>
+          <div class="s-01__card-body">
+            <p class="s-01__card-cat">CAREER</p>
+            <h2 class="s-01__card-name">Career Reboot System</h2>
+            <p class="s-01__card-foot">
+              <span class="s-01__card-price">$59</span>
+              <span class="s-01__card-stars">★★★★★</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="s-01__card">
+          <div class="s-01__card-shot">
+            <img src="assets/img/products/sleep-system.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
+            <span class="s-01__card-live">LIVE</span>
+          </div>
+          <div class="s-01__card-body">
+            <p class="s-01__card-cat">HEALTH</p>
+            <h2 class="s-01__card-name">Sleep Improvement System</h2>
+            <p class="s-01__card-foot">
+              <span class="s-01__card-price">$29</span>
+              <span class="s-01__card-stars">★★★★★</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="s-01__card">
+          <div class="s-01__card-shot">
+            <img src="assets/img/products/puppy-plan.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
+            <span class="s-01__card-live">LIVE</span>
+          </div>
+          <div class="s-01__card-body">
+            <p class="s-01__card-cat">PETS</p>
+            <h2 class="s-01__card-name">New Puppy 90-Day Plan</h2>
+            <p class="s-01__card-foot">
+              <span class="s-01__card-price">$9</span>
+              <span class="s-01__card-stars">★★★★★</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="s-01__card">
+          <div class="s-01__card-shot">
+            <img src="assets/img/products/legal-documents.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
+            <span class="s-01__card-live">LIVE</span>
+          </div>
+          <div class="s-01__card-body">
+            <p class="s-01__card-cat">YOUR RIGHTS</p>
+            <h2 class="s-01__card-name">Legal Protection Suite</h2>
+            <p class="s-01__card-foot">
+              <span class="s-01__card-price">$499</span>
+              <span class="s-01__card-stars">★★★★★</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="s-01__card">
+          <div class="s-01__card-shot">
+            <img src="assets/img/products/medical-bill-audit.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
+            <span class="s-01__card-live">LIVE</span>
+          </div>
+          <div class="s-01__card-body">
+            <p class="s-01__card-cat">MONEY RESCUE</p>
+            <h2 class="s-01__card-name">Medical Bill Error Finder</h2>
+            <p class="s-01__card-foot">
+              <span class="s-01__card-price">$49</span>
+              <span class="s-01__card-stars">★★★★★</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="s-01__card">
+          <div class="s-01__card-shot">
+            <img src="assets/img/products/meal-plan.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
+            <span class="s-01__card-live">LIVE</span>
+          </div>
+          <div class="s-01__card-body">
+            <p class="s-01__card-cat">FAMILY</p>
+            <h2 class="s-01__card-name">Picky Eater Planner</h2>
+            <p class="s-01__card-foot">
+              <span class="s-01__card-price">$12</span>
+              <span class="s-01__card-stars">★★★★★</span>
+            </p>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Счётчик под колодой. Набирается один раз при загрузке: это факт о
+           каталоге, а не обещание заработка. -->
+      <p class="s-01__stock" aria-hidden="true">
+        <span class="s-01__stock-value" id="s01-stock">0</span>
+        <span class="s-01__stock-label">products already in your store</span>
+      </p>
+
     </div>
 
   </div>
