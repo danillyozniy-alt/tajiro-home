@@ -25,67 +25,90 @@
       <p class="meta f-01__note">Free 14-day trial &nbsp;·&nbsp; No inventory &nbsp;·&nbsp; No experience needed</p>
     </div>
 
-    <!-- Витрина владельца вместо портрета.
+    <!-- Панель магазина вместо портрета.
 
          На домашней странице первый экран держит фотография — человек, ради
          которого всё это. Здесь разговор другой: сюда приходят по кнопке
          «Start for Free», уже согласившись, и первый вопрос не «кто вы», а
          «что я получу». Поэтому справа стоит рабочий кабинет магазина.
 
-         Денег на панели нет намеренно. Заработок зависит от человека, и
-         обещать его цифрой на первом экране нельзя; всё, что здесь показано,
-         принадлежит магазину, а не владельцу: сколько товаров выложено,
-         сколько заказов прошло, кто заходил. -->
+         Собрана панель деталь в деталь по панели аналитики с домашней
+         (.s-08__panel): та же раскладка сверху вниз — шапка, крупная
+         метрика, карточка с данными, три плитки, лента событий за волосяной
+         линией. Те же надписи капителью в 10 px, те же цифры Outfit, те же
+         пилюли, те же кремовые карточки внутри стекла.
+
+         Первый заход был тёмной самоделкой со своими отступами и кеглями:
+         рядом с домашними панелями он читался черновиком. Ни одного своего
+         размера здесь больше нет — всё снято с 08.
+
+         Денег владельца тут нет намеренно. Заработок зависит от человека, и
+         обещать его цифрой на первом экране нельзя; всё показанное
+         принадлежит магазину, а не владельцу: товары, заказы, посетители. -->
     <div class="f-01__visual" aria-hidden="true">
       <div class="f-01__glow"></div>
 
       <div class="f-01__dash">
 
-        <div class="f-01__dash-bar">
-          <span class="f-01__dash-mark">taȷıro</span>
-          <span class="f-01__dash-tab f-01__dash-tab--on">Dashboard</span>
-          <span class="f-01__dash-tab">Products</span>
-          <span class="f-01__dash-user"></span>
+        <div class="f-01__head">
+          <p class="f-01__head-title">Your store</p>
+          <p class="f-01__live">
+            <span class="f-01__live-dot"></span>
+            STORE IS LIVE
+          </p>
         </div>
 
-        <div class="f-01__dash-metrics">
-          <div class="f-01__metric">
-            <p class="f-01__metric-label">Products live</p>
-            <p class="f-01__metric-value">112</p>
-            <p class="f-01__metric-delta">+12 this week</p>
-          </div>
-          <div class="f-01__metric">
-            <p class="f-01__metric-label">Orders this week</p>
-            <p class="f-01__metric-value">43</p>
-            <p class="f-01__metric-delta">↑ 12</p>
-          </div>
-          <div class="f-01__metric">
-            <p class="f-01__metric-label">Visitors today</p>
-            <p class="f-01__metric-value">1,247</p>
-            <p class="f-01__metric-delta">↑ 9%</p>
-          </div>
-        </div>
-
-        <div class="f-01__dash-panel">
-          <div class="f-01__panel-head">
-            <p class="f-01__panel-title">Most viewed</p>
-            <p class="f-01__panel-range">
-              <span>7d</span><span class="is-on">30d</span><span>All</span>
+        <div class="f-01__hero">
+          <div class="f-01__hero-metric">
+            <p class="f-01__label">ORDERS &middot; THIS WEEK</p>
+            <p class="f-01__hero-row">
+              <span class="f-01__hero-value">43</span>
+              <span class="f-01__delta">↑ 12</span>
             </p>
           </div>
 
+          <!-- Легенда — тот же компонент, что источники трафика в 08, но
+               данные другие: не откуда пришли, а что берут. -->
+          <ul class="f-01__legend">
+            <li class="f-01__legend-row f-01__legend-row--a">
+              <span class="f-01__legend-dot"></span>
+              <span class="f-01__legend-name">Career</span>
+              <span class="f-01__legend-bar"><span class="f-01__legend-fill" style="--w: 92%"></span></span>
+              <span class="f-01__legend-pct">46%</span>
+            </li>
+            <li class="f-01__legend-row f-01__legend-row--b">
+              <span class="f-01__legend-dot"></span>
+              <span class="f-01__legend-name">Health</span>
+              <span class="f-01__legend-bar"><span class="f-01__legend-fill" style="--w: 66%"></span></span>
+              <span class="f-01__legend-pct">33%</span>
+            </li>
+            <li class="f-01__legend-row f-01__legend-row--c">
+              <span class="f-01__legend-dot"></span>
+              <span class="f-01__legend-name">Family</span>
+              <span class="f-01__legend-bar"><span class="f-01__legend-fill" style="--w: 42%"></span></span>
+              <span class="f-01__legend-pct">21%</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="f-01__card">
+          <div class="f-01__card-head">
+            <p class="f-01__label">MOST VIEWED</p>
+            <p class="f-01__range">30D</p>
+          </div>
+
           <ul class="f-01__bars">
-            <li class="f-01__bar">
+            <li class="f-01__bar f-01__bar--a">
               <span class="f-01__bar-rank">1</span>
               <span class="f-01__bar-name">Career Reboot System</span>
               <span class="f-01__bar-track"><span class="f-01__bar-fill" style="--w: 92%"></span></span>
             </li>
-            <li class="f-01__bar">
+            <li class="f-01__bar f-01__bar--b">
               <span class="f-01__bar-rank">2</span>
               <span class="f-01__bar-name">New Puppy 90-Day Plan</span>
               <span class="f-01__bar-track"><span class="f-01__bar-fill" style="--w: 68%"></span></span>
             </li>
-            <li class="f-01__bar">
+            <li class="f-01__bar f-01__bar--c">
               <span class="f-01__bar-rank">3</span>
               <span class="f-01__bar-name">Sleep Improvement System</span>
               <span class="f-01__bar-track"><span class="f-01__bar-fill" style="--w: 51%"></span></span>
@@ -93,33 +116,30 @@
           </ul>
         </div>
 
-        <ul class="f-01__feed">
-          <li class="f-01__order">
-            <span class="f-01__order-dot"></span>
-            <span class="f-01__order-name">Career Reboot System</span>
-            <span class="f-01__order-time">5 min ago</span>
-            <span class="f-01__order-state">Delivered</span>
+        <ul class="f-01__tiles">
+          <li class="f-01__tile">
+            <p class="f-01__label">PRODUCTS</p>
+            <p class="f-01__tile-value">112</p>
           </li>
-          <li class="f-01__order">
-            <span class="f-01__order-dot"></span>
-            <span class="f-01__order-name">Medical Bill Error Finder</span>
-            <span class="f-01__order-time">22 min ago</span>
-            <span class="f-01__order-state">Delivered</span>
+          <li class="f-01__tile">
+            <p class="f-01__label">VISITORS</p>
+            <p class="f-01__tile-value">1,247</p>
+          </li>
+          <li class="f-01__tile">
+            <p class="f-01__label">RATING</p>
+            <p class="f-01__tile-value">4.9</p>
           </li>
         </ul>
 
+        <div class="f-01__feed">
+          <p class="f-01__order">
+            <img class="f-01__avatar" src="assets/img/people/shopper-layla.jpg"
+                 alt="" width="96" height="96" loading="lazy" decoding="async">
+            <span class="f-01__order-text">Layla from Dubai bought Career Reboot System<span class="f-01__via"><span class="f-01__via-dot"></span>delivered</span></span>
+          </p>
+        </div>
+
       </div>
-
-      <p class="f-01__float f-01__float--live">
-        <span class="f-01__float-title">Store is live</span>
-        <span class="f-01__float-text">Open all night, no days off</span>
-      </p>
-
-      <p class="f-01__float f-01__float--order">
-        <span class="f-01__float-title">New order</span>
-        <span class="f-01__float-text">Delivered on its own, in seconds</span>
-      </p>
-
     </div>
 
   </div>
