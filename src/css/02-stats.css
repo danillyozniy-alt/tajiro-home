@@ -26,9 +26,20 @@
   justify-content: center;
   gap: 6px;
   padding: 20px 24px;
-  border: 1px solid rgba(212, 163, 115, 0.2);
+
+  /* Стекло, общее со всеми крупными плашками страницы: токены в 00-base.css.
+     Эти четыре карточки под него не попали, потому что у них своя разметка,
+     а рядом с остеклёнными шагами разница читалась. Граница прозрачна и
+     работает распоркой — в её толщину видно градиентную кромку. */
+  border: 1px solid transparent;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.7);
+  background-image: var(--glass-bg), var(--glass-edge);
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+
   overflow: clip;   /* Figma: overflow-clip — страница не должна ехать вбок */
 }
 
