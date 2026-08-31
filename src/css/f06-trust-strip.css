@@ -1,0 +1,79 @@
+/* ==========================================================================
+   Free store · f-06 · Полоса «чего делать не придётся»
+
+   Три строки перед блоком доверия. Намеренно тонкая: это не секция, а
+   перебивка — последнее напоминание перед тем, как страница начнёт
+   доказывать, что компания настоящая.
+
+   Ни стекла, ни карточек. Всё, что тяжелее линий, спорило бы с сеткой
+   изразцов, которая идёт следом.
+   ========================================================================== */
+
+.f-06 {
+  padding-block: 64px;
+  border-top: 1px solid var(--c-line-soft);
+  border-bottom: 1px solid var(--c-line-soft);
+  background: var(--c-bg);
+}
+
+.f-06__strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.f-06__item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Знак в песочной плашке. Голая линия в 26 px на кремовом фоне почти не
+   читалась: полоса выглядела не перебивкой, а обрывком предыдущей секции.
+   Плашка — то же скругление и та же логика, что у изразцов выше, только
+   без керамики: перебивке хватает намёка на неё. */
+.f-06__icon {
+  flex: none;
+  box-sizing: content-box;
+  width: 26px;
+  height: 26px;
+  padding: 13px;
+  border: 1px solid var(--c-line-gold);
+  border-radius: 14px;
+  background: rgba(212, 163, 115, 0.12);
+  color: var(--c-gold);
+  overflow: visible;
+}
+
+.f-06__title {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: var(--c-text);
+}
+
+.f-06__text {
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--c-text-muted);
+}
+
+/* --- Экраны --------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .f-06 { padding-block: 48px; }
+
+  /* В три колонки по 220px описание ломается на три строки и полоса
+     перестаёт быть полосой. В столбик. */
+  .f-06__strip {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+}
+
+@media (max-width: 600px) {
+  .f-06 { padding-block: 36px; }
+  .f-06__item { gap: 14px; }
+  .f-06__icon { width: 22px; height: 22px; padding: 11px; border-radius: 12px; }
+}

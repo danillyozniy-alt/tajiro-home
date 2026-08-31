@@ -1,0 +1,321 @@
+/* ==========================================================================
+   Free store · f-02 · Пилон 03 — стартовый набор
+
+   Зеркальный пилон: карточка слева, текст справа. Типографика колонки взята
+   у 06 и 07 один в один — номер, надзаголовок, заголовок, лид, список с
+   галочками. Это продолжение той же нумерации, а не отдельный жанр.
+
+   Карточка без фотографии намеренно. У экомзи в этом месте стоит снимок
+   продавца на складе; набор здесь цифровой, склада нет, и снимок пришлось
+   бы выдумывать. Вместо него — то, что в наборе действительно лежит.
+   ========================================================================== */
+
+.f-02 {
+  --f02-muted: #6b645a;   /* тёплый серо-бежевый, как в 07 */
+
+  /* Аврора шире карточки на 16% с каждой стороны. На широком экране запас
+     съедает колонка, а на телефоне карточка занимает всю ширину — и пятно
+     вылезало за габарит страницы, добавляя горизонтальную прокрутку. */
+  overflow: hidden;
+  padding-block: 120px;
+  background: var(--c-bg-plain);
+}
+
+.f-02__inner {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+/* Визуал уходит влево через order: в разметке текстовый блок идёт первым,
+   чтобы h2 предшествовал h3 карточки и на мобильном стоял сверху. */
+.f-02__visual {
+  order: -1;
+  flex: 1 1 520px;
+  min-width: 0;
+}
+
+/* --- Текстовая колонка ---------------------------------------------------- */
+.f-02__text {
+  display: flex;
+  flex: 0 1 520px;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
+.f-02__block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.f-02__numeral {
+  font-family: var(--f-display);
+  font-size: 96px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -3.8px;
+  color: var(--c-gold);
+}
+
+.f-02 .f-02__title {
+  font-size: 56px;
+  line-height: 62px;
+  letter-spacing: -1.5px;
+}
+
+.f-02__lead { max-width: 480px; }
+
+.f-02__features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.f-02__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 24px;
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--f02-muted);
+}
+
+/* Галочка выровнена по верху строки, чуть выше центра текста — как в 06/07 */
+.f-02__check {
+  flex: none;
+  margin-top: 4px;
+}
+
+.f-02__cta { align-self: flex-start; }
+
+/* --- Сцена вокруг карточки -------------------------------------------------
+   Соседние пилоны держат тяжёлые визуалы: витрина с авророй и кольцами в
+   06, живая лента каталога в 07. Плашка с тремя строками рядом с ними
+   читалась черновиком, поэтому у неё появилась своя сцена.
+
+   Она из двух частей. Аврора — тёплое пятно под карточкой, тот же приём и
+   тот же такт, что в 06. Стопка — два слоя, выглядывающих из-под карточки
+   вверх и вправо: набор состоит из нескольких вещей, и стопка говорит это
+   раньше, чем список внутри.
+   -------------------------------------------------------------------------- */
+.f-02__stage {
+  position: relative;
+  max-width: 520px;
+  padding-top: 22px;   /* место под выглядывающие слои стопки */
+}
+
+.f-02__aurora {
+  position: absolute;
+  z-index: 0;
+  inset: -14% -16%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 46% 38% at 30% 28%, rgba(212, 163, 115, 0.40) 0%, transparent 70%),
+    radial-gradient(ellipse 42% 36% at 72% 70%, rgba(61, 143, 99, 0.30) 0%, transparent 70%);
+  filter: blur(46px);
+  animation: f02-aurora 14s ease-in-out infinite;
+}
+
+@keyframes f02-aurora {
+  0%, 100% { transform: scale(1)    translate(0, 0);    opacity: 0.9; }
+  50%      { transform: scale(1.08) translate(2%, -2%); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .f-02__aurora { animation: none; }
+}
+
+/* Слои стопки. Скругление и кромка те же, что у карточки, — иначе они
+   читались бы тенью, а не второй и третьей вещью в наборе. */
+.f-02__ghost {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  left: 0;
+  height: 60px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  background-image: var(--glass-bg), var(--glass-edge);
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  box-shadow: var(--glass-shadow);
+}
+
+.f-02__ghost--1 {
+  top: 11px;
+  margin-inline: 16px;
+}
+
+.f-02__ghost--2 {
+  top: 0;
+  margin-inline: 34px;
+  opacity: 0.72;
+}
+
+/* --- Карточка набора -------------------------------------------------------
+   Материал общий со всеми крупными плашками страницы: прозрачная граница
+   работает распоркой, в её толщину видно градиентную кромку.
+   -------------------------------------------------------------------------- */
+.f-02__card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  max-width: 520px;
+  padding: 28px 28px 0;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  background-image: var(--glass-bg), var(--glass-edge);
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+
+/* --- Шапка карточки ------------------------------------------------------- */
+.f-02__card-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--c-line-soft);
+}
+
+.f-02__card-tile {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  box-shadow:
+    0 1px 2px rgba(43, 38, 33, 0.06),
+    0 4px 12px -8px rgba(43, 38, 33, 0.26);
+}
+
+.f-02__card-titles {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.f-02__card-sub {
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--c-text-muted);
+}
+
+/* Ценник — бронзовая пилюля. Зелёный здесь занят действием (кнопка справа),
+   и второй зелёный на том же экране спорил бы с ней за главное. */
+.f-02__card-badge {
+  flex: none;
+  align-self: flex-start;
+  padding: 6px 13px;
+  border: 1px solid var(--c-line-gold);
+  border-radius: var(--r-pill);
+  background: rgba(212, 163, 115, 0.14);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--c-gold);
+  white-space: nowrap;
+}
+
+/* --- Состав набора -------------------------------------------------------- */
+.f-02__contents {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-block: 24px;
+}
+
+/* Галочка в своей колонке, заголовок и описание — во второй: описание
+   выравнивается по заголовку, а не по галочке. */
+.f-02__content {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  column-gap: 12px;
+  row-gap: 3px;
+}
+
+.f-02__content .f-02__check { grid-row: 1; margin-top: 3px; }
+
+.f-02__content-title {
+  grid-column: 2;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 22px;
+  color: var(--c-text);
+}
+
+.f-02__content-text {
+  grid-column: 2;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--f02-muted);
+}
+
+/* --- Подвал карточки -------------------------------------------------------
+   Своя заливка и своё скругление снизу: ступенька читается гранью, а не
+   приклеенной плашкой — тот же приём, что у подвала панелей меню. */
+.f-02__card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-inline: -28px;
+  padding: 16px 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 0 0 19px 19px;
+  background: rgba(43, 38, 33, 0.035);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.f-02__card-foot-left  { color: var(--c-green-text); }
+.f-02__card-foot-right { color: var(--c-gold); }
+
+/* --- Экраны --------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .f-02__inner { gap: 56px; }
+  .f-02__numeral { font-size: 80px; letter-spacing: -3px; }
+  .f-02 .f-02__title { font-size: 48px; line-height: 56px; letter-spacing: -1.2px; }
+}
+
+@media (max-width: 900px) {
+  .f-02 { padding-block: 72px; }
+
+  /* Текст поднимается над карточкой — он и так первый в разметке */
+  .f-02__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 48px;
+  }
+
+  .f-02__visual { order: 0; flex: none; }
+  .f-02__text { flex: none; }
+  .f-02__block,
+  .f-02__lead { max-width: 640px; }
+  .f-02__stage,
+  .f-02__card { max-width: none; }
+
+  .f-02__numeral { font-size: 64px; letter-spacing: -2.2px; }
+  .f-02 .f-02__title { font-size: 38px; line-height: 46px; letter-spacing: -0.9px; }
+}
+
+@media (max-width: 600px) {
+  .f-02 { padding-block: 56px; }
+  .f-02__inner { gap: 40px; }
+
+  .f-02__card { padding-inline: 20px; }
+  .f-02__card-foot { margin-inline: -20px; padding-inline: 20px; }
+
+  /* Ценник уезжает под заголовок: в строке из плитки, названия и пилюли на
+     360 остаётся 90px под название — оно ломалось на четыре слова. */
+  .f-02__card-head { flex-wrap: wrap; }
+  .f-02__card-badge { order: 3; margin-left: 72px; }
+
+  .f-02__cta { align-self: stretch; }
+}

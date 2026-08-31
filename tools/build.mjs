@@ -6,17 +6,23 @@
    папках — чтобы «что можно отправлять» было видно по расположению, а не
    по памяти:
 
-     dist/    рабочая версия. index.html плюс папки css, js, assets: страница
-              разобрана на части. Это то, что заливается на хостинг и что
+     dist/    рабочая версия. Страницы плюс папки css, js, assets: сайт
+              разобран на части. Это то, что заливается на хостинг и что
               открываешь в браузере во время работы. Отправлять нельзя —
-              без соседних папок index.html откроется голым текстом.
+              без соседних папок html откроется голым текстом.
 
-     send/    то, что отправляют. Всё вшито внутрь одного файла:
+     send/    то, что отправляют. Каждая страница — один самодостаточный
+              файл, всё вшито внутрь:
 
-                Tajiro-home.html       стили, скрипты, шрифты, картинки
-                Tajiro-home-full.html  то же плюс видео
+                Tajiro-home.html             стили, скрипты, шрифты, картинки
+                Tajiro-home-full.html        то же плюс видео
+                Tajiro-free-store.html       страница «Start for Free»
+                Tajiro-free-store-full.html
 
               Полный тяжелее втрое, зато работает вообще без сети.
+
+   Страниц может быть сколько угодно: список лежит в PAGES ниже, добавление
+   новой — одна строка там и один шаблон в src/.
 
    Собираются обе всегда и вместе. Раньше полный файл требовал отдельного
    ключа — и после любой правки молча оставался старым, потому что watcher
@@ -42,7 +48,17 @@ const SRC  = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
 const SEND = path.join(ROOT, 'send');
 
-const SINGLE_FILE = 'Tajiro-home.html';
+/* Страницы сайта. Всё, что нужно знать сборке о каждой: из какого шаблона
+   собирать, как назвать в dist/ и как назвать цельный файл для отправки.
+
+   Список существует затем, чтобы добавление страницы было одной строкой, а
+   не правкой в четырёх местах. Отчёт, очистка старых цельных файлов и
+   выбор стартовой страницы сервера строятся отсюда же. */
+const PAGES = [
+  { template: 'index.html',       out: 'index.html',       send: 'Tajiro-home.html' },
+  { template: 'free-store.html',  out: 'free-store.html',  send: 'Tajiro-free-store.html' }
+];
+
 const PORT = 4173;
 
 const MIME = {
@@ -87,8 +103,8 @@ function size(bytes) {
    Раскрываем <!--#include partials/xx.html -->. Маркер секции остаётся в
    разметке: по нему готовую страницу всегда можно разобрать обратно. */
 
-function assemble() {
-  const template = read(path.join(SRC, 'index.html'));
+function assemble(templateRel) {
+  const template = read(path.join(SRC, templateRel));
   const missing = [];
 
   const html = template.replace(
@@ -148,12 +164,18 @@ function syncDir(from, to) {
   }
 }
 
-function buildLinked(html) {
+/* Папки копируются ОДИН раз за сборку, а не на каждую страницу: syncDir
+   доносит до dist/ изменения и сносит осиротевшее, и два таких прохода по
+   одному каталогу подряд — это лишняя работа на десятки мегабайт ассетов. */
+function syncAssets() {
   fs.mkdirSync(DIST, { recursive: true });
   for (const dir of ['css', 'js', 'assets']) {
     syncDir(path.join(SRC, dir), path.join(DIST, dir));
   }
-  fs.writeFileSync(path.join(DIST, 'index.html'), html);
+}
+
+function buildLinked(html, out) {
+  fs.writeFileSync(path.join(DIST, out), html);
   return Buffer.byteLength(html);
 }
 
@@ -161,7 +183,7 @@ function buildLinked(html) {
    Порядок операций важен: сначала стили и скрипты становятся текстом внутри
    документа, и только потом внутри этого текста ищутся ссылки на ассеты. */
 
-function buildSingle(html, withVideo) {
+function buildSingle(html, withVideo, sendBase) {
   let out = html;
 
   /* --- стили: весь блок <link> схлопывается в один <style> --------------- */
@@ -218,7 +240,7 @@ function buildSingle(html, withVideo) {
       .map(r => r.replace(/^(?:\.\.\/)+/, ''))
   )];
 
-  const name = withVideo ? SINGLE_FILE.replace(/\.html$/, '-full.html') : SINGLE_FILE;
+  const name = withVideo ? sendBase.replace(/\.html$/, '-full.html') : sendBase;
 
   fs.mkdirSync(SEND, { recursive: true });
   fs.writeFileSync(path.join(SEND, name), out);
@@ -249,34 +271,41 @@ function build() {
 
 function buildOnce() {
   const t0 = process.hrtime.bigint();
-  const html = assemble();
-  const linked = buildLinked(html);
-  const single = buildSingle(html, false);
-  const full = buildSingle(html, true);
-  const ms = Number(process.hrtime.bigint() - t0) / 1e6;
+  syncAssets();
 
-  /* Старые цельные файлы из dist убираем: пока они там лежат, в папке две
-     пары одинаковых на вид html, и непонятно, какую брать. */
-  for (const stale of [SINGLE_FILE, SINGLE_FILE.replace(/\.html$/, '-full.html')]) {
-    fs.rmSync(path.join(DIST, stale), { force: true });
+  const report = [];
+
+  for (const page of PAGES) {
+    const html = assemble(page.template);
+    const linked = buildLinked(html, page.out);
+    const single = buildSingle(html, false, page.send);
+    const full = buildSingle(html, true, page.send);
+
+    /* Старые цельные файлы из dist убираем: пока они там лежат, в папке две
+       пары одинаковых на вид html, и непонятно, какую брать. */
+    for (const stale of [page.send, page.send.replace(/\.html$/, '-full.html')]) {
+      fs.rmSync(path.join(DIST, stale), { force: true });
+    }
+
+    const line = r => '  send/' + r.name.padEnd(26) + size(r.bytes).padStart(9) +
+                      '   ' + r.inlined + ' ассетов вшито';
+
+    report.push(
+      '  dist/' + page.out.padEnd(26) + size(linked).padStart(9) +
+        '   + ' + single.sheets + ' css, ассеты файлами  (рабочая версия)\n' +
+      line(single)
+      + (single.external.length
+          ? '\n  ! ссылкой, не вшито: ' + single.external.join(', ')
+          : '')
+      + '\n' + line(full)
+      + (full.external.length
+          ? '\n  ! ссылкой, не вшито: ' + full.external.join(', ')
+          : '\n    всё внутри — работает без сети')
+    );
   }
 
-  const line = r => '  send/' + r.name.padEnd(21) + size(r.bytes).padStart(9) +
-                    '   ' + r.inlined + ' ассетов вшито';
-
-  console.log(
-    'built in ' + ms.toFixed(0) + ' ms\n' +
-    '  dist/index.html      ' + size(linked).padStart(9) +
-      '   + ' + single.sheets + ' css, ассеты файлами  (рабочая версия)\n' +
-    line(single)
-    + (single.external.length
-        ? '\n  ! ссылкой, не вшито: ' + single.external.join(', ')
-        : '')
-    + '\n' + line(full)
-    + (full.external.length
-        ? '\n  ! ссылкой, не вшито: ' + full.external.join(', ')
-        : '\n    всё внутри — работает без сети')
-  );
+  const ms = Number(process.hrtime.bigint() - t0) / 1e6;
+  console.log('built in ' + ms.toFixed(0) + ' ms\n' + report.join('\n\n'));
 }
 
 /* ---------------------------------------------------------------- 5. сервер */

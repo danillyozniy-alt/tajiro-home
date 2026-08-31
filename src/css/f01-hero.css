@@ -1,0 +1,480 @@
+/* ==========================================================================
+   tajiro — Free store · f-01 · Первый экран
+
+   Раскладка та же, что у первого экрана домашней страницы: копирайт слева,
+   визуал справа, гирих подложкой. Отличается содержимое правой колонки —
+   вместо портрета владельца его рабочая панель.
+
+   Панель тёмная на кремовом. Это единственное место первого экрана, где
+   разрешён такой контраст: экран должен с первого взгляда отличаться от
+   домашнего, а тёмное у нас уже есть в словаре (секции 09 и 13), так что
+   ничего нового изобретать не пришлось.
+   ========================================================================== */
+
+.f-01 {
+  --f01-dash-bg:    #221e1a;   /* на полтона глубже --c-ink-surface: панель уходит под плашки */
+  --f01-dash-tile:  rgba(255, 255, 255, 0.055);
+  --f01-dash-line:  rgba(255, 255, 255, 0.09);
+
+  overflow: hidden;   /* гирих уходит за правый край */
+  background: var(--c-bg);
+}
+
+/* --- Декоративная подложка ------------------------------------------------ */
+.f-01__girih {
+  position: absolute;
+  z-index: 0;
+  top: -96px;
+  right: 0;
+  width: 760px;
+  height: 880px;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* --- Раскладка ------------------------------------------------------------ */
+.f-01__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr);
+  column-gap: 48px;
+  align-items: center;
+  padding-top: 74px;
+  padding-bottom: 96px;
+}
+
+/* --- Копирайт ------------------------------------------------------------- */
+.f-01__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.f-01__title {
+  margin-top: 14px;
+  font-size: 60px;
+  line-height: 66px;
+  letter-spacing: -1.6px;
+
+  /* Колонка здесь уже домашней (панель шире портрета), и 72px в неё не
+     влезают: «today» уезжало в третью строку одним словом. */
+  text-wrap: balance;
+}
+
+.f-01__lead {
+  margin-top: 22px;
+  max-width: 500px;
+}
+
+.f-01__actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 36px;
+}
+
+/* Стрелка едет вправо на наведении — то же движение, что у «Talk to us» на
+   домашней. Своего смысла у неё нет, она подсказывает направление. */
+.f-01__arrow {
+  transition: transform 0.18s ease;
+}
+.f-01__how:hover .f-01__arrow { transform: translateX(3px); }
+
+.f-01__note { margin-top: 18px; }
+
+/* --- Визуал --------------------------------------------------------------- */
+.f-01__visual {
+  position: relative;
+  justify-self: end;
+  width: 100%;
+  max-width: 560px;
+
+  /* Поля сверху и снизу — место под парящие плашки. Раньше их не было, и
+     плашки ложились прямо на содержимое панели: одна закрывала полосы
+     «самого просматриваемого», другая — названия заказов. Панель, которую
+     нельзя прочитать, доказывает ровно обратное тому, ради чего стоит. */
+  padding-block: 50px;
+}
+
+/* Ореол под панелью: тёплое пятно, которое отрывает её от кремового фона.
+   Тот же приём, что под портретом на домашней (.s-01__glow). */
+.f-01__glow {
+  position: absolute;
+  z-index: 0;
+  inset: -14% -10% -18%;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 52% at 42% 40%, rgba(212, 163, 115, 0.42) 0%, transparent 70%),
+    radial-gradient(52% 48% at 76% 78%, rgba(61, 143, 99, 0.26) 0%, transparent 72%);
+  filter: blur(6px);
+}
+
+/* --- Панель --------------------------------------------------------------- */
+.f-01__dash {
+  position: relative;
+  z-index: 1;
+  padding: 18px;
+  border-radius: 20px;
+  background: var(--f01-dash-bg);
+  box-shadow:
+    0 2px 4px rgba(43, 38, 33, 0.10),
+    0 18px 40px -18px rgba(43, 38, 33, 0.42),
+    0 48px 80px -50px rgba(43, 38, 33, 0.60),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+/* --- Верхняя строка ------------------------------------------------------- */
+.f-01__dash-bar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--f01-dash-line);
+}
+
+.f-01__dash-mark {
+  margin-right: 6px;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: -0.4px;
+  color: var(--c-on-dark);
+}
+
+.f-01__dash-tab {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-on-dark-muted);
+}
+.f-01__dash-tab--on { color: var(--c-green-on-dark); }
+
+/* Кружок вместо аватара: лица здесь нет и быть не должно — панель безличная */
+.f-01__dash-user {
+  width: 22px;
+  height: 22px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: linear-gradient(140deg, rgba(212, 163, 115, 0.75), rgba(212, 163, 115, 0.3));
+}
+
+/* --- Плитки метрик -------------------------------------------------------- */
+.f-01__dash-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.f-01__metric {
+  padding: 13px 14px 14px;
+  border-radius: 12px;
+  background: var(--f01-dash-tile);
+}
+
+.f-01__metric-label {
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--c-on-dark-muted);
+}
+
+.f-01__metric-value {
+  margin-top: 7px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 30px;
+  letter-spacing: -1px;
+  color: var(--c-on-dark);
+}
+
+.f-01__metric-delta {
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--c-green-on-dark);
+}
+
+/* --- Список самого просматриваемого --------------------------------------- */
+.f-01__dash-panel {
+  margin-top: 10px;
+  padding: 15px 16px 17px;
+  border-radius: 12px;
+  background: var(--f01-dash-tile);
+}
+
+.f-01__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.f-01__panel-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-on-dark);
+}
+
+.f-01__panel-range {
+  display: flex;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--c-on-dark-muted);
+}
+
+.f-01__panel-range span {
+  padding: 3px 7px;
+  border-radius: var(--r-pill);
+}
+.f-01__panel-range .is-on {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--c-on-dark);
+}
+
+.f-01__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-top: 14px;
+}
+
+.f-01__bar {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) 104px;
+  align-items: center;
+  gap: 10px;
+}
+
+.f-01__bar-rank {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--c-on-dark-muted);
+}
+
+.f-01__bar-name {
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--c-on-dark-soft);
+}
+
+.f-01__bar-track {
+  height: 5px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Заливка едет из нуля в свою ширину один раз, лесенкой по строкам.
+   Длительность — доля мастера 16s страницы (16 / 16 = 1s). */
+.f-01__bar-fill {
+  display: block;
+  width: var(--w);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(61, 143, 99, 0.55), var(--c-green-on-dark));
+  transform-origin: left center;
+  animation: f01-bar 1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.f-01__bar:nth-child(2) .f-01__bar-fill { animation-delay: 0.125s; }
+.f-01__bar:nth-child(3) .f-01__bar-fill { animation-delay: 0.25s; }
+
+@keyframes f01-bar {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* --- Лента заказов -------------------------------------------------------- */
+.f-01__feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 10px;
+}
+
+.f-01__order {
+  display: grid;
+  grid-template-columns: 6px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: var(--f01-dash-tile);
+}
+
+.f-01__order-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-green-on-dark);
+}
+
+.f-01__order-name {
+  overflow: hidden;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--c-on-dark);
+}
+
+.f-01__order-time {
+  font-size: 11px;
+  color: var(--c-on-dark-muted);
+}
+
+.f-01__order-state {
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  background: rgba(127, 201, 160, 0.16);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--c-green-on-dark);
+}
+
+/* --- Парящие плашки --------------------------------------------------------
+   Стекло общее со всей страницей, глубина «плавающая»: плашки висят над
+   панелью, а не лежат на ней.
+
+   Ход общий для всех трёх — 18s, один из мастер-циклов страницы. Различаются
+   только задержкой, поэтому они не дышат в такт и сцена не выглядит
+   механической.
+   -------------------------------------------------------------------------- */
+.f-01__float {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 11px 16px 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background-image: var(--glass-bg-solid), var(--glass-edge);
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  box-shadow: var(--glass-shadow-float);
+  animation: f01-float 18s ease-in-out infinite;
+}
+
+.f-01__float-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--c-text);
+}
+
+.f-01__float-text {
+  font-size: 11px;
+  line-height: 15px;
+  color: var(--c-text-muted);
+}
+
+/* Плашки висят В ПОЛЯХ, а не поверх панели: над её верхним краем и под
+   нижним. Наезд остаётся только на тень — читать под ними нечего. */
+.f-01__float--live {
+  top: 0;
+  left: -34px;
+}
+
+.f-01__float--order {
+  right: -34px;
+  bottom: 0;
+  animation-delay: -9s;
+}
+
+@keyframes f01-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-9px); }
+}
+
+/* --- Экраны --------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .f-01__inner { padding-top: 64px; }
+
+  /* Плашки перестают вылезать за габарит: на 1280 колонка уже, и левая
+     уходила под текст. */
+  .f-01__float--live  { left: -18px; }
+  .f-01__float--order { right: -14px; }
+}
+
+@media (min-width: 901px) and (max-width: 1140px) {
+  .f-01__title {
+    font-size: 50px;
+    line-height: 56px;
+    letter-spacing: -1.3px;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .f-01__inner {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 56px;
+    padding-top: 56px;
+    padding-bottom: 72px;
+  }
+
+  .f-01__title {
+    margin-top: 24px;
+    font-size: 44px;
+    line-height: 52px;
+    letter-spacing: -1.2px;
+  }
+  .f-01__lead    { margin-top: 22px; }
+  .f-01__actions { margin-top: 32px; }
+  .f-01__note    { margin-top: 16px; }
+
+  .f-01__visual {
+    justify-self: center;
+    max-width: 520px;
+  }
+
+  .f-01__girih { opacity: 0.7; }
+}
+
+@media (max-width: 600px) {
+
+  .f-01__inner {
+    row-gap: 40px;
+    padding-top: 40px;
+    padding-bottom: 56px;
+  }
+
+  .f-01__title {
+    margin-top: 20px;
+    font-size: 34px;
+    line-height: 40px;
+    letter-spacing: -0.8px;
+  }
+
+  .f-01__lead { margin-top: 18px; }
+
+  /* Кнопки в столбик и во всю ширину: рядом они не помещаются, а ужимать
+     «See How It Works» до многоточия нельзя — это второе действие экрана. */
+  .f-01__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  .f-01__note {
+    margin-top: 14px;
+    font-size: 12px;
+  }
+
+  .f-01__dash { padding: 14px; }
+
+  /* Три плитки в ряд на 320 дают по 88px — цифра переносится. В два ряда. */
+  .f-01__dash-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .f-01__metric:last-child { grid-column: 1 / -1; }
+
+  .f-01__bar { grid-template-columns: 14px minmax(0, 1fr) 72px; }
+
+  /* Плашки уходят внутрь габарита: за краем экрана их просто не видно */
+  .f-01__visual { padding-block: 42px; }
+  .f-01__float--live  { left: 0; }
+  .f-01__float--order { right: 0; }
+}
