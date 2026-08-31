@@ -22,129 +22,61 @@
         </a>
       </div>
 
-      <!-- Строка каталога. Меняется в такт с колодой справа: пока карточка
-           выезжает, здесь подставляется её название. Связка нужна, чтобы
-           левая колонка не стояла мёртвой рядом с движущейся правой. -->
-      <p class="s-01__now">
-        <span class="s-01__now-label">In your store now</span>
-        <span class="s-01__now-value" id="s01-now">Career Reboot System</span>
-      </p>
+      <p class="meta s-01__note">Free 14-day trial &nbsp;·&nbsp; No inventory &nbsp;·&nbsp; No experience needed</p>
     </div>
 
-    <!-- Колода товаров.
+    <!-- Вечер.
 
-         Первый экран должен двигаться сам, а не носить анимацию поверх
-         фотографии. Поэтому справа не кадр, а витрина, которая непрерывно
-         раздаёт карточки: передняя уезжает влево и гаснет, стопка подаётся
-         вперёд, сзади встаёт следующая. Круг замкнут — товары идут по
-         кольцу и не кончаются.
+         Первый экран был неподвижной фотографией, и это была главная
+         претензия к нему. Кадр остался кадром, но внутри него теперь
+         идёт время: за окном темнеет, вслед за небом холодеет комната,
+         и на этом фоне разгорается лампа. Полный вечер за 24 секунды.
 
-         Видно три карточки, дальше стопка уходит в тень. Порядок ведёт
-         js/01-hero.js классами is-1…is-4, сама раздача — переходы в CSS. -->
+         Это не украшение, а сам довод страницы. Пока человек дома,
+         магазин работает: часы идут, и под ними меняется то, что за
+         это время произошло без него.
+
+         Прежний заход прятал движение в полминуты хода кадра — на
+         такой скорости его нельзя увидеть, можно только измерить.
+         Отсюда все длительности здесь заметные.
+
+         Секция остаётся кремовой: тёмным был только стенд для показа
+         вариантов, а страница светлая, и герой не должен из неё
+         выпадать. Тень лежит только внутри кадра. -->
     <div class="s-01__visual">
-      <div class="s-01__aurora" aria-hidden="true"></div>
+      <figure class="s-01__shot">
+        <span class="s-01__ken" aria-hidden="true"></span>
+        <span class="s-01__sky" aria-hidden="true"></span>
+        <span class="s-01__cool" aria-hidden="true"></span>
+        <span class="s-01__wash" aria-hidden="true"></span>
+        <span class="s-01__lamp" aria-hidden="true"></span>
+        <span class="s-01__shade" aria-hidden="true"></span>
+        <span class="s-01__grain" aria-hidden="true"></span>
 
-      <div class="s-01__deck" id="s01-deck" aria-hidden="true">
+        <figcaption class="s-01__log" aria-hidden="true">
+          <p class="s-01__log-cap">Tonight, while she was home</p>
 
-        <article class="s-01__card">
-          <div class="s-01__card-shot">
-            <img src="assets/img/products/career-portfolio.jpg" alt="" width="640" height="400" fetchpriority="high" decoding="async">
-            <span class="s-01__card-live">LIVE</span>
-          </div>
-          <div class="s-01__card-body">
-            <p class="s-01__card-cat">CAREER</p>
-            <h2 class="s-01__card-name">Career Reboot System</h2>
-            <p class="s-01__card-foot">
-              <span class="s-01__card-price">$59</span>
-              <span class="s-01__card-stars">★★★★★</span>
-            </p>
-          </div>
-        </article>
+          <span class="s-01__clock"><span class="s-01__clock-track">
+            <span>19:00</span><span>20:00</span><span>21:00</span><span>22:00</span>
+            <span>23:00</span><span>00:00</span><span>01:00</span><span>02:00</span><span>19:00</span>
+          </span></span>
 
-        <article class="s-01__card">
-          <div class="s-01__card-shot">
-            <img src="assets/img/products/sleep-system.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
-            <span class="s-01__card-live">LIVE</span>
-          </div>
-          <div class="s-01__card-body">
-            <p class="s-01__card-cat">HEALTH</p>
-            <h2 class="s-01__card-name">Sleep Improvement System</h2>
-            <p class="s-01__card-foot">
-              <span class="s-01__card-price">$29</span>
-              <span class="s-01__card-stars">★★★★★</span>
-            </p>
-          </div>
-        </article>
+          <span class="s-01__log-rule"></span>
 
-        <article class="s-01__card">
-          <div class="s-01__card-shot">
-            <img src="assets/img/products/puppy-plan.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
-            <span class="s-01__card-live">LIVE</span>
-          </div>
-          <div class="s-01__card-body">
-            <p class="s-01__card-cat">PETS</p>
-            <h2 class="s-01__card-name">New Puppy 90-Day Plan</h2>
-            <p class="s-01__card-foot">
-              <span class="s-01__card-price">$9</span>
-              <span class="s-01__card-stars">★★★★★</span>
-            </p>
-          </div>
-        </article>
+          <span class="s-01__roll"><span class="s-01__roll-track">
+            <span class="s-01__ev"><b>A new video went out</b><i>She filmed it. Not you.</i></span>
+            <span class="s-01__ev"><b>Two people saved it</b><i>Then four more.</i></span>
+            <span class="s-01__ev"><b>A shopper opened the store</b><i>You were reading.</i></span>
+            <span class="s-01__ev"><b>An order was delivered</b><i>You were asleep.</i></span>
+            <span class="s-01__ev"><b>A new video went out</b><i>She filmed it. Not you.</i></span>
+          </span></span>
+        </figcaption>
+      </figure>
 
-        <article class="s-01__card">
-          <div class="s-01__card-shot">
-            <img src="assets/img/products/legal-documents.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
-            <span class="s-01__card-live">LIVE</span>
-          </div>
-          <div class="s-01__card-body">
-            <p class="s-01__card-cat">YOUR RIGHTS</p>
-            <h2 class="s-01__card-name">Legal Protection Suite</h2>
-            <p class="s-01__card-foot">
-              <span class="s-01__card-price">$499</span>
-              <span class="s-01__card-stars">★★★★★</span>
-            </p>
-          </div>
-        </article>
-
-        <article class="s-01__card">
-          <div class="s-01__card-shot">
-            <img src="assets/img/products/medical-bill-audit.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
-            <span class="s-01__card-live">LIVE</span>
-          </div>
-          <div class="s-01__card-body">
-            <p class="s-01__card-cat">MONEY RESCUE</p>
-            <h2 class="s-01__card-name">Medical Bill Error Finder</h2>
-            <p class="s-01__card-foot">
-              <span class="s-01__card-price">$49</span>
-              <span class="s-01__card-stars">★★★★★</span>
-            </p>
-          </div>
-        </article>
-
-        <article class="s-01__card">
-          <div class="s-01__card-shot">
-            <img src="assets/img/products/meal-plan.jpg" alt="" width="640" height="400" loading="lazy" decoding="async">
-            <span class="s-01__card-live">LIVE</span>
-          </div>
-          <div class="s-01__card-body">
-            <p class="s-01__card-cat">FAMILY</p>
-            <h2 class="s-01__card-name">Picky Eater Planner</h2>
-            <p class="s-01__card-foot">
-              <span class="s-01__card-price">$12</span>
-              <span class="s-01__card-stars">★★★★★</span>
-            </p>
-          </div>
-        </article>
-
-      </div>
-
-      <!-- Счётчик под колодой. Набирается один раз при загрузке: это факт о
-           каталоге, а не обещание заработка. -->
-      <p class="s-01__stock" aria-hidden="true">
-        <span class="s-01__stock-value" id="s01-stock">0</span>
-        <span class="s-01__stock-label">products already in your store</span>
-      </p>
-
+      <!-- Смысл кадра словами — для тех, кто читает, а не смотрит.
+           Скринридеру уходит только эта строка: всё остальное внутри
+           кадра помечено aria-hidden, потому что это одна картинка. -->
+      <p class="visually-hidden">A Tajiro store owner at home in the evening while her shop keeps trading.</p>
     </div>
 
   </div>
