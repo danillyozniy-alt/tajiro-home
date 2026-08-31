@@ -1,11 +1,37 @@
 <section class="section s-01" id="hero">
 
-  <img class="s-01__girih" src="assets/img/decor/girih-pattern.svg" alt="" aria-hidden="true" width="760" height="880">
+  <!-- Вечер во всю ширину.
+
+       Схема «текст слева, картинка справа в рамке» держалась на этой
+       странице с самого начала и была главной претензией: она читается
+       шаблоном. Здесь её нет — кадр занимает экран целиком, от края до
+       края, а текст лежит на нём.
+
+       Внутри кадра идёт время: за окном темнеет, вслед за небом
+       холодеет комната, на этом фоне разгорается лампа. Полный вечер
+       за 24 секунды. Это не отделка, а сам довод: пока человек дома,
+       магазин работает — часы в углу идут, и под ними меняется то,
+       что за это время произошло без неё.
+
+       Секция остаётся единственной тёмной полосой наверху светлой
+       страницы: шапка над ней кремовая, статистика под ней кремовая.
+       Так делает Shopify и вся эта школа — тёмный кадр не спорит со
+       светлым сайтом, если он один и во всю ширину. -->
+
+  <div class="s-01__frame" aria-hidden="true">
+    <span class="s-01__ken"></span>
+    <span class="s-01__sky"></span>
+    <span class="s-01__cool"></span>
+    <span class="s-01__wash"></span>
+    <span class="s-01__lamp"></span>
+    <span class="s-01__shade"></span>
+    <span class="s-01__grain"></span>
+  </div>
 
   <div class="container s-01__inner">
 
     <div class="s-01__copy">
-      <p class="eyebrow">
+      <p class="eyebrow s-01__eyebrow">
         <span class="eyebrow__dot"></span>
         Free to Start &middot; Launch in 60 seconds
       </p>
@@ -25,59 +51,31 @@
       <p class="meta s-01__note">Free 14-day trial &nbsp;·&nbsp; No inventory &nbsp;·&nbsp; No experience needed</p>
     </div>
 
-    <!-- Вечер.
+    <!-- Часы и то, что успел магазин. Живут в правом верхнем углу, над
+         ночным небом в окне: там самое тёмное и самое пустое место
+         кадра. -->
+    <div class="s-01__log" aria-hidden="true">
+      <p class="s-01__log-cap">Tonight, while she was home</p>
 
-         Первый экран был неподвижной фотографией, и это была главная
-         претензия к нему. Кадр остался кадром, но внутри него теперь
-         идёт время: за окном темнеет, вслед за небом холодеет комната,
-         и на этом фоне разгорается лампа. Полный вечер за 24 секунды.
+      <span class="s-01__clock"><span class="s-01__clock-track">
+        <span>19:00</span><span>20:00</span><span>21:00</span><span>22:00</span>
+        <span>23:00</span><span>00:00</span><span>01:00</span><span>02:00</span><span>19:00</span>
+      </span></span>
 
-         Это не украшение, а сам довод страницы. Пока человек дома,
-         магазин работает: часы идут, и под ними меняется то, что за
-         это время произошло без него.
+      <span class="s-01__log-rule"></span>
 
-         Прежний заход прятал движение в полминуты хода кадра — на
-         такой скорости его нельзя увидеть, можно только измерить.
-         Отсюда все длительности здесь заметные.
-
-         Секция остаётся кремовой: тёмным был только стенд для показа
-         вариантов, а страница светлая, и герой не должен из неё
-         выпадать. Тень лежит только внутри кадра. -->
-    <div class="s-01__visual">
-      <figure class="s-01__shot">
-        <span class="s-01__ken" aria-hidden="true"></span>
-        <span class="s-01__sky" aria-hidden="true"></span>
-        <span class="s-01__cool" aria-hidden="true"></span>
-        <span class="s-01__wash" aria-hidden="true"></span>
-        <span class="s-01__lamp" aria-hidden="true"></span>
-        <span class="s-01__shade" aria-hidden="true"></span>
-        <span class="s-01__grain" aria-hidden="true"></span>
-
-        <figcaption class="s-01__log" aria-hidden="true">
-          <p class="s-01__log-cap">Tonight, while she was home</p>
-
-          <span class="s-01__clock"><span class="s-01__clock-track">
-            <span>19:00</span><span>20:00</span><span>21:00</span><span>22:00</span>
-            <span>23:00</span><span>00:00</span><span>01:00</span><span>02:00</span><span>19:00</span>
-          </span></span>
-
-          <span class="s-01__log-rule"></span>
-
-          <span class="s-01__roll"><span class="s-01__roll-track">
-            <span class="s-01__ev"><b>A new video went out</b><i>She filmed it. Not you.</i></span>
-            <span class="s-01__ev"><b>Two people saved it</b><i>Then four more.</i></span>
-            <span class="s-01__ev"><b>A shopper opened the store</b><i>You were reading.</i></span>
-            <span class="s-01__ev"><b>An order was delivered</b><i>You were asleep.</i></span>
-            <span class="s-01__ev"><b>A new video went out</b><i>She filmed it. Not you.</i></span>
-          </span></span>
-        </figcaption>
-      </figure>
-
-      <!-- Смысл кадра словами — для тех, кто читает, а не смотрит.
-           Скринридеру уходит только эта строка: всё остальное внутри
-           кадра помечено aria-hidden, потому что это одна картинка. -->
-      <p class="visually-hidden">A Tajiro store owner at home in the evening while her shop keeps trading.</p>
+      <span class="s-01__roll"><span class="s-01__roll-track">
+        <span class="s-01__ev"><b>A new video went out</b><i>She filmed it. Not you.</i></span>
+        <span class="s-01__ev"><b>Two people saved it</b><i>Then four more.</i></span>
+        <span class="s-01__ev"><b>A shopper opened the store</b><i>You were reading.</i></span>
+        <span class="s-01__ev"><b>An order was delivered</b><i>You were asleep.</i></span>
+        <span class="s-01__ev"><b>A new video went out</b><i>She filmed it. Not you.</i></span>
+      </span></span>
     </div>
+
+    <!-- Смысл кадра словами. Скринридеру уходит только эта строка:
+         всё остальное — одна картинка и помечено aria-hidden. -->
+    <p class="visually-hidden">A Tajiro store owner at home in the evening while her shop keeps trading.</p>
 
   </div>
 </section>
