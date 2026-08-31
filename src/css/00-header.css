@@ -144,7 +144,10 @@ html { scroll-padding-top: var(--nav-h); }
   z-index: 10;
   top: calc(100% + 8px);    /* 8px под нижней границей бара */
   left: 0;
-  overflow: hidden;         /* чтобы подвал наследовал нижние скругления */
+  /* overflow: hidden здесь стоял ради нижних скруглений подвала — и заодно
+     срезал мостик через зазор до шапки, из-за чего меню закрывалось на
+     полпути к нему. Скругления теперь заданы подвалу и блику напрямую,
+     а отсечки нет. */
   /* Граница прозрачна и работает распоркой: в её толщину видно нижний
      слой фона — градиентную кромку, обрезанную по border-box. Слои
      поверхности обрезаны по padding-box и внутрь границы не заходят. */
@@ -154,7 +157,7 @@ html { scroll-padding-top: var(--nav-h); }
   /* Материал общий со всеми плашками страницы, описан в 00-base.css.
      Здесь берётся «плавающая» глубина: панель висит над содержимым, а не
      лежит на нём. */
-  background-image: var(--glass-bg), var(--glass-edge);
+  background-image: var(--glass-bg-solid), var(--glass-edge);
   background-origin: padding-box, padding-box, border-box;
   background-clip: padding-box, padding-box, border-box;
   box-shadow: var(--glass-shadow-float);
@@ -215,6 +218,7 @@ html { scroll-padding-top: var(--nav-h); }
   right: 0;
   left: 0;
   height: 42%;
+  border-radius: var(--r-card) var(--r-card) 0 0;
   /* Под содержимое, а не поверх. Отрицательный z-index кладёт слой между
      фоном панели и её текстом: сверху блик выбеливал подписи колонок и
      первый пункт списка. */
@@ -231,14 +235,18 @@ html { scroll-padding-top: var(--nav-h); }
 .nav-panel--small { width: 388px; }
 
 /* Мостик через 8px зазор между баром и панелью — иначе курсор «выходит»
-   из пункта по дороге к панели и меню схлопывается. */
+   из пункта по дороге к панели и меню схлопывается.
+
+   По бокам с запасом: панель шире пункта, и к дальней её колонке курсор
+   идёт наискось, срезая угол мимо узкой полоски. Сверху перекрываем на
+   пиксель больше зазора, чтобы не оставалось щели на дробных масштабах. */
 .nav-panel::before {
   content: '';
   position: absolute;
-  top: -9px;
-  right: 0;
-  left: 0;
-  height: 9px;
+  top: -10px;
+  right: -24px;
+  left: -24px;
+  height: 11px;
 }
 
 
@@ -246,23 +254,23 @@ html { scroll-padding-top: var(--nav-h); }
   display: flex;
   align-items: flex-start;
   gap: 30px;
-  padding: 34px 38px;
+  padding: 26px 32px;
 }
 
-.nav-panel--small .nav-panel__body { padding: 28px 32px; }
+.nav-panel--small .nav-panel__body { padding: 22px 28px; }
 
 .nav-col {
   display: flex;
   flex: 0 0 376px;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .nav-col--trade { flex-basis: 330px; }
 
 /* Надзаголовок колонки + хайрлайн под ним */
 .nav-col__kicker {
-  padding-bottom: 14px;
+  padding-bottom: 11px;
   border-bottom: 1px solid var(--nav-line);
   font-size: 11px;
   letter-spacing: 2px;
@@ -271,21 +279,67 @@ html { scroll-padding-top: var(--nav-h); }
 .nav-col__list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  /* Пункт уже несёт свои отступы (padding ниже) — именно они и разводят
+     строки. Зазор поверх них дублировал ту же работу второй раз, отчего
+     список и выглядел раздутым: между соседними подписями набегало 34 px
+     пустоты при высоте самой подписи в 20. */
+  gap: 4px;
 }
 
 /* --- Пункт меню (общий для панелей и мобильного аккордеона) --------------- */
 .nav-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 11px 12px 12px;
+  gap: 2px;
+  padding: 8px 12px 9px;
   margin-inline: -12px;      /* подложка ховера шире текста, текст не съезжает */
   border-radius: var(--r-btn);
   transition: background-color 0.18s ease;
 }
 
+/* Строку делает строкой не линия под ней, а признак того, что отсюда
+   можно уйти. Разделители эту работу делали в лоб — резали полотно на
+   куски и читались решёткой; здесь вместо них у каждого пункта стрелка.
+
+   Она стоит всегда, а не только под курсором: если показывать её по
+   наведению, при беглом взгляде меню снова выглядит текстом. В покое она
+   бледная и не спорит с подписями, под курсором наливается и делает шаг
+   вправо — тем же приёмом, что стрелка в подвале панели. */
+.nav-item {
+  position: relative;
+  padding-right: 30px;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  /* Центр шеврона совпадает с центром строки заголовка: 8 px верхнего
+     отступа пункта плюс половина двадцатипиксельной строки. */
+  top: 14px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  border-top: 1.8px solid currentColor;
+  border-right: 1.8px solid currentColor;
+  transform: rotate(45deg);
+  /* Бронза, а не приглушённый серый. Серого на треть непрозрачности не было
+     видно вовсе, а именно эта стрелка и объясняет, что перед тобой меню, —
+     значит она обязана читаться до наведения, а не после. Бронза при этом
+     не спорит с чёрным заголовком: у них разный тон, а не разная сила. */
+  color: var(--c-gold);
+  opacity: 0.75;
+  transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
+}
+
+.nav-item:hover::after {
+  opacity: 1;
+  transform: rotate(45deg) translate(3px, -3px);
+}
+
 .nav-item:hover { background: var(--nav-hover); }
+
+.nav-item__title { transition: color 0.18s ease; }
+.nav-item:hover .nav-item__title { color: var(--c-gold); }
 
 .nav-item__title {
   font-size: 15px;
@@ -296,7 +350,7 @@ html { scroll-padding-top: var(--nav-h); }
 
 .nav-item__desc {
   font-size: 13px;
-  line-height: 20px;
+  line-height: 18px;
   color: var(--c-text-muted);
 }
 
@@ -310,6 +364,7 @@ html { scroll-padding-top: var(--nav-h); }
   /* Подвал темнее полотна на четверть тона и отделён волосяной линией:
      ступенька читается как грань, а не как приклеенная плашка. */
   border-top: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 0 0 var(--r-card) var(--r-card);
   background: #f4efe7;
 }
 
