@@ -25,14 +25,23 @@
       <p class="meta s-01__note">Free 14-day trial &nbsp;·&nbsp; No inventory &nbsp;·&nbsp; No experience needed</p>
     </div>
 
-    <!-- Арка снята: кадр живёт в скруглённом прямоугольнике с ореолом, как
-         фотоблок на экомзи (.hero-photo + .hero-photo-glow). -->
+    <!-- Портрет из песка.
+
+         Снимок пересобирается в поле точек, левый и нижний края осыпаются
+         и уходят в фон. Считает это js/01-hero-sand.js — прямо по пикселям
+         фотографии, второго файла под эффект не нужно.
+
+         Сама фотография остаётся в разметке и никуда не девается: пока
+         холст не готов — а если скрипт не доехал, то и вовсе всегда —
+         на экране обычный кадр. Класс is-sand ставит скрипт и только
+         после того, как первый кадр нарисован. -->
     <div class="s-01__visual">
       <div class="s-01__glow" aria-hidden="true"></div>
       <figure class="s-01__portrait">
-        <img src="assets/img/people/hero-owner.jpg"
-             alt="A Tajiro store owner at his desk"
-             width="500" height="620" fetchpriority="high" decoding="async">
+        <img class="s-01__shot" src="assets/img/people/hero-sand.jpg"
+             alt="A Tajiro store owner"
+             width="900" height="900" fetchpriority="high" decoding="async">
+        <canvas class="s-01__sand" aria-hidden="true"></canvas>
       </figure>
     </div>
 
