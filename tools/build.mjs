@@ -16,8 +16,6 @@
 
                 Tajiro-home.html             стили, скрипты, шрифты, картинки
                 Tajiro-home-full.html        то же плюс видео
-                Tajiro-free-store.html       страница «Start for Free»
-                Tajiro-free-store-full.html
 
               Полный тяжелее втрое, зато работает вообще без сети.
 
@@ -55,8 +53,7 @@ const SEND = path.join(ROOT, 'send');
    не правкой в четырёх местах. Отчёт, очистка старых цельных файлов и
    выбор стартовой страницы сервера строятся отсюда же. */
 const PAGES = [
-  { template: 'index.html',       out: 'index.html',       send: 'Tajiro-home.html' },
-  { template: 'free-store.html',  out: 'free-store.html',  send: 'Tajiro-free-store.html' }
+  { template: 'index.html',       out: 'index.html',       send: 'Tajiro-home.html' }
 ];
 
 const PORT = 4173;
@@ -279,7 +276,13 @@ function buildOnce() {
     const html = assemble(page.template);
     const linked = buildLinked(html, page.out);
     const single = buildSingle(html, false, page.send);
-    const full = buildSingle(html, true, page.send);
+
+    /* Полная версия имеет смысл только там, где есть видео: без него она
+       выходит байт в байт как обычная, и в папке появляется выбор, которого
+       на самом деле нет. */
+    const hasVideo = /assets\/video\//.test(html);
+    const full = hasVideo ? buildSingle(html, true, page.send) : null;
+    if (!hasVideo) fs.rmSync(path.join(SEND, page.send.replace(/\.html$/, '-full.html')), { force: true });
 
     /* Старые цельные файлы из dist убираем: пока они там лежат, в папке две
        пары одинаковых на вид html, и непонятно, какую брать. */
@@ -297,10 +300,12 @@ function buildOnce() {
       + (single.external.length
           ? '\n  ! ссылкой, не вшито: ' + single.external.join(', ')
           : '')
-      + '\n' + line(full)
-      + (full.external.length
-          ? '\n  ! ссылкой, не вшито: ' + full.external.join(', ')
-          : '\n    всё внутри — работает без сети')
+      + (full
+          ? '\n' + line(full)
+            + (full.external.length
+                ? '\n  ! ссылкой, не вшито: ' + full.external.join(', ')
+                : '\n    всё внутри — работает без сети')
+          : '')
     );
   }
 
