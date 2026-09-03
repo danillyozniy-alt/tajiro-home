@@ -15,6 +15,12 @@
   var deck = document.querySelector('.s-09__deck');
   if (!deck) return;
 
+  /* Тянуть можно за всю ширину секции, а не только за карточки. Колода
+     занимает лишь среднюю тысячу с небольшим пикселей, и по бокам от неё
+     оставалась мёртвая полоса: палец там ложится на фон, лента не едет, и
+     жест выглядит сломанным. Захват вешаем на секцию. */
+  var area = deck.closest('section') || deck;
+
   var track = deck.querySelector('.s-09__track');
   if (!track) return;
 
@@ -66,25 +72,88 @@
      как продолжение, — и молча переставляем ленту на ту же карточку внутри
      набора. Кадр совпадает сам с собой, шва не видно.
 
-     Ждём transitionend, а не таймер: событие приходит ровно тогда, когда
-     лента доехала, и на медленной машине перескок не случится раньше. */
+     Ждём, когда лента доедет, а не отмеряем таймером наугад: на медленной
+     машине перескок случился бы раньше времени, посреди хода.
+
+     Но ждать ТОЛЬКО события нельзя. Ход можно прервать — палец ложится на
+     ленту, пока она едет, и класс is-dragging снимает переход. Тогда
+     браузер шлёт transitioncancel, а transitionend не придёт никогда:
+     обработчик висит впустую, индекс остаётся за набором и с каждым шагом
+     растёт — 6, 7, 8, 9. На девятом карточек уже нет, и на месте ленты
+     остаётся пустота.
+
+     Поэтому ждём три вещи разом: доехало, прервано, вышло время. Что
+     наступит первым, то и запускает перескок, и ровно один раз.
+
+     Срок взят с большим запасом к ходу в 0.85 s. В обычной жизни он не
+     используется вовсе — событие приходит раньше, — а тонкий запас дал бы
+     ровно ту беду, от которой ушли: на медленной машине резерв сработал бы
+     первым и перескок случился бы посреди хода. */
+  var SETTLE = 1400;
+  var pending = null;
+
   function rewrap() {
     if (i >= BASE && i < BASE + COUNT) return;
+    if (pending) return;          /* уже ждём — второй раз не подписываемся */
 
-    var onEnd = function (e) {
-      if (e.propertyName !== 'transform') return;
-      track.removeEventListener('transitionend', onEnd);
+    var listen = function (e) {
+      /* Строго с САМОЙ ленты. transitionend всплывает, а ход по transform
+         есть и у карточек — то самое уменьшение соседей, и длительность у
+         него та же, 0.85 s. Без проверки цели перескок срабатывал по чужому
+         событию: какая карточка доехала первой, та его и запускала, лента к
+         этому моменту ещё шла — и подмена происходила на глазах. */
+      if (e.target !== track || e.propertyName !== 'transform') return;
+      jump();
+    };
+
+    var stopWaiting = function () {
+      if (!pending) return false;
+      clearTimeout(pending.timer);
+      track.removeEventListener('transitionend', listen);
+      track.removeEventListener('transitioncancel', listen);
+      pending = null;
+      return true;
+    };
+
+    var jump = function () {
+      if (!stopWaiting()) return;
+
+      /* Наезд снимаем ДО того, как погасим ходы.
+
+         is-jumping ставит transition: none, а это мгновенно доводит идущий
+         переход до конечного значения. Замерь после — и вместо середины
+         наезда всегда получишь 1.06, то есть ровно то, от чего уходим. */
+      var out = cards[i];
+      var shotFrom = out && out.querySelector('.s-09__shot');
+      var carry = shotFrom ? getComputedStyle(shotFrom).transform : null;
 
       track.classList.add('is-jumping');
+
+      /* Приходящая карточка принимает вид уходящей мгновенно — ходы на шве
+         погашены стилями. Наезд переносим накладкой: при автоходе он и так
+         совпал бы (13 с между шагами против 9 с наезда), но пальцем историю
+         листают когда угодно, и на уходящей он может стоять на середине. */
       i = BASE + ((((i - BASE) % COUNT) + COUNT) % COUNT);
+      var shotTo = cards[i] && cards[i].querySelector('.s-09__shot');
+      if (carry && shotTo) shotTo.style.transform = carry;
+
       paint();
       /* Читаем раскладку, чтобы сдвиг без хода применился до снятия класса —
          иначе браузер склеит оба изменения в один кадр. */
       void track.getBoundingClientRect().width;
       track.classList.remove('is-jumping');
+
+      /* Накладку снимаем СЛЕДУЮЩЕЙ задачей, а не тут же: иначе браузер
+         склеит её постановку и снятие в один кадр, и переноса не будет
+         вовсе. Отпущенный наезд доедет до 1.06 с того места, где стоял. */
+      if (shotTo) {
+        setTimeout(function () { shotTo.style.transform = ''; }, 0);
+      }
     };
 
-    track.addEventListener('transitionend', onEnd);
+    pending = { timer: setTimeout(jump, SETTLE) };
+    track.addEventListener('transitionend', listen);
+    track.addEventListener('transitioncancel', listen);
   }
 
   function go(dir) {
@@ -115,10 +184,17 @@
 
   function down(e) {
     if (e.button != null && e.button !== 0) return;
+
+    /* По вертикали ограничиваемся полосой колоды: заголовок секции остаётся
+       обычным текстом, его можно выделить, а не утащить вместе с лентой.
+       Запас в сорок пикселей — чтобы не искать край на ощупь. */
+    var r = deck.getBoundingClientRect();
+    if (e.clientY < r.top - 40 || e.clientY > r.bottom + 40) return;
+
     dragging = true;
     startX = e.clientX;
     dx = 0;
-    if (track.setPointerCapture) track.setPointerCapture(e.pointerId);
+    if (area.setPointerCapture) area.setPointerCapture(e.pointerId);
     track.classList.add('is-dragging');
     stop();                       /* пока тянут, автоход молчит */
   }
@@ -139,10 +215,18 @@
     start();
   }
 
-  track.addEventListener('pointerdown', down);
-  track.addEventListener('pointermove', move);
-  track.addEventListener('pointerup', up);
-  track.addEventListener('pointercancel', up);
+  /* Родное перетаскивание картинок и выделение текста заводит сам браузер,
+     и оно перебивает наш жест: палец тащит по карточке — уезжает не лента,
+     а портрет с полупрозрачным призраком под курсором. Гасим на подходе.
+
+     Синтетическими событиями это не проверить: dragstart браузер поднимает
+     только от настоящего ввода. */
+  area.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  area.addEventListener('pointerdown', down);
+  area.addEventListener('pointermove', move);
+  area.addEventListener('pointerup', up);
+  area.addEventListener('pointercancel', up);
 
   /* Ссылка внутри карточки не должна срабатывать после броска: палец
      проехал по ней, но нажатием это не было. */

@@ -5,185 +5,231 @@
 
 .s-14 {
   /* значения, которых нет в токенах 00-base */
-  --s14-bg:       #1a1714;                    /* тот же тёмный, что в секции 09 */
-  --s14-wordmark: #f7f3ec;
-  --s14-text:     rgba(245, 241, 232, 0.7);
-  --s14-text-hi:  #f7f3ec;                    /* hover ссылок */
-  --s14-divider:  rgba(212, 163, 115, 0.2);   /* --c-sand @ 20% */
-  --s14-chev:     rgba(245, 241, 232, 0.45);  /* шеврон аккордеона на мобиле */
+    --s14-bg: #1a1714;                    /* тот же тёмный, что в секции 09 */
+    --s14-wordmark: #f7f3ec;
+    --s14-text: rgba(245, 241, 232, 0.7);
+    --s14-text-hi: #f7f3ec;                    /* hover ссылок */
+    --s14-divider: rgba(212, 163, 115, 0.2);   /* --c-sand @ 20% */
+    --s14-chev: rgba(245, 241, 232, 0.45);  /* шеврон аккордеона на мобиле */
 
-  padding-block: 72px 56px;
-  background: var(--s14-bg);
-  color: var(--s14-text);
+    padding-block: 64px 40px;
+    background: var(--s14-bg);
+    color: var(--s14-text);
 }
 
 .s-14__inner {
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
 /* --- Верхняя часть: бренд + колонки --------------------------------------- */
 .s-14__top {
-  display: flex;
-  align-items: flex-start;
-  gap: 66px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 48px;
 }
 
 /* --- Бренд ---------------------------------------------------------------- */
 .s-14__brand {
-  display: flex;
-  flex: 0 0 320px;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 320px;
+    display: flex;
+  /* Расписано покомпонентно, а не сокращением: ниже 1280 меняется только
+     основа, и лестнице нужно одно и то же имя свойства на всех ступенях. */
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 460px;
 }
 
 .s-14__wordmark {
-  font-family: var(--f-display);
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 32px;
-  letter-spacing: -0.6px;
-  color: var(--s14-wordmark);
+  /* Точки знака позиционируются от него, поэтому он система координат.
+     Междустрочие ровно в кегль — как в шапке: смещения точек заданы в em
+     от кегля, и лишняя полустрока сверху увела бы их на пиксел вверх. */
+    position: relative;
+    font-family: var(--f-display);
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: -0.6px;
+    color: var(--s14-wordmark);
 }
 
 .s-14__about {
-  font-size: 14px;
-  line-height: 23px;
+    font-size: 14px;
+    line-height: 23px;
 }
 
 .s-14__address {
-  font-size: 13px;
-  font-style: normal;
-  line-height: 20px;
+    font-size: 13px;
+    font-style: normal;
+    line-height: 20px;
 }
 
 /* --- Колонки ссылок ------------------------------------------------------- */
 .s-14__nav {
-  display: flex;
-  flex: 1 1 auto;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 40px;
+    display: block;
+  /* Значения по умолчанию выписаны явно: ниже 1140 колонка становится
+     многоколоночным потоком, ниже 600 — простым блоком, и снять это выше
+     порогов можно только тем, что здесь написано. */
+    width: 100%;
+    margin-bottom: 0;
+    columns: auto;
+    column-gap: 32px;
+    flex: 1 1 auto;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 28px;
+}
+
+/* Колонка. Своих значений на широком экране у неё нет — только те, что
+   гасят телефонные: разделительная линия и поля многоколоночного потока. */
+.s-14__col {
+    margin-bottom: 0;
+    break-inside: avoid;
+    border-bottom: 1px solid var(--s14-divider);
 }
 
 /* Заголовок колонки — кнопка: ниже 600px тот же узел работает строкой
    аккордеона. На десктопе раскрывать нечего, поэтому кнопка инертна
    (клики и таб-порядок снимает js/14-footer.js). */
-.s-14__col-head { font: inherit; }
+.s-14__col-head {   font: inherit; }
 
 .s-14__col-title {
-  display: block;
-  width: 100%;
-  margin-bottom: 28px;   /* в макете это gap 12 + пустой спейсер 4 + gap 12 */
-  font-family: var(--f-body);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 14px;
-  letter-spacing: 0.9px;
-  text-align: left;
-  text-transform: uppercase;   /* подписи в разметке живут обычным регистром */
-  color: var(--c-sand);
-  cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 18px;
+    transition: color 0.18s ease;
+    width: 100%;
+    margin-bottom: 0;   /* в макете это gap 12 + пустой спейсер 4 + gap 12 */
+    font-family: var(--f-display);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: normal;
+    text-align: left;
+    text-transform: none;   /* подписи в разметке живут обычным регистром */
+    color: var(--s14-wordmark);
+    cursor: default;
 }
 
 /* Шеврон нужен только свёрнутым строкам */
-.s-14__chev { display: none; }
+.s-14__chev {   display: none; }
+
+/* Шеврон показывается только в режиме аккордеона, а он весь держится
+   на классе — значит и здесь гейтом служит класс, а не ширина. */
+.s-14__col.is-collapsible .s-14__chev {
+    display: block;
+    flex: none;
+    width: 10px;
+    height: 6px;
+    color: var(--s14-chev);
+    transition: color 0.18s ease, transform 0.18s ease;
+}
+
+/* --- Аккордеон: гейт — класс, а не ширина --------------------------------
+   .is-collapsible вешает и снимает скрипт по порогу max-width: 600px
+   (14-footer.js). Пока класса нет, эти правила не совпадают ни с чем. */
+.s-14__col.is-collapsible .s-14__col-title {   cursor: pointer; }
+/* Раскрытая строка золотится, шеврон переворачивается — как в шапке */
+.s-14__col.is-open .s-14__col-title {   color: var(--c-sand); }
+
+.s-14__col.is-open .s-14__chev {
+    color: var(--c-sand);
+    transform: rotate(180deg);
+}
+/* 0fr → 1fr: высота едет сама, без замера содержимого скриптом */
+.s-14__col.is-collapsible .s-14__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.22s ease;
+}
+
+.s-14__col.is-collapsible.is-open .s-14__panel {   grid-template-rows: 1fr; }
+/* Клип схлопывается до нуля, отступы живут внутри него: на самой панели
+   padding не дал бы строке сложиться полностью. */
+.s-14__col.is-collapsible .s-14__clip {
+    overflow: hidden;
+    min-height: 0;
+    visibility: hidden;          /* убирает ссылки из таб-порядка свёрнутыми */
+}
+
+.s-14__col.is-collapsible.is-open .s-14__clip {   visibility: visible; }
 
 .s-14__links {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Селектор двойной намеренно, как и в телефонном правиле: сброс
+   ul[class] { padding: 0 } в 00-base.css имеет специфичность (0,1,1) и
+   молча съел бы поле, заданное одиночным классом. */
+.s-14 .s-14__links {
+    padding-top: 2px;
+    padding-bottom: 22px;
 }
 
 /* flex-строка вместо блока — убирает лишние 4px под inline-baseline */
-.s-14__links > li { display: flex; }
+.s-14__links > li {   display: flex; }
 
 .s-14__link {
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--s14-text);
-  transition: color 0.18s ease;
+    padding-block: 10px;
+    margin-block: -10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--s14-text);
+    transition: color 0.18s ease;
 }
 
 .s-14__link:hover,
 .s-14__link:focus-visible {
-  color: var(--s14-text-hi);
+    color: var(--s14-text-hi);
 }
 
 /* --- Разделитель ---------------------------------------------------------- */
 .s-14__divider {
-  flex: none;            /* не даём флексу сплющить полоску в 0 */
-  height: 1px;
-  margin: 0;
-  border: 0;
-  background: var(--s14-divider);
+    flex: none;            /* не даём флексу сплющить полоску в 0 */
+    height: 1px;
+    margin: 0;
+    border: 0;
+    background: var(--s14-divider);
 }
 
 /* --- Нижняя строка -------------------------------------------------------- */
 .s-14__bottom {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
 }
 
 .s-14__copyright {
-  font-size: 13px;
-  line-height: 18px;
+    font-size: 13px;
+    line-height: 18px;
 }
 
 .s-14__badges {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
 }
 
 /* --- Адаптив -------------------------------------------------------------- */
-@media (max-width: 1280px) {
-  .s-14__top { gap: 48px; }
-  .s-14__nav { gap: 28px; }
-  .s-14__brand { flex-basis: 288px; }
-}
+
 
 /* ниже ~1140px пять колонок в строку уже начинают переносить подписи */
-@media (max-width: 1140px) {
-  .s-14__top {
-    flex-direction: column;
-    gap: 56px;
-  }
 
-  .s-14__brand {
-    flex: none;
-    max-width: 460px;
-  }
-
-  /* многоколоночный поток вместо grid — колонки разной высоты
-     упаковываются плотно, без «дыр» под короткими списками */
-  .s-14__nav {
-    display: block;
-    width: 100%;
-    margin-bottom: -40px;
-    columns: 3;
-    column-gap: 32px;
-  }
-
-  .s-14__col {
-    margin-bottom: 40px;
-    break-inside: avoid;
-  }
-}
-
-@media (max-width: 900px) {
-  .s-14 { padding-block: 88px 48px; }
-  .s-14__inner { gap: 40px; }
-  .s-14__top { gap: 48px; }
-}
 
 /* --- Мобильный аккордеон ---------------------------------------------------
    Figma: HoPojxNiFElmltha1NOl3N, node 208:7 «Footer / mobile».
@@ -203,102 +249,109 @@
    Свёрнутое состояние навешивает скрипт (.is-collapsible). Без него
    аккордеон просто остаётся раскрытым — футер длинный, но целый.
    -------------------------------------------------------------------------- */
-@media (max-width: 600px) {
-  .s-14 { padding-block: 64px 40px; }
 
+/* --- Адаптив: снизу вверх ---------------------------------------------------
+   Всё выше — телефонные значения. Здесь они дорастают до широкого экрана.
+   Блоки идут строго по возрастанию порога: правила равной силы, побеждает
+   последнее подошедшее. Пороги смещены на пиксел (601 вместо 600): при
+   max-width граница входила в узкий диапазон, при min-width должна войти
+   в широкий. -------------------------------------------------------------- */
+
+@media (min-width: 601px) {
+  .s-14 {
+    padding-block: 88px 48px;
+  }
   .s-14__nav {
-    display: block;
-    margin-bottom: 0;
-    columns: auto;
+    margin-bottom: -40px;
+    columns: 3;
   }
-
-  /* margin-bottom снимаем: он приезжает из многоколоночного блока 1140px,
-     а между рядами аккордеона разделяет линия, а не отступ. */
   .s-14__col {
-    margin-bottom: 0;
-    border-bottom: 1px solid var(--s14-divider);
+    margin-bottom: 40px;
+    border-bottom: none;
   }
-
   .s-14__col-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 0;
-    padding-block: 18px;         /* 18 + 20 + 18 = строка 56px, как на доске */
-    font-family: var(--f-display);
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: normal;
-    text-transform: none;
-    color: var(--s14-wordmark);
-    transition: color 0.18s ease;
-  }
-
-  .s-14__col.is-collapsible .s-14__col-title { cursor: pointer; }
-
-  .s-14__chev {
     display: block;
-    flex: none;
-    width: 10px;
-    height: 6px;
-    color: var(--s14-chev);
-    transition: color 0.18s ease, transform 0.18s ease;
-  }
-
-  /* Раскрытая строка золотится, шеврон переворачивается — как в шапке */
-  .s-14__col.is-open .s-14__col-title { color: var(--c-sand); }
-
-  .s-14__col.is-open .s-14__chev {
+    align-items: normal;
+    justify-content: normal;
+    gap: normal;
+    padding-block: 0;
+    transition: none;
+    margin-bottom: 28px;
+    /* в макете это gap 12 + пустой спейсер 4 + gap 12 */
+    font-family: var(--f-body);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    /* подписи в разметке живут обычным регистром */
     color: var(--c-sand);
-    transform: rotate(180deg);
   }
-
-  /* 0fr → 1fr: высота едет сама, без замера содержимого скриптом */
-  .s-14__col.is-collapsible .s-14__panel {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.22s ease;
-  }
-
-  .s-14__col.is-collapsible.is-open .s-14__panel { grid-template-rows: 1fr; }
-
-  /* Клип схлопывается до нуля, отступы живут внутри него: на самой панели
-     padding не дал бы строке сложиться полностью. */
-  .s-14__col.is-collapsible .s-14__clip {
-    overflow: hidden;
-    min-height: 0;
-    visibility: hidden;          /* убирает ссылки из таб-порядка свёрнутыми */
-  }
-
-  .s-14__col.is-collapsible.is-open .s-14__clip { visibility: visible; }
-
-  /* Селектор двойной намеренно: сброс `ul[class] { padding: 0 }` в
-     00-base.css имеет специфичность (0,1,1) и молча съедает padding,
-     заданный одиночным классом. */
   .s-14 .s-14__links {
-    padding-top: 2px;
-    padding-bottom: 22px;
+    padding-top: 0;
+    padding-bottom: 0;
   }
-
-  /* Ссылка ростом со строку текста — двадцать пикселей, в которые пальцем
-     не попасть. Растим зону нажатия отступами и тут же убираем их полем:
-     цель становится сорокапиксельной, раскладка не двигается. */
   .s-14__link {
-    padding-block: 10px;
-    margin-block: -10px;
+    padding-block: 0;
+    margin-block: 0;
   }
-
   .s-14__bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 18px;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px 24px;
   }
-
   .s-14__badges {
-    flex-wrap: wrap;
-    gap: 10px 18px;
+    flex-wrap: nowrap;
+    gap: 20px;
   }
 }
 
+@media (min-width: 901px) {
+  .s-14 {
+    /* шеврон аккордеона на мобиле */
+    padding-block: 72px 56px;
+  }
+  .s-14__inner {
+    gap: 48px;
+  }
+  .s-14__top {
+    gap: 56px;
+  }
+}
+
+@media (min-width: 1141px) {
+  .s-14__top {
+    flex-direction: row;
+    gap: 48px;
+  }
+  .s-14__brand {
+    flex-basis: 288px;
+    max-width: 320px;
+  }
+  .s-14__nav {
+    display: flex;
+    /* Значения по умолчанию выписаны явно: ниже 1140 колонка становится
+    многоколоночным потоком, ниже 600 — простым блоком, и снять это выше
+    порогов можно только тем, что здесь написано. */
+    width: auto;
+    margin-bottom: 0;
+    columns: auto;
+    column-gap: normal;
+  }
+  .s-14__col {
+    margin-bottom: 0;
+    break-inside: auto;
+  }
+}
+
+@media (min-width: 1281px) {
+  .s-14__top {
+    gap: 66px;
+  }
+  .s-14__brand {
+    flex-basis: 320px;
+  }
+  .s-14__nav {
+    gap: 40px;
+  }
+}

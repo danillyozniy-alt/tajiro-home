@@ -1,6 +1,53 @@
 <section class="section s-11" id="personal-manager">
   <div class="container s-11__inner">
 
+    <!-- Блок менеджера стоит ПЕРВЫМ, до заголовка: сначала человек, потом
+         обещание. Раньше он был в конце, и секция открывалась утверждением
+         «вы не одни», а того, кто именно не оставит одного, показывали
+         последним.
+
+         Говорит здесь сам менеджер, а не клиент, поэтому и подпись его. -->
+    <figure class="s-11__quote reveal">
+      <div class="s-11__manager-card">
+        <!-- Менеджер машет. Две версии одного кадра, и вторая не
+             перестраховка: остановить зациклённое видео из CSS нельзя, а
+             при prefers-reduced-motion оно обязано остановиться. Поэтому
+             при запрете движения показывается снимок, а видео убирается.
+
+             muted обязателен вместе с autoplay — без него браузер
+             воспроизведение не начнёт. playsinline держит ролик в вёрстке
+             на айфоне, иначе он раскроется на весь экран. Постером идёт тот
+             же снимок: пока грузится первый кадр, на месте видео стоит он,
+             а не пустой прямоугольник. -->
+        <video class="s-11__manager s-11__manager--motion"
+               src="assets/video/manager-wave.mp4"
+               poster="assets/img/people/manager-wave.webp"
+               width="1280" height="732"
+               autoplay muted loop playsinline preload="metadata"
+               aria-label="Faisal, a Tajiro Growth Manager, waving hello from his desk"></video>
+
+        <img class="s-11__manager s-11__manager--still" src="assets/img/people/manager-wave.webp"
+             alt="Faisal, a Tajiro Growth Manager, waving hello from his desk"
+             width="1280" height="731" loading="lazy" decoding="async">
+
+        <!-- Имени в плашке нет намеренно: она про то, что менеджер на связи
+             вообще, а не про конкретного человека. Имя стоит под цитатой. -->
+        <p class="s-11__online">
+          <span class="s-11__online-dot" aria-hidden="true"></span>
+          Your Growth Manager is online
+        </p>
+      </div>
+
+      <div class="s-11__quote-body">
+        <blockquote class="s-11__quote-text">
+          <p>&ldquo;When someone joins, I call them on day one and say &mdash; don't worry, we'll figure this out together. I mean it. Watching my store owners grow over the months is the best part of my job.&rdquo;</p>
+        </blockquote>
+        <figcaption class="s-11__quote-author">
+          <cite>Faisal</cite>&nbsp; · &nbsp;Growth Manager
+        </figcaption>
+      </div>
+    </figure>
+
     <header class="s-11__head reveal">
       <p class="kicker s-11__kicker">
         <span class="rule s-11__kicker-rule" aria-hidden="true"></span>
@@ -47,36 +94,6 @@
         <p class="s-11__card-text">When you're ready to go bigger - more products, higher ad spend, new markets - your manager helps you scale without the growing pains.</p>
       </li>
     </ul>
-
-    <ul class="s-11__channels">
-      <li class="s-11__channel">Phone calls</li>
-      <li class="s-11__channel">Email</li>
-      <li class="s-11__channel">Zoom</li>
-      <li class="s-11__channel">WhatsApp</li>
-    </ul>
-
-    <figure class="s-11__quote">
-      <!-- Фото подписано: на снимке менеджер Faisal, а цитата принадлежит
-           клиентке Huda K. Без подписи снимок читался как её портрет. -->
-      <div class="s-11__manager-card">
-        <img class="s-11__manager" src="assets/img/people/manager-faisal.webp"
-             alt="Faisal, a Tajiro Growth Manager, at his desk"
-             width="440" height="330" loading="lazy" decoding="async">
-        <p class="s-11__manager-label">
-          <span class="s-11__manager-name">Faisal</span>
-          <span class="s-11__manager-role">Growth Manager</span>
-        </p>
-      </div>
-
-      <div class="s-11__quote-body">
-        <blockquote class="s-11__quote-text">
-          <p>“I was scared to start. My manager Faisal called me the first day and said – don't worry, we're going to figure this out together. And he meant it. 6 months later, I'm not looking back at my old job.”</p>
-        </blockquote>
-        <figcaption class="s-11__quote-author">
-          <cite>Huda K.</cite>&nbsp; · &nbsp;Abu Dhabi 🇦🇪
-        </figcaption>
-      </div>
-    </figure>
 
   </div>
 </section>

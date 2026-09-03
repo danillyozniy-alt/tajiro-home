@@ -6,176 +6,176 @@
    ========================================================================== */
 
 .s-10 {
-  overflow: hidden;   /* кольца орбит шире сцены — режем по краю секции */
+    overflow: hidden;   /* кольца орбит шире сцены — режем по краю секции */
   /* Подписи внутри калькулятора — в токенах базы такого оттенка нет */
-  --s10-text-soft: #6e675c;
-  --s10-tint:      rgba(212, 163, 115, 0.14);
-  --s10-tint-line: rgba(212, 163, 115, 0.40);
-  --s10-tint-rail: rgba(212, 163, 115, 0.20);
+    --s10-text-soft: #6e675c;
+    --s10-tint: rgba(212, 163, 115, 0.14);
+    --s10-tint-line: rgba(212, 163, 115, 0.40);
+    --s10-tint-rail: rgba(212, 163, 115, 0.20);
 
-  padding-block: 120px;
-  background: var(--c-bg-plain);
+    padding-block: 56px;
+    background: var(--c-bg-plain);
 }
 
 .s-10__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
 }
 
 /* --- Шапка секции --------------------------------------------------------- */
 .s-10__head {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding-bottom: 8px;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 8px;
+    text-align: center;
 }
 
 .s-10__kicker {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  line-height: 18px;
-  letter-spacing: 1.3px;
-  color: var(--c-green-text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 1.3px;
+    color: var(--c-green-text);
 }
 
 .s-10__kicker-rule {
-  flex: none;
-  width: 24px;
-  border-radius: 2px;
+    flex: none;
+    width: 24px;
+    border-radius: 2px;
 }
 
 .s-10__title {
-  font-size: 64px;
-  line-height: 70px;
-  letter-spacing: -2px;
-  color: var(--c-ink-surface-2);
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: -0.6px;
+    color: var(--c-ink-surface-2);
 }
 
 .s-10__lead {
-  max-width: 640px;
-  color: var(--s10-text-soft);
+    max-width: 640px;
+    color: var(--s10-text-soft);
 }
 
 /* --- Карточка калькулятора ------------------------------------------------ */
 .s-10__calc {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  width: 100%;
-  max-width: 720px;
-  padding: 40px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 720px;
+    padding: 24px 18px;
   /* Граница прозрачна и работает распоркой: в её толщину видно нижний
      слой фона — градиентную кромку, обрезанную по border-box. Слои
      поверхности обрезаны по padding-box и внутрь границы не заходят. */
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
 
   /* Ровно один пиксель, а не полтора: дробную границу браузер округляет до
      целого, и заявленные 1.5 всё равно превращались в 1. Лучше задать то,
      что действительно нарисуется. */
-  border: 1px solid transparent;
-  border-radius: 24px;
-  background-image: var(--glass-bg), var(--glass-edge);
-  background-origin: padding-box, padding-box, border-box;
-  background-clip: padding-box, padding-box, border-box;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    background-image: var(--glass-bg), var(--glass-edge);
+    background-origin: padding-box, padding-box, border-box;
+    background-clip: padding-box, padding-box, border-box;
 
   /* Фон секции стал почти белым, и одной светлой рамки карточке мало —
      она переставала читаться отдельной плашкой. Мягкая тень поднимает её
      над фоном, не добавляя ни линий, ни цвета. */
-  box-shadow: var(--glass-shadow);
+    box-shadow: var(--glass-shadow);
 }
 
 .s-10__calc-head {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .s-10__calc-title {
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 26px;
-  letter-spacing: -0.2px;
-  color: var(--c-ink-surface-2);
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: -0.2px;
+    color: var(--c-ink-surface-2);
 }
 
 .s-10__calc-sub {
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--s10-text-soft);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--s10-text-soft);
 }
 
 /* --- Поле со слайдером ---------------------------------------------------- */
 .s-10__field {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .s-10__field-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .s-10__field-label {
-  flex: 1 1 auto;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 18px;
-  color: var(--s10-text-soft);
-  cursor: pointer;
+    flex: 1 1 auto;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+    color: var(--s10-text-soft);
+    cursor: pointer;
 }
 
 .s-10__field-value {
-  flex: none;
-  font-family: var(--f-display);
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
-  font-variant-numeric: tabular-nums;
+    flex: none;
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    font-variant-numeric: tabular-nums;
   /* Чип прижат к правому краю строки — эмфаза обязана расти от него,
      иначе цифра на всплеске уползает вправо от собственного места. */
-  transform-origin: right center;
-  color: var(--c-green-text);
+    transform-origin: right center;
+    color: var(--c-green-text);
 }
 
 /* Дорожка: подложка (::before) + золотая заливка + прозрачный нативный input */
 .s-10__track {
-  position: relative;
+    position: relative;
   /* Высота — это зона захвата, а не толщина дорожки: сама дорожка рисуется
      псевдоэлементом в 8 px и центрируется внутри. Двадцати пикселей мало,
      мимо кружка промахиваешься; двадцать восемь дают палец. */
-  height: 28px;
+    height: 28px;
 }
 
 .s-10__track::before {
-  content: "";
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline: 0;
-  height: 8px;
-  border-radius: var(--r-pill);
-  background: var(--s10-tint-rail);
-  transform: translateY(-50%);
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline: 0;
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: var(--s10-tint-rail);
+    transform: translateY(-50%);
 }
 
 .s-10__track-fill {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-start: 0;
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
   /* центр бегунка ходит от 10px до (100% − 10px) — заливка идёт ровно под него */
-  width: calc(10px + var(--s10-p, 0.2632) * (100% - 20px));
-  height: 8px;
-  border-radius: var(--r-pill);
-  background: var(--c-green-bright);
-  transform: translateY(-50%);
+    width: calc(10px + var(--s10-p, 0.2632) * (100% - 20px));
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: var(--c-green-bright);
+    transform: translateY(-50%);
 }
 
 /* Ореол у бегунка — само приглашение к захвату. Позиция считается от того
@@ -185,132 +185,132 @@
    управление. Анимируются только transform и opacity — «left» пересчитывает
    не анимация, а тот же render(), что двигает бегунок. */
 .s-10__track::after {
-  content: "";
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-start: calc(10px + var(--s10-p, 0.2632) * (100% - 20px));
-  width: 20px;   /* = внешний диаметр бегунка: кольцо стартует ровно с его канта */
-  height: 20px;
-  margin-block-start: -10px;
-  margin-inline-start: -10px;
-  border: 1.5px solid var(--c-green-bright);
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0;
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: calc(10px + var(--s10-p, 0.2632) * (100% - 20px));
+    width: 20px;   /* = внешний диаметр бегунка: кольцо стартует ровно с его канта */
+    height: 20px;
+    margin-block-start: -10px;
+    margin-inline-start: -10px;
+    border: 1.5px solid var(--c-green-bright);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
 }
 
 .s-10__calc.is-demo .s-10__track::after {
-  animation: s10-halo 2s linear infinite;   /* смягчение — внутри кейфреймов */
+    animation: s10-halo 2s linear infinite;   /* смягчение — внутри кейфреймов */
 }
 
 .s-10__slider {
-  position: relative;
-  width: 100%;
-  height: 28px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
+    position: relative;
+    width: 100%;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .s-10__slider::-webkit-slider-runnable-track {
-  height: 28px;
-  background: transparent;
+    height: 28px;
+    background: transparent;
 }
 
 .s-10__slider::-moz-range-track {
-  height: 28px;
-  background: transparent;
+    height: 28px;
+    background: transparent;
 }
 
 .s-10__slider::-webkit-slider-thumb {
-  width: 20px;
-  height: 20px;
-  margin-block-start: 4px;   /* (28 − 20) / 2: Chrome кладёт бегунок по верху дорожки */
-  border: 0;
-  background: url("../assets/img/ui/slider-thumb.svg") center / 20px 20px no-repeat;
-  transition: transform 0.16s ease;
-  -webkit-appearance: none;
-  appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-block-start: 4px;   /* (28 − 20) / 2: Chrome кладёт бегунок по верху дорожки */
+    border: 0;
+    background: url("../assets/img/ui/slider-thumb.svg") center / 20px 20px no-repeat;
+    transition: transform 0.16s ease;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .s-10__slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border: 0;
-  background: url("../assets/img/ui/slider-thumb.svg") center / 20px 20px no-repeat;
-  transition: transform 0.16s ease;
+    width: 20px;
+    height: 20px;
+    border: 0;
+    background: url("../assets/img/ui/slider-thumb.svg") center / 20px 20px no-repeat;
+    transition: transform 0.16s ease;
 }
 
 .s-10__slider:hover::-webkit-slider-thumb,
-.s-10__slider:focus-visible::-webkit-slider-thumb { transform: scale(1.12); }
+.s-10__slider:focus-visible::-webkit-slider-thumb {   transform: scale(1.12); }
 
 .s-10__slider:hover::-moz-range-thumb,
-.s-10__slider:focus-visible::-moz-range-thumb { transform: scale(1.12); }
+.s-10__slider:focus-visible::-moz-range-thumb {   transform: scale(1.12); }
 
 /* Пока «рука» ведёт бегунок, он выглядит захваченным — тем же масштабом и
    через тот же готовый transition, что и при живом hover. Отдельными
    правилами: один невалидный вендорный селектор убил бы всю группу. */
-.s-10__calc.is-drag .s-10__slider::-webkit-slider-thumb { transform: scale(1.12); }
-.s-10__calc.is-drag .s-10__slider::-moz-range-thumb { transform: scale(1.12); }
+.s-10__calc.is-drag .s-10__slider::-webkit-slider-thumb {   transform: scale(1.12); }
+.s-10__calc.is-drag .s-10__slider::-moz-range-thumb {   transform: scale(1.12); }
 
-.s-10__slider:active { cursor: grabbing; }
+.s-10__slider:active {   cursor: grabbing; }
 
 /* --- Результаты ----------------------------------------------------------- */
 .s-10__results {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .s-10__stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
 }
 
 .s-10__stat {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 18px 20px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .s-10__stat-label {
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 14px;
-  letter-spacing: 0.6px;
-  color: var(--s10-text-soft);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0.6px;
+    color: var(--s10-text-soft);
 }
 
 .s-10__stat-value {
-  font-family: var(--f-display);
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 34px;
-  letter-spacing: -0.6px;
-  font-variant-numeric: tabular-nums;
-  transform-origin: left center;   /* цифры выключены влево — растут оттуда же */
-  color: var(--c-ink-surface-2);
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 28px;
+    letter-spacing: -0.4px;
+    font-variant-numeric: tabular-nums;
+    transform-origin: left center;   /* цифры выключены влево — растут оттуда же */
+    color: var(--c-ink-surface-2);
 }
 
 .s-10__total {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 26px 28px;
-  border: 1px solid var(--s10-tint-line);
-  border-radius: 16px;
-  background: var(--s10-tint);
-  text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 20px 16px;
+    border: 1px solid var(--s10-tint-line);
+    border-radius: 16px;
+    background: var(--s10-tint);
+    text-align: center;
 }
 
 /* Кольцо-эмфаза на приезде. Это ТОЛЬКО рамка на прозрачном фоне: подложка
@@ -318,37 +318,37 @@
    суммы остаётся тем же, что в покое. Радиус 17 = 16 карточки + 1 вылет
    inset, иначе на скруглениях кольцо срезало бы угол. */
 .s-10__total::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border: 1px solid var(--c-line-green);
-  border-radius: 17px;
-  pointer-events: none;
-  opacity: 0;
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border: 1px solid var(--c-line-green);
+    border-radius: 17px;
+    pointer-events: none;
+    opacity: 0;
 }
 
 .s-10__total-label {
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 16px;
-  letter-spacing: 0.8px;
-  color: var(--c-text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0.6px;
+    color: var(--c-text-muted);
 }
 
 .s-10__total-value {
-  font-family: var(--f-display);
-  font-weight: 600;
-  font-size: 48px;
-  line-height: 54px;
-  letter-spacing: -1px;
-  font-variant-numeric: tabular-nums;
-  color: var(--c-text);
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.6px;
+    font-variant-numeric: tabular-nums;
+    color: var(--c-text);
 }
 
 .s-10__total-note {
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--s10-text-soft);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--s10-text-soft);
 }
 
 /* --- Дисклеймер ----------------------------------------------------------- */
@@ -356,11 +356,11 @@
    до 3.34:1 на 12px (AA требует 4.5:1). Приглушённость держит размер, а не
    прозрачность: 12px против 20px лида — иерархия и так однозначная. 4.94:1. */
 .s-10__note {
-  max-width: 560px;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-  color: var(--s10-text-soft);
+    max-width: 560px;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    color: var(--s10-text-soft);
 }
 
 /* ==========================================================================
@@ -420,17 +420,17 @@
 .s-10__calc.is-settled .s-10__stat-value,
 .s-10__calc.is-settled .s-10__total-value,
 .s-10__calc.is-settled .s-10__total::after {
-  animation-duration: 900ms;
-  animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
-  animation-iteration-count: 1;
+    animation-duration: 900ms;
+    animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
+    animation-iteration-count: 1;
 }
 
-.s-10__calc.is-settled .s-10__field-value { animation-name: s10-pop-orders; }
+.s-10__calc.is-settled .s-10__field-value {   animation-name: s10-pop-orders; }
 /* nth-child здесь только выбирает роль: сам стаггер живёт в кейфреймах */
-.s-10__calc.is-settled .s-10__stat:nth-child(1) .s-10__stat-value { animation-name: s10-pop-sales; }
-.s-10__calc.is-settled .s-10__stat:nth-child(2) .s-10__stat-value { animation-name: s10-pop-cut; }
-.s-10__calc.is-settled .s-10__total-value { animation-name: s10-pop-total; }
-.s-10__calc.is-settled .s-10__total::after { animation-name: s10-ring; }
+.s-10__calc.is-settled .s-10__stat:nth-child(1) .s-10__stat-value {   animation-name: s10-pop-sales; }
+.s-10__calc.is-settled .s-10__stat:nth-child(2) .s-10__stat-value {   animation-name: s10-pop-cut; }
+.s-10__calc.is-settled .s-10__total-value {   animation-name: s10-pop-total; }
+.s-10__calc.is-settled .s-10__total::after {   animation-name: s10-ring; }
 
 @keyframes s10-pop-orders {
   0%        { transform: scale(1);
@@ -475,32 +475,7 @@
 }
 
 /* --- Адаптив -------------------------------------------------------------- */
-@media (max-width: 1280px) {
-  .s-10 { padding-block: 96px; }
-  .s-10__title { font-size: 56px; line-height: 62px; letter-spacing: -1.6px; }
-}
 
-@media (max-width: 900px) {
-  .s-10 { padding-block: 72px; }
-  .s-10__inner { gap: 44px; }
-  .s-10__title { font-size: 40px; line-height: 46px; letter-spacing: -1px; }
-  .s-10__calc { padding: 32px 28px; }
-  .s-10__stat-value { font-size: 26px; line-height: 32px; }
-  .s-10__total-value { font-size: 38px; line-height: 44px; }
-}
-
-@media (max-width: 600px) {
-  .s-10 { padding-block: 56px; }
-  .s-10__inner { gap: 36px; }
-  .s-10__title { font-size: 30px; line-height: 36px; letter-spacing: -0.6px; }
-  .s-10__calc { gap: 20px; padding: 24px 18px; border-radius: 18px; }
-  .s-10__stats { gap: 10px; }
-  .s-10__stat { padding: 14px 16px; }
-  .s-10__stat-value { font-size: 22px; line-height: 28px; letter-spacing: -0.4px; }
-  .s-10__total { padding: 20px 16px; }
-  .s-10__total-label { letter-spacing: 0.6px; }
-  .s-10__total-value { font-size: 32px; line-height: 38px; letter-spacing: -0.6px; }
-}
 
 /* --- Уважение к prefers-reduced-motion --------------------------------------
    Скрипт секции проверяет тот же медиазапрос и демонстрацию не запускает
@@ -567,88 +542,92 @@
    инструмент со слайдером и тремя суммами, а планета — иллюстрация к нему.
    Поэтому у него фиксированная доля, а планета берёт остаток. */
 .s-10__layout {
-  display: grid;
+    display: grid;
   /* Ширина обязательна: .s-10__inner — флекс-колонка с align-items: center,
      и без неё раскладка сжимается по содержимому, а колонка 1fr схлопывается
      до минимума. Планета от этого выходила втрое меньше положенного. */
-  width: 100%;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 580px);
-  gap: 36px;
-  align-items: center;
-  margin-top: 56px;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    align-items: center;
+    margin-top: 32px;
 }
 
 .s-10__stage {
-  position: relative;
+    position: relative;
+
+  /* Порядок выписан явно: в стопке сцена уезжает вниз через order, и
+     вернуть её на место выше 900 можно только этой строкой. */
+    order: 2;
 }
 
 /* Атмосфера: мягкое кольцо света вокруг шара. Без неё шар выглядит
    наклейкой на прямоугольнике, а не телом в пространстве. */
 .s-10__halo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 118%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -54%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 50%,
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 118%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -54%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%,
               rgba(61, 143, 99, 0.09) 0%,
               rgba(212, 163, 115, 0.06) 44%,
               transparent 68%);
-  filter: blur(52px);
-  pointer-events: none;
+    filter: blur(52px);
+    pointer-events: none;
 }
 
 .s-10__scene {
-  position: relative;
-  width: 100%;
-  max-width: 460px;
-  aspect-ratio: 1;
-  margin-inline: auto;
+    position: relative;
+    width: 88%;
+    max-width: 300px;
+    aspect-ratio: 1;
+    margin-inline: auto;
 }
 
 .s-10__globe {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: 100%;
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 /* --- Ярлыки городов ------------------------------------------------------- */
 .s-10__tags {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  pointer-events: none;
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    pointer-events: none;
 }
 
 .s-10__tag {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 12px;
-  border: 1px solid var(--c-line-green);
-  border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(12px) saturate(150%);
-  -webkit-backdrop-filter: blur(12px) saturate(150%);
-  box-shadow: 0 8px 22px rgba(43, 38, 33, 0.12);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 16px;
-  white-space: nowrap;
-  color: var(--c-text);
-  transform: translate(-50%, -50%);
-  animation: s10-tag 4.2s ease forwards;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    border: 1px solid var(--c-line-green);
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    box-shadow: 0 8px 22px rgba(43, 38, 33, 0.12);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 16px;
+    white-space: nowrap;
+    color: var(--c-text);
+    transform: translate(-50%, -50%);
+    animation: s10-tag 4.2s ease forwards;
 }
 
 .s-10__tag-sum {
-  font-family: var(--f-display);
-  font-weight: 700;
-  color: var(--c-green-text);
+    font-family: var(--f-display);
+    font-weight: 700;
+    color: var(--c-green-text);
 }
 
 @keyframes s10-tag {
@@ -659,24 +638,24 @@
 
 /* --- Счётчик заказов ------------------------------------------------------ */
 .s-10__live {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 28px;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--c-text-muted);
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--c-text-muted);
 }
 
 .s-10__live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--c-green-bright);
-  animation: s10-live 2s ease-in-out infinite;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-green-bright);
+    animation: s10-live 2s ease-in-out infinite;
 }
 
 @keyframes s10-live {
@@ -685,35 +664,140 @@
 }
 
 .s-10__live-num {
-  font-family: var(--f-display);
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--c-green-text);
+    font-family: var(--f-display);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--c-green-text);
 }
 
 /* --- Калькулятор наверху -------------------------------------------------- */
-.s-10__calc { margin-inline: auto; }
+.s-10__calc {   margin-inline: auto; }
 
 /* --- Адаптив -------------------------------------------------------------- */
-@media (max-width: 900px) {
-  .s-10__layout { grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 44px; }
-  .s-10__stage { order: 2; }
-  .s-10__scene { max-width: 420px; }
-  .s-10__scene { width: min(460px, 86%); }
-  .s-10__tag   { font-size: 11px; padding: 5px 10px; }
-}
 
-@media (max-width: 600px) {
-  .s-10__layout { gap: 32px; margin-top: 32px; }
-  .s-10__scene { max-width: 300px; }
-  .s-10__scene { width: 88%; }
-  .s-10__tag   { font-size: 10px; padding: 4px 9px; gap: 5px; }
-  .s-10__live  { font-size: 13px; margin-top: 20px; }
-}
 
 /* Без движения шар остаётся нарисованным — просто не вращается, ярлыки
    не всплывают. Статичный кадр здесь осмыслен сам по себе. */
 @media (prefers-reduced-motion: reduce) {
   .s-10__live-dot { animation: none !important; }
   .s-10__tag      { animation: none !important; opacity: 1; }
+}
+
+/* --- Адаптив: снизу вверх ---------------------------------------------------
+   Всё выше — телефонные значения. Здесь они дорастают до широкого экрана.
+   Блоки идут строго по возрастанию порога: правила равной силы, побеждает
+   последнее подошедшее. Пороги смещены на пиксел (601 вместо 600): при
+   max-width граница входила в узкий диапазон, при min-width должна войти
+   в широкий. -------------------------------------------------------------- */
+
+@media (min-width: 601px) {
+  .s-10 {
+    padding-block: 72px;
+  }
+  .s-10__inner {
+    gap: 44px;
+  }
+  .s-10__title {
+    font-size: 40px;
+    line-height: 46px;
+    letter-spacing: -1px;
+  }
+  .s-10__calc {
+    gap: 24px;
+    padding: 32px 28px;
+    border-radius: 24px;
+  }
+  .s-10__stats {
+    gap: 16px;
+  }
+  .s-10__stat {
+    padding: 18px 20px;
+  }
+  .s-10__stat-value {
+    font-size: 26px;
+    line-height: 32px;
+    letter-spacing: -0.6px;
+  }
+  .s-10__total {
+    padding: 26px 28px;
+  }
+  .s-10__total-label {
+    letter-spacing: 0.8px;
+  }
+  .s-10__total-value {
+    font-size: 38px;
+    line-height: 44px;
+    letter-spacing: -1px;
+  }
+  .s-10__layout {
+    gap: 40px;
+    margin-top: 44px;
+  }
+  .s-10__scene {
+    width: min(460px, 86%);
+    max-width: 420px;
+  }
+  .s-10__tag {
+    gap: 7px;
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  .s-10__live {
+    margin-top: 28px;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 901px) {
+  .s-10 {
+    padding-block: 96px;
+  }
+  .s-10__inner {
+    gap: 56px;
+  }
+  .s-10__title {
+    font-size: 56px;
+    line-height: 62px;
+    letter-spacing: -1.6px;
+  }
+  .s-10__calc {
+    padding: 40px 48px;
+  }
+  .s-10__stat-value {
+    font-size: 30px;
+    line-height: 34px;
+  }
+  .s-10__total-value {
+    font-size: 48px;
+    line-height: 54px;
+  }
+  .s-10__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 580px);
+    gap: 36px;
+    margin-top: 56px;
+  }
+  .s-10__stage {
+    /* Порядок выписан явно: в стопке сцена уезжает вниз через order, и
+    вернуть её на место выше 900 можно только этой строкой. */
+    order: 0;
+  }
+  .s-10__scene {
+    width: 100%;
+    max-width: 460px;
+  }
+  .s-10__tag {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1281px) {
+  .s-10 {
+    padding-block: 120px;
+  }
+  .s-10__title {
+    font-size: 64px;
+    line-height: 70px;
+    letter-spacing: -2px;
+  }
 }

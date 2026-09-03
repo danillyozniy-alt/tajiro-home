@@ -17,7 +17,7 @@
   if (!ctr) return;
 
   var revenueE = document.getElementById('s06-revenue');
-  var ordersE  = document.getElementById('s06-orders');
+  var loadedE  = document.getElementById('s06-loaded');
   var phone    = ctr.closest('.s-06__stage');
   var iconProto = document.getElementById('s06-toast-icon');
   var grid      = document.querySelector('.s-06__lattice-grid');
@@ -58,7 +58,7 @@
   ];
 
   var revenue = 2340;
-  var orders  = 187;
+  var loaded  = 187;
 
   /* Свой генератор вместо Math.random: последовательность заказов одинакова
      от загрузки к загрузке — секцию можно сравнивать по скриншотам. */
@@ -295,9 +295,9 @@
 
     /* --- показатели --- */
     countTo(revenueE, revenue, revenue + amount, 420, money);
-    countTo(ordersE, orders, orders + 1, 320, String);
+    countTo(loadedE, loaded, loaded + 1, 320, String);
     revenue += amount;
-    orders += 1;
+    loaded += 1;
   }
 
   /* --- Расписание ----------------------------------------------------------

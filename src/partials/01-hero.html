@@ -1,58 +1,64 @@
 <section class="section s-hero" id="hero">
 
-  <!-- ПЕСОК, КОТОРЫЙ РАССТУПАЕТСЯ
+  <!-- ПЕРВЫЙ ЭКРАН
 
-       Приём взят с первого экрана craft.wild.as, но не срисован. Там холст
-       зафиксирован во весь экран, лежит фоном всего документа, не ловит мышь
-       и рисует в координатах страницы — поле кажется приклеенным к бумаге.
-       Заголовок ничего из поля не вырезает: у них он просто лежит на
-       непрозрачной плашке, а маски и «расшифровка текста» в отгруженной
-       версии — мёртвый код, от которого отказались.
+       Слева текст, справа фигура. Взято с варианта C, но без двух вещей,
+       которые там были:
 
-       Здесь та же конструкция, но песком, и с одним отличием, которое и есть
-       смысл экрана: курсор не подсвечивает круг под собой, а РАЗДВИГАЕТ песок.
-       Крупинки отталкиваются от него наружу, в середине остаётся чистое место,
-       по кромке набегает уплотнённый вал, а след затягивается не сразу.
+       · осыпи. В варианте C фигура была вырезом в песчаном поле и правым
+         краем рассыпалась. От эффекта отказались — фигура и так хорошо
+         сидит в фоне, а осыпь отвлекала от лица. Снимок теперь обычный:
+         цветной кадр и маска, сведённые в один webp с прозрачностью;
+         холста и скрипта под него больше нет вовсе;
 
-       Рисует js/01-hero.js. Без скрипта остаётся кремовая страница с текстом —
-       экран цел и читается, просто не сыплется. -->
-  <canvas class="s-hero__sand" id="hero-sand" aria-hidden="true"></canvas>
+       · рамы. Полотно со скруглением 24 обводило первый экран рамкой и
+         читалось карточкой внутри страницы. Цвет остался тот же, а рама
+         снята: экран идёт полосой во всю ширину и отделён от следующего
+         блока одной линией.
 
-  <!-- Одна колонка по центру.
-
-       До этого правую половину пробовали занять товаром, собранным из песка.
-       Не вышло, и не по исполнению: материал крупный и редкий, предмет с
-       мелкой деталью он не держит. Мелким зерном карточка читалась, но
-       переставала быть песком — рядом с полем она выглядела вклеенным
-       растром. Симметрия честнее: если справа нечего положить, то и слева
-       ничего прижимать не нужно. -->
-  <div class="container s-hero__inner">
-
-    <p class="eyebrow s-hero__eyebrow" data-sand-clear>
-      <span class="eyebrow__dot"></span>
-      Free to Start &middot; Launch in 60 seconds
-    </p>
-
-    <h1 class="h1 s-hero__title" data-sand-clear>The First Ecommerce <br>Platform with <em><span class="s-hero__nobr">Built-in</span> AI Influencers</em></h1>
-
-    <p class="lead s-hero__lead" data-sand-clear>Get a ready-made store loaded with digital products &mdash; and an AI influencer who promotes it on social media every day</p>
-
-    <div class="s-hero__actions">
-      <a class="btn btn--primary s-hero__cta" id="hero-cta" href="#footer-cta" data-sand-clear>
-        Start for Free
-        <img class="s-hero__cta-icon" src="assets/img/icons/arrow-right-cream.svg" alt="" width="18" height="18">
-      </a>
-      <a class="btn btn--ghost s-hero__talk" href="#footer-cta" data-sand-clear>
-        Talk to us
-        <span class="s-hero__arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-
-    <p class="s-hero__note" data-sand-clear>
-      <img class="s-hero__note-icon" src="assets/img/icons/clock-check-bronze.svg" alt="" width="14" height="14">
-      Free 14-day trial &middot; No inventory &middot; No experience needed
-    </p>
-
+       Вёрстка снизу вверх: сперва телефон, потом добавки для широких
+       экранов. Порядок для этой страницы не формальность — с телефонов
+       ждём девятнадцать посетителей из двадцати. -->
+  <!-- Течение: полотно текучих линий во всю ширину, за текстом и за
+       фигурой. Перенесено из варианта B, только заметнее. Рисует
+       js/01-hero-flow.js; без скрипта остаётся ровный фон. -->
+  <div class="s-hero__flow" aria-hidden="true">
+    <canvas id="hero-flow"></canvas>
   </div>
 
+  <div class="container s-hero__inner">
+
+    <div class="s-hero__copy">
+
+      <p class="eyebrow s-hero__eyebrow">
+        <span class="eyebrow__dot"></span>
+        Free to Start &middot; Launch in 60 seconds
+      </p>
+
+      <h1 class="h1 s-hero__title">The First Ecommerce Platform with <em><span class="s-hero__nobr">Built-in</span> AI Influencers</em></h1>
+
+      <p class="lead s-hero__lead">Create your own AI products and influencers, or pick from our catalog of thousands of best-sellers &mdash; in a ready-made store built to sell</p>
+
+      <div class="s-hero__actions">
+        <a class="btn btn--primary s-hero__cta" id="hero-cta" href="#footer-cta">
+          Start for Free
+          <img class="s-hero__cta-icon" src="assets/img/icons/arrow-right-cream.svg" alt="" width="18" height="18">
+        </a>
+        <a class="btn btn--ghost s-hero__talk" href="#footer-cta">
+          Talk to us
+          <span class="s-hero__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Фигура вырезана по контуру и лежит прямо на фоне, без плашки и
+         тени: край силуэта и есть её граница. -->
+    <div class="s-hero__figure">
+      <img class="s-hero__woman" src="assets/img/people/hero-woman.webp"
+           alt="A Tajiro store owner with her phone"
+           width="420" height="846" fetchpriority="high" decoding="async">
+    </div>
+
+  </div>
 </section>

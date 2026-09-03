@@ -8,8 +8,8 @@
   /* Сверху меньше, чем снизу, намеренно: верх этой секции выглядывает из-под
      первого экрана, и при равных отступах из-за сгиба торчало бы одно пустое
      поле, а не карточки. */
-  padding-top: 60px;
-  padding-bottom: 120px;
+    padding-top: 36px;
+    padding-bottom: 56px;
 
   /* Заливки здесь намеренно нет. Цвет у неё был ровно фоновый, то есть на глаз
      ничего не давал, — а холст первого экрана зафиксирован под всем документом,
@@ -19,100 +19,155 @@
 
 /* --- Сетка показателей ---------------------------------------------------- */
 .s-02__grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 32px;
-  text-align: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+
+  /* Зазор ужат с 32: числа стали длиннее прежних, и каждый лишний пиксел
+     между карточками — пиксел, отнятый у строки внутри них. */
+    gap: 10px;
+    text-align: center;
 }
 
 /* --- Карточка показателя -------------------------------------------------- */
 /* column-reverse: в разметке сначала подпись (dt), визуально сначала число */
 .s-02__stat {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 20px 24px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+  /* Отступы НЕ равны намеренно — равной должна быть краска, а не коробки.
+
+     Цифра не заполняет свою строку: сверху над ней остаётся около десяти
+     пикселей пустой строки, снизу под подписью — около двух с половиной.
+     При ровных полях это давало 34 сверху против 22.5 снизу, и верх
+     читался просторнее. Здесь разница выбрана так, чтобы от верхнего края
+     до краски цифры и от краски подписи до нижнего выходило поровну —
+     около двадцати восьми. */
+    padding: 14px 12px 18px;
 
   /* Стекло, общее со всеми крупными плашками страницы: токены в 00-base.css.
      Эти четыре карточки под него не попали, потому что у них своя разметка,
      а рядом с остеклёнными шагами разница читалась. Граница прозрачна и
      работает распоркой — в её толщину видно градиентную кромку. */
-  border: 1px solid transparent;
-  border-radius: 18px;
-  background-image: var(--glass-bg), var(--glass-edge);
-  background-origin: padding-box, padding-box, border-box;
-  background-clip: padding-box, padding-box, border-box;
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-shadow);
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background-image: var(--glass-bg), var(--glass-edge);
+    background-origin: padding-box, padding-box, border-box;
+    background-clip: padding-box, padding-box, border-box;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
 
-  overflow: clip;   /* Figma: overflow-clip — страница не должна ехать вбок */
+    overflow: clip;   /* Figma: overflow-clip — страница не должна ехать вбок */
 }
 
 .s-02__value {
-  font-family: var(--f-display);
-  font-weight: 700;
-  font-size: 64px;
-  line-height: 64px;
-  letter-spacing: -2px;
-  color: var(--c-text);
+    font-family: var(--f-display);
+    font-weight: 700;
+
+  /* Кегль подобран под САМУЮ ДЛИННУЮ строку — «Up to 100%». Числа здесь
+     длиннее прежних: было «38» и «4.8/5», стало «Up to 100%» и «50,000+».
+     При 64 длинная строка занимала 274 пиксела на 214 доступных и либо
+     срывалась на вторую строку, либо вылезала за карточку. Перенос
+     недопустим: ряд из четырёх сразу расходится по высоте. */
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: -0.9px;
+    white-space: nowrap;
+    color: var(--c-text);
 }
 
 .s-02__label {
-  font-size: 16px;
-  line-height: 22px;
-  color: #706b61;
+    font-size: 14px;
+    line-height: 20px;
+    color: #706b61;
 }
 
 /* --- Адаптив -------------------------------------------------------------- */
-@media (max-width: 1280px) {
-  .s-02__grid { gap: 24px; }
 
-  .s-02__value {
-    font-size: 54px;
-    line-height: 56px;
-    letter-spacing: -1.6px;
-  }
-}
 
 /* На четыре колонки «12,400+» перестаёт влезать раньше 900px:
    при gutter 64px трек = (vw − 200) / 4, а число в 54px требует ~236px
    вместе с паддингами. Порог перехода на две колонки — 1080px. */
-@media (max-width: 1080px) {
-  .s-02__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-  .s-02__value {
-    font-size: 48px;
-    line-height: 52px;
-    letter-spacing: -1.4px;
+/* --- Адаптив: снизу вверх ---------------------------------------------------
+   Всё выше — телефонные значения. Здесь они дорастают до широкого экрана.
+   Блоки идут строго по возрастанию порога: правила равной силы, побеждает
+   последнее подошедшее. Пороги смещены на пиксел (601 вместо 600): при
+   max-width граница входила в узкий диапазон, при min-width должна войти
+   в широкий. -------------------------------------------------------------- */
+
+@media (min-width: 601px) {
+  .s-02 {
+    padding-top: 44px;
+    padding-bottom: 80px;
   }
-}
-
-@media (max-width: 900px) {
-  .s-02 { padding-top: 44px; padding-bottom: 80px; }
-}
-
-@media (max-width: 600px) {
-  .s-02 { padding-top: 36px; padding-bottom: 56px; }
-
-  .s-02__grid { gap: 12px; }
-
+  .s-02__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
   .s-02__stat {
-    gap: 4px;
-    padding: 16px 12px;
-    border-radius: 14px;
+    gap: 6px;
+    /* Отступы НЕ равны намеренно — равной должна быть краска, а не коробки.
+    
+    Цифра не заполняет свою строку: сверху над ней остаётся около десяти
+    пикселей пустой строки, снизу под подписью — около двух с половиной.
+    При ровных полях это давало 34 сверху против 22.5 снизу, и верх
+    читался просторнее. Здесь разница выбрана так, чтобы от верхнего края
+    до краски цифры и от краски подписи до нижнего выходило поровну —
+    около двадцати восьми. */
+    padding: 20px 16px 26px;
+    border-radius: 18px;
   }
-
   .s-02__value {
-    font-size: 32px;
-    line-height: 38px;
-    letter-spacing: -1px;
+    font-size: 40px;
+    line-height: 44px;
+    letter-spacing: -1.1px;
   }
-
   .s-02__label {
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
+
+@media (min-width: 901px) {
+  .s-02 {
+    /* Сверху меньше, чем снизу, намеренно: верх этой секции выглядывает из-под
+    первого экрана, и при равных отступах из-за сгиба торчало бы одно пустое
+    поле, а не карточки. */
+    padding-top: 60px;
+    padding-bottom: 120px;
+  }
+}
+
+@media (min-width: 1081px) {
+  .s-02__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .s-02__value {
+    font-size: 34px;
+    line-height: 38px;
+    letter-spacing: -0.9px;
+  }
+}
+
+@media (min-width: 1281px) {
+  .s-02__grid {
+    /* Зазор ужат с 32: числа стали длиннее прежних, и каждый лишний пиксел
+    между карточками — пиксел, отнятый у строки внутри них. */
+    gap: 20px;
+  }
+  .s-02__value {
+    /* Кегль подобран под САМУЮ ДЛИННУЮ строку — «Up to 100%». Числа здесь
+    длиннее прежних: было «38» и «4.8/5», стало «Up to 100%» и «50,000+».
+    При 64 длинная строка занимала 274 пиксела на 214 доступных и либо
+    срывалась на вторую строку, либо вылезала за карточку. Перенос
+    недопустим: ряд из четырёх сразу расходится по высоте. */
+    font-size: 38px;
+    line-height: 42px;
+    letter-spacing: -1px;
   }
 }

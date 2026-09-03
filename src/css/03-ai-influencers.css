@@ -10,90 +10,99 @@
 
 .s-03 {
   /* фирменный тёплый тон секции — между --c-bg и --c-bg-alt, отдельного токена нет */
-  background: var(--c-bg-plain);
-  padding-block: 120px;
+    background: var(--c-bg-plain);
+    padding-block: 72px;
 
   /* Высота строки счётчиков в рейле. Держим в переменной: от неё считаются
      и кейфреймы тикеров, и парковка в reduced-motion — зашитые пиксели
      разъехались бы с line-height при правке типографики. */
-  --s03-row: 14px;
+    --s03-row: 14px;
 
   /* Сдвиг фазы мастер-цикла. Цикл начинается кадром «первый клип въезжает
      снизу», то есть в момент 0 экран телефона ещё пуст. Отматываем часы
      на 0.6s назад — и страница открывается на уже въехавшем клипе.
      Сдвиг ОДИН на все анимации секции: относительная синхронность не
      меняется, меняется только точка, с которой цикл стартует. */
-  --s03-phase: -0.6s;
+    --s03-phase: -0.6s;
 }
 
 .s-03__content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 80px;
+    display: flex;
+  /* row задан явно: ниже 900 колонка встаёт столбиком, и без этой строки
+     на широком экране столбик было бы нечем отменить. */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 44px;
 }
 
 /* --- Текстовая колонка ---------------------------------------------------- */
 .s-03__text {
-  flex: 0 1 520px;
-  min-width: 0;
+    flex: 0 1 auto;
+    min-width: 0;
+
+  /* Значения по умолчанию, выписанные явно: в стопке колонка получает
+     свою ширину и потолок, и вернуть её к обычному потоку выше 900 можно
+     только тем, что здесь написано. */
+    width: 100%;
+    max-width: 560px;
 }
 
 .s-03__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
 }
 
 .s-03__eyebrow-line {
-  flex: none;
-  width: 24px;
-  border-radius: 2px;
+    flex: none;
+    width: 24px;
+    border-radius: 2px;
 }
 
 .s-03__eyebrow .kicker {
-  font-size: 13px;
-  line-height: 18px;
-  letter-spacing: 1.3px;
-  color: var(--c-green-text);
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 1.3px;
+    color: var(--c-green-text);
 }
 
 .s-03__title {
-  margin-bottom: 16px;
-  font-size: 64px;
-  line-height: 70px;
-  letter-spacing: -2px;
+    margin-bottom: 16px;
+    font-size: 34px;
+    line-height: 42px;
+    letter-spacing: -0.8px;
 }
 
 .s-03__lead {
-  margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .s-03__actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
 }
 
 .s-03__cta img {
-  flex: none;
-  transition: transform 0.18s ease;
+    flex: none;
+    transition: transform 0.18s ease;
 }
 
-.s-03__cta:hover img { transform: translateX(3px); }
+.s-03__cta:hover img {   transform: translateX(3px); }
 
 .s-03__note {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  line-height: 18px;
-  color: var(--c-text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--c-text-muted);
 }
 
-.s-03__note img { flex: none; }
+.s-03__note img {   flex: none;   margin-top: 2px; }
 
 /* --- Телефон -------------------------------------------------------------- */
 /* Тёплый ореол — тот же приём, что у телефона в s-06: два телефона на
@@ -102,26 +111,25 @@
    подсветка остаётся — просто перестаёт дышать.
    box-shadow тут анимировать можно: элемент один, не повторяющийся. */
 .s-03__phone {
-  flex: none;
-  width: 280px;
-  height: 572px;
-  padding: 4px;               /* рамка корпуса */
-  border-radius: 48px;
-  background: #080808;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--c-sand) 22%, transparent),
+    flex: none;
+    width: 280px;
+    height: 572px;
+    padding: 4px;               /* рамка корпуса */
+    border-radius: 48px;
+    background: #080808;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--c-sand) 22%, transparent),
     0 0 30px -8px color-mix(in srgb, var(--c-sand) 40%, transparent),
     0 30px 60px rgba(89, 61, 28, 0.16);
-  animation: s03-glow 8s var(--s03-phase) ease-in-out infinite;
+    animation: s03-glow 8s var(--s03-phase) ease-in-out infinite;
 }
 
 .s-03__screen {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 44px;
-  overflow: hidden;
-  background: #080808;   /* подложка на первый кадр, пока грузится картинка */
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 44px;
+    overflow: hidden;
+    background: #080808;   /* подложка на первый кадр, пока грузится картинка */
 }
 
 /* --- Видео ленты -----------------------------------------------------------
@@ -130,12 +138,12 @@
    кадром, если файла ещё нет, — секция не разваливается ни в одном случае.
    -------------------------------------------------------------------------- */
 .s-03__video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: inherit;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
 }
 
 /* --- Клипы ленты -----------------------------------------------------------
@@ -172,49 +180,49 @@
    первого, и до 12-й секунды телефон показывал бы неподвижный кадр.
    backwards подставляет им кадр 0 % — «жду под нижней кромкой». */
 .s-03__clip {
-  position: absolute;
-  inset: 0;
+    position: absolute;
+    inset: 0;
   /* linear на уровне элемента: в цикле есть длинные удержания, любое ease
      здесь переразметило бы их. Кривая свайпа — внутри кейфреймов. */
-  animation: s03-swipe 16s linear infinite backwards;
-  animation-delay: var(--s03-phase);
+    animation: s03-swipe 16s linear infinite backwards;
+    animation-delay: var(--s03-phase);
 }
 
-.s-03__clip--1 { --s03-z0: 1.08; --s03-x0: 0%;    --s03-y0: 0%;
-                 --s03-z1: 1.15; --s03-x1: 0%;    --s03-y1: -0.6%; }
-.s-03__clip--2 { --s03-z0: 1.75; --s03-x0: -2.5%; --s03-y0: 11.31%;
-                 --s03-z1: 1.84; --s03-x1: -2.5%; --s03-y1: 10.6%; }
-.s-03__clip--3 { --s03-z0: 2.10; --s03-x0: 2%;    --s03-y0: -25.4%;
-                 --s03-z1: 2.18; --s03-x1: -1%;   --s03-y1: -25.4%; }
-.s-03__clip--4 { --s03-z0: 1.25; --s03-x0: 9%;    --s03-y0: 4%;
-                 --s03-z1: 1.34; --s03-x1: 8%;    --s03-y1: 3.2%; }
+.s-03__clip--1 {   --s03-z0: 1.08;   --s03-x0: 0%;      --s03-y0: 0%;
+                   --s03-z1: 1.15;   --s03-x1: 0%;      --s03-y1: -0.6%; }
+.s-03__clip--2 {   --s03-z0: 1.75;   --s03-x0: -2.5%;   --s03-y0: 11.31%;
+                   --s03-z1: 1.84;   --s03-x1: -2.5%;   --s03-y1: 10.6%; }
+.s-03__clip--3 {   --s03-z0: 2.10;   --s03-x0: 2%;      --s03-y0: -25.4%;
+                   --s03-z1: 2.18;   --s03-x1: -1%;     --s03-y1: -25.4%; }
+.s-03__clip--4 {   --s03-z0: 1.25;   --s03-x0: 9%;      --s03-y0: 4%;
+                   --s03-z1: 1.34;   --s03-x1: 8%;      --s03-y1: 3.2%; }
 
 /* Наездка живёт на самой картинке, а свайп — на обёртке: у них разные
    кривые (наездка строго линейна, свайп смягчён), и на одном элементе
    они бы дрались за transform. */
 .s-03__frame {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform-origin: center;
-  animation: s03-ken 16s linear infinite backwards;
-  animation-delay: var(--s03-phase);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-origin: center;
+    animation: s03-ken 16s linear infinite backwards;
+    animation-delay: var(--s03-phase);
 }
 
 /* Домашний приём: одинаковые сиблинги разводятся задержкой, а не копиями
    кейфреймов. Обёртка и картинка одного клипа обязаны идти в такт. */
-.s-03__clip--2, .s-03__clip--2 .s-03__frame { animation-delay: calc(4s  + var(--s03-phase)); }
-.s-03__clip--3, .s-03__clip--3 .s-03__frame { animation-delay: calc(8s  + var(--s03-phase)); }
-.s-03__clip--4, .s-03__clip--4 .s-03__frame { animation-delay: calc(12s + var(--s03-phase)); }
+.s-03__clip--2, .s-03__clip--2 .s-03__frame {   animation-delay: calc(4s  + var(--s03-phase)); }
+.s-03__clip--3, .s-03__clip--3 .s-03__frame {   animation-delay: calc(8s  + var(--s03-phase)); }
+.s-03__clip--4, .s-03__clip--4 .s-03__frame {   animation-delay: calc(12s + var(--s03-phase)); }
 
 
 /* Интерфейс поверх видео — раскладка потоком, без магических координат */
 .s-03__ui {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 26px 17px 26px 18px;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 17px 26px 18px;
   /* Интерфейс лежит прямо на кадре. Прежняя лёгкая тень была рассчитана на
      четыре тёмных статичных снимка; у живого видео кадры бывают засвеченные
      — небо, стена на солнце, — и белый текст на них пропадал целиком.
@@ -222,11 +230,11 @@
      Две тени вместо одной: узкая держит контур глифа, широкая подкладывает
      под него пятно. Так надпись читается и на небе, и на белой стене, не
      превращаясь в обводку. */
-  color: var(--c-on-dark);
+    color: var(--c-on-dark);
   /* Затемнений поверх кадра нет ни одного: они лезли на собственные
      подписи ролика. Вся читаемость держится на тенях, поэтому их три —
      узкая под контур глифа, средняя под пятно, широкая под ореол. */
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75),
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75),
                0 2px 8px rgba(0, 0, 0, 0.6),
                0 0 20px rgba(0, 0, 0, 0.45);
 }
@@ -234,52 +242,52 @@
 /* Ширина колонки задана иконкой (26px), а не самой длинной подписью, —
    иначе «Share» растягивает колонку и сдвигает иконки влево. */
 .s-03__rail {
-  position: relative;
-  display: flex;
-  margin-top: auto;   /* распорка вместо снятых вкладок: рейл держится внизу */
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-  align-self: flex-end;
-  width: 26px;
-  margin-bottom: 28px;
+    position: relative;
+    display: flex;
+    margin-top: auto;   /* распорка вместо снятых вкладок: рейл держится внизу */
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    align-self: flex-end;
+    width: 26px;
+    margin-bottom: 28px;
 }
 
 
 .s-03__rail-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 14px;
-  white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 14px;
+    white-space: nowrap;
 }
 
-.s-03__rail-item--like { position: relative; }
+.s-03__rail-item--like {   position: relative; }
 
 /* Кольцо-всплеск: рождается в центре сердца и разлетается. Центрируем
    марджинами, а не transform, — transform занят самой анимацией.
    Максимум scale(2.2) выбран по краю экрана: центр рейла в 30px от правой
    кромки, 26px·2.2/2 = 28.6px — кольцо не срезается. */
 .s-03__rail-item--like::after {
-  content: '';
-  position: absolute;
-  top: 13px;
-  left: 50%;
-  width: 26px;
-  height: 26px;
-  margin: -13px 0 0 -13px;
-  border: 1.5px solid var(--c-sand);
-  border-radius: 50%;
-  opacity: 0;
-  animation: s03-burst 16s var(--s03-phase) linear infinite;
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    width: 26px;
+    height: 26px;
+    margin: -13px 0 0 -13px;
+    border: 1.5px solid var(--c-sand);
+    border-radius: 50%;
+    opacity: 0;
+    animation: s03-burst 16s var(--s03-phase) linear infinite;
 }
 
 .s-03__heart {
-  transform-origin: center;
-  animation: s03-heart 16s var(--s03-phase) linear infinite;
+    transform-origin: center;
+    animation: s03-heart 16s var(--s03-phase) linear infinite;
 }
 
 /* Окно тикера шире колонки рейла (48 против 26): «142.3K» не должен
@@ -289,7 +297,7 @@
    кадра, а там может оказаться что угодно, от неба до белой стены. Тень
    ему нужна плотнее общей, иначе цифры пропадают на светлых кадрах. */
 .s-03__rail {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7),
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7),
                0 2px 10px rgba(0, 0, 0, 0.65),
                0 0 22px rgba(0, 0, 0, 0.4);
 }
@@ -299,47 +307,47 @@
    пропадали на светлом так же, как надписи. */
 .s-03__rail img,
 .s-03__heart {
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.65))
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.65))
           drop-shadow(0 2px 10px rgba(0, 0, 0, 0.5));
 }
 
 .s-03__count {
-  display: block;
-  width: 48px;
-  height: var(--s03-row);
-  overflow: hidden;
-  text-align: center;
+    display: block;
+    width: 48px;
+    height: var(--s03-row);
+    overflow: hidden;
+    text-align: center;
 }
 
-.s-03__count-track { display: block; }
+.s-03__count-track {   display: block; }
 
 .s-03__count-track > span {
-  display: block;
-  height: var(--s03-row);
-  line-height: var(--s03-row);
-  font-variant-numeric: tabular-nums;
+    display: block;
+    height: var(--s03-row);
+    line-height: var(--s03-row);
+    font-variant-numeric: tabular-nums;
 }
 
 /* steps(1, end) — счётчик щёлкает, а не плывёт: цифры не должны
    «проезжать» между значениями. Приём взят из тикера заказов s-06. */
-.s-03__count-track--likes    { animation: s03-likes    16s var(--s03-phase) steps(1, end) infinite; }
-.s-03__count-track--comments { animation: s03-comments 16s var(--s03-phase) steps(1, end) infinite; }
+.s-03__count-track--likes {   animation: s03-likes    16s var(--s03-phase) steps(1, end) infinite; }
+.s-03__count-track--comments {   animation: s03-comments 16s var(--s03-phase) steps(1, end) infinite; }
 
 /* --- Подпись поста -------------------------------------------------------- */
 .s-03__meta {
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  gap: 5px;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    gap: 5px;
 }
 
 .s-03__handle {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
 }
 
 /* Высота слота задана явно (17 подпись + 4 зазор + 15 ниша): дети
@@ -348,9 +356,9 @@
    видео: на переходе в окне видно низ старого поста и верх нового, как
    в настоящей ленте. */
 .s-03__posts {
-  position: relative;
-  height: 36px;
-  overflow: hidden;
+    position: relative;
+    height: 36px;
+    overflow: hidden;
 }
 
 /* Та же анимация, что у клипа: translateY(100 %) здесь — это 36px, а не
@@ -359,66 +367,66 @@
    backwards — по той же причине, что и у клипов: иначе первые 12 секунд
    все четыре подписи лежали бы друг на друге в нулевой позиции. */
 .s-03__post {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  animation: s03-swipe 16s linear infinite backwards;
-  animation-delay: var(--s03-phase);
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: s03-swipe 16s linear infinite backwards;
+    animation-delay: var(--s03-phase);
 }
 
-.s-03__post--2 { animation-delay: calc(4s  + var(--s03-phase)); }
-.s-03__post--3 { animation-delay: calc(8s  + var(--s03-phase)); }
-.s-03__post--4 { animation-delay: calc(12s + var(--s03-phase)); }
+.s-03__post--2 {   animation-delay: calc(4s  + var(--s03-phase)); }
+.s-03__post--3 {   animation-delay: calc(8s  + var(--s03-phase)); }
+.s-03__post--4 {   animation-delay: calc(12s + var(--s03-phase)); }
 
 /* flex, а не inline: бейдж «NEW» тогда не растягивает строку выше 17px и
    слот подписи остаётся ровно 36px */
 .s-03__caption {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  line-height: 17px;
-  white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    line-height: 17px;
+    white-space: nowrap;
 }
 
 /* Тёмный текст по песочному: 7.35:1. Тень интерфейса тут вредна — сбрасываем */
 .s-03__new {
-  flex: none;
-  padding: 1px 6px;
-  border-radius: var(--r-pill);
-  background: var(--c-sand);
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 12px;
-  letter-spacing: 0.8px;
-  color: var(--c-ink-surface-2);
-  text-shadow: none;
+    flex: none;
+    padding: 1px 6px;
+    border-radius: var(--r-pill);
+    background: var(--c-sand);
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 12px;
+    letter-spacing: 0.8px;
+    color: var(--c-ink-surface-2);
+    text-shadow: none;
 }
 
 .s-03__niche {
-  font-size: 11px;
-  line-height: 15px;
+    font-size: 11px;
+    line-height: 15px;
 }
 
 /* --- Полоса проигрывания -------------------------------------------------- */
 .s-03__progress {
-  margin-top: 14px;
-  height: 2px;
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--c-on-dark) 26%, transparent);
-  overflow: hidden;
+    margin-top: 14px;
+    height: 2px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--c-on-dark) 26%, transparent);
+    overflow: hidden;
 }
 
 .s-03__progress-fill {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--c-sand);
-  width: var(--s03-progress, 0%);
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--c-sand);
+    width: var(--s03-progress, 0%);
 }
 
 /* ==========================================================================
@@ -657,34 +665,7 @@
 }
 
 /* --- Адаптив -------------------------------------------------------------- */
-@media (max-width: 1280px) {
-  .s-03 { padding-block: 96px; }
-  .s-03__content { gap: 64px; }
-  .s-03__title { font-size: 56px; line-height: 62px; letter-spacing: -1.6px; }
-}
 
-@media (max-width: 900px) {
-  .s-03__content {
-    flex-direction: column;
-    align-items: center;
-    gap: 56px;
-  }
-  .s-03__text {
-    flex: 0 1 auto;
-    width: 100%;
-    max-width: 560px;
-  }
-  .s-03__title { font-size: 44px; line-height: 52px; letter-spacing: -1.2px; }
-}
-
-@media (max-width: 600px) {
-  .s-03 { padding-block: 72px; }
-  .s-03__content { gap: 44px; }
-  .s-03__title { font-size: 34px; line-height: 42px; letter-spacing: -0.8px; }
-  .s-03__lead { margin-bottom: 24px; }
-  .s-03__note { align-items: flex-start; }
-  .s-03__note img { margin-top: 2px; }
-}
 
 /* --- Уважение к prefers-reduced-motion ------------------------------------
    Сброс в 00-base.css схлопывает каждую анимацию в ПОСЛЕДНИЙ кадр. У свайпа
@@ -735,7 +716,7 @@
    как глитч: имя дёргалось, хотя человек в кадре менялся плавно. */
 .s-03__meta.is-switching .s-03__handle,
 .s-03__meta.is-switching .s-03__niche {
-  animation: s03-meta-in 0.42s ease both;
+    animation: s03-meta-in 0.42s ease both;
 }
 
 @keyframes s03-meta-in {
@@ -746,4 +727,70 @@
 @media (prefers-reduced-motion: reduce) {
   .s-03__meta.is-switching .s-03__handle,
   .s-03__meta.is-switching .s-03__niche { animation: none; }
+}
+
+/* --- Адаптив: снизу вверх ---------------------------------------------------
+   Всё выше — телефонные значения. Здесь они дорастают до широкого экрана.
+   Блоки идут строго по возрастанию порога: правила равной силы, побеждает
+   последнее подошедшее. Пороги смещены на пиксел (601 вместо 600): при
+   max-width граница входила в узкий диапазон, при min-width должна войти
+   в широкий. -------------------------------------------------------------- */
+
+@media (min-width: 601px) {
+  .s-03 {
+    padding-block: 96px;
+  }
+  .s-03__content {
+    gap: 56px;
+  }
+  .s-03__title {
+    font-size: 44px;
+    line-height: 52px;
+    letter-spacing: -1.2px;
+  }
+  .s-03__lead {
+    margin-bottom: 28px;
+  }
+  .s-03__note {
+    align-items: center;
+  }
+  .s-03__note img {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .s-03__content {
+    /* row задан явно: ниже 900 колонка встаёт столбиком, и без этой строки
+    на широком экране столбик было бы нечем отменить. */
+    flex-direction: row;
+    gap: 64px;
+  }
+  .s-03__text {
+    flex: 0 1 520px;
+    /* Значения по умолчанию, выписанные явно: в стопке колонка получает
+    свою ширину и потолок, и вернуть её к обычному потоку выше 900 можно
+    только тем, что здесь написано. */
+    width: auto;
+    max-width: none;
+  }
+  .s-03__title {
+    font-size: 56px;
+    line-height: 62px;
+    letter-spacing: -1.6px;
+  }
+}
+
+@media (min-width: 1281px) {
+  .s-03 {
+    padding-block: 120px;
+  }
+  .s-03__content {
+    gap: 80px;
+  }
+  .s-03__title {
+    font-size: 64px;
+    line-height: 70px;
+    letter-spacing: -2px;
+  }
 }

@@ -4,14 +4,12 @@
    ========================================================================== */
 
 .s-11 {
-  --s11-card-line: rgba(224, 217, 207, 0.5);
-  --s11-card-text: #6b645a;
-  --s11-icon-bg:   rgba(212, 163, 115, 0.1);
-  --s11-pill-bg:   #f7f2e8;
-  --s11-pill-line: rgba(212, 163, 115, 0.2);
+    --s11-card-line: rgba(224, 217, 207, 0.5);
+    --s11-card-text: #6b645a;
+    --s11-icon-bg: rgba(212, 163, 115, 0.1);
 
-  padding-block: 120px;
-  background: var(--c-bg);
+    padding-block: 64px;
+    background: var(--c-bg);
 }
 
 /* --- Подложка под стекло ----------------------------------------------------
@@ -21,108 +19,107 @@
    спорит с их текстом.
    -------------------------------------------------------------------------- */
 .s-11 {
-  position: relative;
-  isolation: isolate;
+    position: relative;
+    isolation: isolate;
 }
 
 .s-11::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(52% 44% at 18% 22%, rgba(61, 143, 99, 0.16) 0%, transparent 68%),
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(52% 44% at 18% 22%, rgba(61, 143, 99, 0.16) 0%, transparent 68%),
     radial-gradient(46% 40% at 84% 74%, rgba(212, 163, 115, 0.28) 0%, transparent 66%),
     url("../assets/img/decor/girih-pattern.svg") center / 620px repeat;
-  opacity: 0.55;
+    opacity: 0.55;
 }
 
 
 .s-11__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
 }
 
 /* --- Шапка секции --------------------------------------------------------- */
 .s-11__head {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  padding-bottom: 8px;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding-bottom: 8px;
+    text-align: center;
 }
 
 .s-11__kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  letter-spacing: 1.3px;
-  line-height: 18px;
-  color: var(--c-green-text);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    letter-spacing: 1.3px;
+    line-height: 18px;
+    color: var(--c-green-text);
 }
 
 .s-11__kicker-rule {
-  width: 24px;
-  border-radius: 2px;
+    width: 24px;
+    border-radius: 2px;
 }
 
 .s-11__title {
-  max-width: 900px;
-  font-size: 64px;
-  line-height: 70px;
-  letter-spacing: -2px;
+    max-width: 900px;
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.8px;
 }
 
 .s-11__lead {
-  max-width: 640px;
+    max-width: 640px;
 }
 
 /* --- Сетка карточек ------------------------------------------------------- */
 .s-11__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-  width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    width: 100%;
 }
 
 .s-11__card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   /* 20 px между плиткой и заголовком: у крупного знака своя оптическая
      тяжесть, прежние 14 читались слипшимися. */
-  gap: 14px;
-  min-height: 266px;
-  padding: 32px 28px;
+    gap: 14px;
+    min-height: 0;
+    padding: 26px 22px;
   /* Граница прозрачна и работает распоркой: в её толщину видно нижний
      слой фона — градиентную кромку, обрезанную по border-box. Слои
      поверхности обрезаны по padding-box и внутрь границы не заходят. */
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
 
   /* Ровно один пиксель, а не полтора: дробную границу браузер округляет до
      целого, и заявленные 1.5 всё равно превращались в 1. Лучше задать то,
      что действительно нарисуется. */
-  border: 1px solid transparent;
-  border-radius: 18px;
-  background-image: var(--glass-bg), var(--glass-edge);
-  background-origin: padding-box, padding-box, border-box;
-  background-clip: padding-box, padding-box, border-box;
-  box-shadow: var(--glass-shadow);
+    border: 1px solid transparent;
+    border-radius: 18px;
+    background-image: var(--glass-bg), var(--glass-edge);
+    background-origin: padding-box, padding-box, border-box;
+    background-clip: padding-box, padding-box, border-box;
+    box-shadow: var(--glass-shadow);
   /* Figma-макет тени на карточках не имеет — только 1px обводка. */
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .s-11__card:hover {
-  transform: translateY(-2px);
-  border-color: var(--c-line);
-  box-shadow: var(--sh-card);
+    transform: translateY(-2px);
+    border-color: var(--c-line);
+    box-shadow: var(--sh-card);
 }
 
 /* Изразец вместо нарисованного знака.
@@ -135,26 +132,24 @@
    Кадрирование сделано по кромке глины, так что серого фона съёмки в файле
    нет и скруглению нечего резать, кроме самой плитки. */
 .s-11__tile {
-  display: block;
-  flex: none;
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
+    display: block;
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
   /* Кадр снят так, что плитка занимает его целиком: обрезать нечего,
      и подгонять тоже. Три захода на вычисление границ плитки в кадре
      провалились каждый по-своему — проще оказалось переснять. */
-  object-fit: fill;
-  box-shadow:
-    0 1px 2px rgba(43, 38, 33, 0.06),
+    object-fit: fill;
+    box-shadow: 0 1px 2px rgba(43, 38, 33, 0.06),
     0 4px 12px -8px rgba(43, 38, 33, 0.26);
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
               box-shadow 0.3s ease;
 }
 
 .s-11__card:hover .s-11__tile {
-  transform: translateY(-2px);
-  box-shadow:
-    0 2px 4px rgba(43, 38, 33, 0.08),
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(43, 38, 33, 0.08),
     0 9px 18px -10px rgba(43, 38, 33, 0.32);
 }
 
@@ -164,147 +159,238 @@
 }
 
 .s-11__card-title {
-  font-size: 20px;
-  font-weight: 800;
-  line-height: 26px;
-  letter-spacing: -0.2px;
-  color: var(--c-text-body);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 24px;
+    letter-spacing: -0.2px;
+    color: var(--c-text-body);
 }
 
 .s-11__card-text {
-  font-size: 15px;
-  line-height: 25px;
-  color: var(--s11-card-text);
-}
-
-/* --- Каналы связи --------------------------------------------------------- */
-.s-11__channels {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-
-.s-11__channel {
-  /* 8+1px рамки = 9px и 17+1 = 18px, как в Figma (высота пилюли ровно 36px). */
-  padding: 8px 17px;
-  border: 1px solid var(--s11-pill-line);
-  border-radius: var(--r-pill);
-  background: var(--s11-pill-bg);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 18px;
-  color: var(--s11-card-text);
-  white-space: nowrap;
+    font-size: 15px;
+    line-height: 25px;
+    color: var(--s11-card-text);
 }
 
 /* --- Отзыв ---------------------------------------------------------------- */
 /* Фото менеджера слева, реплика клиента справа */
+/* --- Менеджер ------------------------------------------------------------
+   Кадр идёт во всю ширину блока, цитата под ним. Раньше снимок был в 300
+   пикселей сбоку от текста и читался иллюстрацией; человек, ради которого
+   секция написана, стоял мельче собственной подписи. -------------------- */
 .s-11__quote {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  max-width: 940px;
-  text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    width: 100%;
+    text-align: left;
 }
 
-/* Карточка менеджера: снимок + подпись, кто на нём. Иначе фото стоит
-   вплотную к имени автора цитаты и читается как его портрет. */
 .s-11__manager-card {
-  display: flex;
-  flex: none;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.s-11__manager-label {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.s-11__manager-name {
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 19px;
-  color: var(--c-text);
-}
-
-.s-11__manager-role {
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--s11-card-text);
+    position: relative;
+    width: 100%;
 }
 
 .s-11__manager {
-  width: 300px;
-  height: auto;              /* без этого атрибут height из разметки бьёт aspect-ratio */
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border: 1px solid var(--c-line);
-  border-radius: var(--r-card);
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1280 / 731;
+    object-fit: cover;
+    border-radius: var(--r-card);
+}
+
+/* По умолчанию видно ролик, снимок лежит под сукном. При запрете движения
+   меняются местами. */
+.s-11__manager--still {   display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .s-11__manager--motion { display: none; }
+  .s-11__manager--still  { display: block; }
+}
+
+/* Затемнение по нижнему краю кадра. Без него плашка ниже не работает: она
+   светлая и держится на белом тексте, а кадр под ней светлый сам. Приём
+   с экомзи — там ровно такая же подложка под такой же плашкой. */
+.s-11__manager-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--r-card);
+    pointer-events: none;
+    background: linear-gradient(
+    0deg,
+    rgba(28, 25, 22, 0.34) 0%,
+    transparent 40%
+  );
+}
+
+/* Плашка статуса. Имени в ней нет: она про то, что менеджер на связи вообще.
+
+   Сделана по экомзи. Сперва здесь стояла плотная тёмная пилюля с крупной
+   жирной надписью — на светлом кадре она читалась чёрным пятном и
+   перебивала и лицо, и цитату. У экомзи наоборот: стекло почти прозрачное,
+   белое, а держится всё на затемнении кадра под ним. Плашка получается
+   заметной, но не тяжёлой. */
+.s-11__online {
+    position: absolute;
+    z-index: 2;
+    bottom: 14px;
+    left: 14px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 17px 8px 11px;
+    border-radius: var(--r-pill);
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.s-11__online-dot {
+    position: relative;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-green-bright);
+
+  /* Пульс — не украшение: он и есть признак того, что связь живая.
+     Две части, как на экомзи: сама точка мигает прозрачностью, а вокруг
+     неё расходится кольцо. Кадры общие с точкой надзаголовка, лежат в
+     00-base.css. */
+    animation: dot-blink 1.6s ease-in-out infinite;
+}
+
+.s-11__online-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid rgba(61, 143, 99, 0.55);
+    animation: dot-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-11__online-dot,
+  .s-11__online-dot::after { animation: none; }
 }
 
 .s-11__quote-body {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
+/* Цитата шла жирной двадцать второй — это осталось от времён, когда она
+   стояла узкой колонкой рядом с маленьким снимком. Под кадром во всю ширину
+   две строки такого веса читаются криком; здесь она обычная речь. */
 .s-11__quote-text {
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 34px;
-  letter-spacing: -0.22px;
-  color: var(--c-text-body);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: -0.1px;
+    color: var(--c-text-body);
 }
 
 .s-11__quote-author {
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--s11-card-text);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--s11-card-text);
 }
 
-.s-11__quote-author cite { font-style: normal; }
+.s-11__quote-author cite {   font-style: normal; }
 
 /* --- Адаптив -------------------------------------------------------------- */
-@media (max-width: 1280px) {
-  .s-11 { padding-block: 96px; }
-  .s-11__title { font-size: 56px; line-height: 62px; letter-spacing: -1.6px; }
-}
 
-@media (max-width: 900px) {
-  .s-11 { padding-block: 80px; }
-  .s-11__inner { gap: 44px; }
-  .s-11__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .s-11__card { min-height: 0; }
-  .s-11__title { font-size: 42px; line-height: 50px; letter-spacing: -1.1px; }
-  .s-11__quote-text { font-size: 20px; line-height: 31px; }
+/* --- Адаптив: снизу вверх ---------------------------------------------------
+   Всё выше — телефонные значения. Здесь они дорастают до широкого экрана.
+   Блоки идут строго по возрастанию порога: правила равной силы, побеждает
+   последнее подошедшее. Пороги смещены на пиксел (601 вместо 600): при
+   max-width граница входила в узкий диапазон, при min-width должна войти
+   в широкий. -------------------------------------------------------------- */
 
-  /* Фото над репликой, всё по центру */
-  .s-11__quote {
-    flex-direction: column;
-    align-items: center;
-    gap: 28px;
-    text-align: center;
+@media (min-width: 601px) {
+  .s-11 {
+    padding-block: 80px;
   }
-
-  .s-11__manager-card { align-items: center; }
-  .s-11__manager { width: min(100%, 420px); }
-  .s-11__manager-label { align-items: center; }
-  .s-11__quote-body { align-items: center; }
+  .s-11__inner {
+    gap: 44px;
+  }
+  .s-11__title {
+    font-size: 42px;
+    line-height: 50px;
+    letter-spacing: -1.1px;
+  }
+  .s-11__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .s-11__card {
+    padding: 32px 28px;
+  }
+  .s-11__card-title {
+    font-size: 20px;
+    line-height: 26px;
+  }
+  .s-11__quote-text {
+    font-size: 20px;
+    line-height: 31px;
+  }
 }
 
-@media (max-width: 600px) {
-  .s-11 { padding-block: 64px; }
-  .s-11__inner { gap: 36px; }
-  .s-11__grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  /* На узком экране карточка идёт в одну колонку и высоту ей диктует текст —
-     минимум снимаем, иначе внизу повисает пустота. */
-  .s-11__card { min-height: 0; gap: 14px; padding: 26px 22px; }
-  .s-11__title { font-size: 32px; line-height: 38px; letter-spacing: -0.8px; }
-  .s-11__card-title { font-size: 18px; line-height: 24px; }
-  .s-11__channels { gap: 8px; }
-  .s-11__channel { padding: 7px 13px; font-size: 13px; }
-  .s-11__quote-text { font-size: 18px; line-height: 28px; }
+@media (min-width: 901px) {
+  .s-11 {
+    padding-block: 96px;
+  }
+  .s-11__inner {
+    gap: 56px;
+  }
+  .s-11__title {
+    font-size: 56px;
+    line-height: 62px;
+    letter-spacing: -1.6px;
+  }
+  .s-11__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .s-11__card {
+    min-height: 266px;
+  }
+  .s-11__online {
+    bottom: 26px;
+    left: 26px;
+    gap: 11px;
+    padding: 10px 23px 10px 13px;
+    font-size: 15px;
+    line-height: 21px;
+  }
+  .s-11__online-dot {
+    width: 9px;
+    height: 9px;
+  }
+  .s-11__quote-text {
+    font-size: 19px;
+    line-height: 30px;
+  }
+}
+
+@media (min-width: 1281px) {
+  .s-11 {
+    padding-block: 120px;
+  }
+  .s-11__title {
+    font-size: 64px;
+    line-height: 70px;
+    letter-spacing: -2px;
+  }
 }

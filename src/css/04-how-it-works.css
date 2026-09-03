@@ -13,55 +13,55 @@
 
 .s-04 {
   /* Приглушённый текст секции — между --c-text-body и --c-text-muted, своего токена нет */
-  --s04-text-soft: #6e675c;
+    --s04-text-soft: #6e675c;
   /* Кремовая заливка карточки теплее, чем --c-bg-alt */
-  --s04-card-bg: #f7f2e8;
-  --s04-card-radius: 18px;
+    --s04-card-bg: #f7f2e8;
+    --s04-card-radius: 18px;
 
   /* Тёплая подложка активной карточки. 12 % — потолок, а не вкус:
      --s04-text-soft на #f7f2e8 даёт 4.90:1, и при 16 % песка подложка
      становится #f1e6d5, где та же пара проваливается до 4.50 (fail).
      На 12 % подложка #f3e9da → 4.65:1, AA остаётся с запасом. */
-  --s04-warm: color-mix(in srgb, var(--c-sand) 12%, transparent);
+    --s04-warm: color-mix(in srgb, var(--c-sand) 12%, transparent);
 
   /* Заливка номера. Была песочная, стала зелёная — тот же сигнальный цвет,
      что у мулек над пилонами и у цены в фокусе ленты каталога. 34 % поверх
      тёплой карточки; цифра --c-text-strong читается с большим запасом. */
-  --s04-num-fill: color-mix(in srgb, var(--c-green) 34%, transparent);
+    --s04-num-fill: color-mix(in srgb, var(--c-green) 34%, transparent);
 
-  --s04-num: 48px;
-  --s04-num-radius: 14px;
+    --s04-num: 44px;
+    --s04-num-radius: 12px;
 
   /* Подъём активной карточки. 6px, не больше: связка — потомок карточки
      и уезжает вместе с ней, а на 6px стык с боковой гранью соседа
      (высотой в две сотни пикселей) на глаз не смещается. */
-  --s04-lift: -6px;
+    --s04-lift: -6px;
 
   /* Геометрия сетки и узлов. Держим в переменных, потому что от них
      считаются и раскладка, и длина связки, и парковка в reduced-motion. */
-  --s04-gap: 32px;
+    --s04-gap: 28px;
   /* Связка идёт по вертикальному центру карточки, а не по центру номера:
      карточки в гриде тянутся до равной высоты, поэтому 50% — одна общая
      линия для всех трёх. Привязка к номеру уводила её в верхнюю треть. */
-  --s04-node-y: 50%;
-  --s04-node-x: 56px;   /* центр номера от левого края (нужен только в стопке) */
+    --s04-node-y: 50%;
+    --s04-node-x: 44px;   /* центр номера от левого края (нужен только в стопке) */
 
   /* Длина связки: зазор сетки плюс по 1px на бордюры обеих карточек —
      линия дотягивается от padding-box одной до padding-box другой. */
-  --s04-len: calc(var(--s04-gap) + 2px);
+    --s04-len: calc(var(--s04-gap) + 2px);
 
   /* --- Ориентация связки ---------------------------------------------------
      На десктопе связка горизонтальная, в стопке — вертикальная. Вместо двух
      наборов кейфреймов держим ГЕОМЕТРИЮ в переменных: такты остаются едиными,
      меняется только ось. Значения подставляются в inset() и translate(). */
-  --s04-track-angle: 90deg;          /* направление пунктира дорожки */
-  --s04-clip-hide: 0 100% 0 0;       /* заливка ещё не начата (срез справа) */
-  --s04-clip-full: 0 0 0 0;          /* заливка на всю длину */
-  --s04-clip-out:  0 0 0 100%;       /* свет ушёл дальше по конвейеру (срез слева) */
-  --s04-run: var(--s04-len), 0px;    /* пробег бегунка на всю длину связки */
+    --s04-track-angle: 180deg;          /* направление пунктира дорожки */
+    --s04-clip-hide: 0 0 100% 0;       /* заливка ещё не начата (срез справа) */
+    --s04-clip-full: 0 0 0 0;          /* заливка на всю длину */
+    --s04-clip-out: 100% 0 0 0;       /* свет ушёл дальше по конвейеру (срез слева) */
+    --s04-run: 0px, var(--s04-len);    /* пробег бегунка на всю длину связки */
 
-  padding-block: 120px;
-  background: var(--c-bg);
+    padding-block: 64px;
+    background: var(--c-bg);
 }
 
 /* --- Подложка под стекло ----------------------------------------------------
@@ -71,83 +71,82 @@
    спорит с их текстом.
    -------------------------------------------------------------------------- */
 .s-04 {
-  position: relative;
-  isolation: isolate;
+    position: relative;
+    isolation: isolate;
 }
 
 .s-04::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(52% 44% at 18% 22%, rgba(212, 163, 115, 0.30) 0%, transparent 68%),
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(52% 44% at 18% 22%, rgba(212, 163, 115, 0.30) 0%, transparent 68%),
     radial-gradient(46% 40% at 84% 74%, rgba(61, 143, 99, 0.18) 0%, transparent 66%),
     url("../assets/img/decor/girih-pattern.svg") center / 620px repeat;
-  opacity: 0.55;
+    opacity: 0.55;
 }
 
 
 /* --- Шапка секции --------------------------------------------------------- */
 .s-04__head {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
 }
 
 .s-04__label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* .rule по умолчанию 120px — здесь короткий штрих слева от надзаголовка */
 .s-04 .rule.s-04__label-rule {
-  display: block;
-  flex: none;
-  width: 24px;
-  border-radius: 2px;
+    display: block;
+    flex: none;
+    width: 24px;
+    border-radius: 2px;
 }
 
 /* .kicker по умолчанию 12px/золотой — здесь крупнее и приглушённый */
 .s-04 .kicker.s-04__label-text {
-  font-size: 13px;
-  line-height: 18px;
-  letter-spacing: 1.3px;
-  color: var(--c-green-text);
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 1.3px;
+    color: var(--c-green-text);
 }
 
 .s-04__title {
-  font-size: 64px;
-  line-height: 70px;
-  letter-spacing: -2px;
-  color: var(--c-ink-surface-2);
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.8px;
+    color: var(--c-ink-surface-2);
 }
 
 .s-04__lead {
-  max-width: 640px;
-  color: var(--s04-text-soft);
+    max-width: 640px;
+    color: var(--s04-text-soft);
 }
 
 /* --- Сетка шагов ---------------------------------------------------------- */
 .s-04__steps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--s04-gap);
-  margin-top: 72px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s04-gap);
+    margin-top: 36px;
 }
 
 /* --- Карточка шага -------------------------------------------------------- */
 .s-04 .card.s-04__step {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 40px 32px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 28px 22px;
   /* Стекло, общее со всеми крупными плашками страницы — материал описан
      токенами в 00-base.css. Кромка тоже оттуда: белая волосяная линия
      вместо прежней бежевой рамки в 1 px, которую просили убрать.
@@ -156,31 +155,30 @@
   /* Граница прозрачна и работает распоркой: в её толщину видно нижний
      слой фона — градиентную кромку. Убирать границу совсем нельзя: карточка
      съедет на пиксель относительно связки, которая считается от её края. */
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
 
   /* Ровно один пиксель, а не полтора: дробную границу браузер округляет до
      целого, и заявленные 1.5 всё равно превращались в 1. Лучше задать то,
      что действительно нарисуется. */
-  border: 1px solid transparent;
-  border-radius: var(--s04-card-radius);
+    border: 1px solid transparent;
+    border-radius: var(--s04-card-radius);
 
   /* Фактура бумаги идёт ПОВЕРХ стекла, а не под ним: слои стекла
      непрозрачны и накрыли бы зерно целиком. Само зерно почти прозрачно —
      семь процентов, — поэтому сверху оно ничего не глушит, а поверхность
      перестаёт быть стерильной. */
-  background-image:
-    url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27140%27%20height%3D%27140%27%3E%3Cfilter%20id%3D%27g%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%274%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%27140%27%20height%3D%27140%27%20filter%3D%27url%28%23g%29%27%20opacity%3D%270.07%27%2F%3E%3C%2Fsvg%3E"),
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27140%27%20height%3D%27140%27%3E%3Cfilter%20id%3D%27g%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%274%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%27140%27%20height%3D%27140%27%20filter%3D%27url%28%23g%29%27%20opacity%3D%270.07%27%2F%3E%3C%2Fsvg%3E"),
     var(--glass-bg),
     var(--glass-edge);
-  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
-  background-size: 140px 140px, 100% 100%, 100% 100%, 100% 100%;
-  background-origin: padding-box, padding-box, padding-box, border-box;
-  background-clip: padding-box, padding-box, padding-box, border-box;
+    background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+    background-size: 140px 140px, 100% 100%, 100% 100%, 100% 100%;
+    background-origin: padding-box, padding-box, padding-box, border-box;
+    background-clip: padding-box, padding-box, padding-box, border-box;
 
   /* Анимируется по-прежнему только transform: тени статичны, иначе подъём
      превращается в перерисовку всего слоя. */
-  box-shadow: var(--glass-shadow);
+    box-shadow: var(--glass-shadow);
 }
 
 /* Тёплая подложка активного шага — один слой, одна анимация прозрачности.
@@ -194,12 +192,12 @@
 
    inset: -1px — слой садится ровно на бордюр карточки, а не внутрь него. */
 .s-04 .card.s-04__step::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: var(--s04-card-radius);
-  background: var(--s04-warm);
-  opacity: 0;
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: var(--s04-card-radius);
+    background: var(--s04-warm);
+    opacity: 0;
 }
 
 /* Порядок отрисовки без z-index и без isolation: подложка — первый ребёнок
@@ -209,7 +207,7 @@
 .s-04__num,
 .s-04 .h3.s-04__step-title,
 .s-04__step-text {
-  position: relative;
+    position: relative;
 }
 
 /* Номер шага: Outfit — единственное место в секции, где он уместен по макету.
@@ -218,64 +216,64 @@
    по 10 %) сняты намеренно: три разных цвета читались как три разные вещи,
    а рассказ здесь про ОДИН сигнал, который поочерёдно доходит до каждого. */
 .s-04__num {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: var(--s04-num);
-  height: var(--s04-num);
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--s04-num);
+    height: var(--s04-num);
   /* Контур живёт отдельным слоем (::after), а не рамкой узла: рамка лежала
      бы под заливкой и просвечивала сквозь неё — заливка полупрозрачная.
      Здесь остаётся только мягкая тень, чтобы пустой узел не был дырой. */
-  border-radius: var(--s04-num-radius);
-  box-shadow: 0 1px 2px rgba(89, 61, 28, 0.06);
-  font-family: var(--f-display);
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 24px;
-  color: var(--c-text-strong);
+    border-radius: var(--s04-num-radius);
+    box-shadow: 0 1px 2px rgba(89, 61, 28, 0.06);
+    font-family: var(--f-display);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    color: var(--c-text-strong);
 }
 
 /* Заливка узла. inset: -1.5px — слой перекрывает и рамку покоя, поэтому
    контур не просвечивает из-под залитого состояния. Поднимается снизу
    вверх срезом: «наливается», а не «проявляется». */
 .s-04__num::before {
-  content: '';
-  position: absolute;
+    content: '';
+    position: absolute;
   /* Рамки у узла больше нет, поэтому заливка встаёт вровень с его краем. */
-  inset: 0;
-  border-radius: var(--s04-num-radius);
-  background: var(--s04-num-fill);
-  clip-path: inset(100% 0 0 0);
+    inset: 0;
+    border-radius: var(--s04-num-radius);
+    background: var(--s04-num-fill);
+    clip-path: inset(100% 0 0 0);
 }
 
 /* Контур пустого узла. Лежит ПОВЕРХ заливки и гаснет, когда та поднимается:
    иначе полупрозрачный цвет не скрыл бы его, а смешался с ним. */
 .s-04__num::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid color-mix(in srgb, var(--c-line-strong) 38%, transparent);
-  border-radius: var(--s04-num-radius);
-  pointer-events: none;
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid color-mix(in srgb, var(--c-line-strong) 38%, transparent);
+    border-radius: var(--s04-num-radius);
+    pointer-events: none;
 }
 
 /* Цифра — отдельный спан, чтобы лечь поверх заливки по тому же правилу
    порядка отрисовки (позиционированные рисуются в порядке дерева). */
 .s-04__num-d {
-  position: relative;
+    position: relative;
 }
 
 .s-04 .h3.s-04__step-title {
-  font-weight: 800;
-  letter-spacing: -0.22px;
-  color: var(--c-ink-surface-2);
+    font-weight: 800;
+    letter-spacing: -0.22px;
+    color: var(--c-ink-surface-2);
 }
 
 .s-04__step-text {
-  font-size: 15px;
-  line-height: 26px;
-  color: var(--s04-text-soft);
+    font-size: 14px;
+    line-height: 24px;
+    color: var(--s04-text-soft);
 }
 
 /* --- Связка между шагами ---------------------------------------------------
@@ -284,8 +282,8 @@
    выключенном движении три карточки читаются как звенья одной цепи.
    Заливка --c-gold на #f5f0eb даёт 5.23:1 — с запасом к 3:1 для не-текста. */
 .s-04__wire {
-  position: absolute;
-  top: var(--s04-node-y);
+    position: absolute;
+    top: calc(100% + 1px);
 
   /* left: 100% отсчитывается от padding-box, то есть на толщину границы
      ВНУТРЬ карточки — связка заходила под неё на пиксель с каждой стороны.
@@ -294,35 +292,42 @@
 
      Сдвигаем на границу наружу и на две укорачиваем: теперь связка ровно
      упирается в кромку обеих карточек и никуда не заходит. */
-  left: calc(100% + 1px);
-  width: calc(var(--s04-len) - 2px);
-  height: 2px;
-  margin-top: -1px;
-  background-image: repeating-linear-gradient(var(--s04-track-angle),
+    left: 50%;
+    width: 2px;
+    height: var(--s04-len);
+    margin-top: 0;
+
+  /* Оба значения выписаны явно ради стопки: там связка встаёт вертикально,
+     укорачивается и центруется отрицательным полем. Без этих двух строк
+     вертикальные настройки нечем было бы снять на широком экране.
+     --s04-len наследуется от секции — inherit возвращает ровно её. */
+    --s04-len: calc(var(--s04-gap) + 14px);
+    margin-left: -1px;
+    background-image: repeating-linear-gradient(var(--s04-track-angle),
     var(--c-line-gold) 0 3px,
     transparent 3px 7px);
 }
 
 .s-04__wire-fill {
-  position: absolute;
-  inset: 0;
-  border-radius: 1px;
-  background: var(--c-gold);
-  clip-path: inset(var(--s04-clip-hide));
+    position: absolute;
+    inset: 0;
+    border-radius: 1px;
+    background: var(--c-gold);
+    clip-path: inset(var(--s04-clip-hide));
 }
 
 /* Бегунок передачи: один сигнал, который уходит из шага N и приходит
    в шаг N+1. Его прибытие — причина, по которой следующий узел наливается. */
 .s-04__pip {
-  position: absolute;
-  top: 1px;
-  left: 0;
-  width: 7px;
-  height: 7px;
-  margin: -3.5px 0 0 -3.5px;
-  border-radius: 50%;
-  background: var(--c-gold);
-  opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 1px;
+    width: 7px;
+    height: 7px;
+    margin: -3.5px 0 0 -3.5px;
+    border-radius: 50%;
+    background: var(--c-gold);
+    opacity: 0;
 }
 
 /* Поток «оно работает»: в финальном такте по обеим связкам непрерывно
@@ -331,20 +336,20 @@
    что одна анимация не может одновременно держать transform-петлю и
    прозрачность-ворота. */
 .s-04__flow {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
+    position: absolute;
+    inset: 0;
+    opacity: 0;
 }
 
 .s-04__flow-dot {
-  position: absolute;
-  top: 1px;
-  left: 0;
-  width: 5px;
-  height: 5px;
-  margin: -2.5px 0 0 -2.5px;
-  border-radius: 50%;
-  background: var(--c-gold);
+    position: absolute;
+    top: 0;
+    left: 1px;
+    width: 5px;
+    height: 5px;
+    margin: -2.5px 0 0 -2.5px;
+    border-radius: 50%;
+    background: var(--c-gold);
 }
 
 /* ==========================================================================
@@ -379,9 +384,9 @@
    ========================================================================== */
 
 .s-04 .card.s-04__step {
-  animation-duration: 18s;
-  animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
-  animation-iteration-count: infinite;
+    animation-duration: 18s;
+    animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
+    animation-iteration-count: infinite;
 }
 
 .s-04 .card.s-04__step::before,
@@ -390,43 +395,43 @@
 .s-04__wire-fill,
 .s-04__pip,
 .s-04__flow {
-  animation-duration: 18s;
-  animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
-  animation-iteration-count: infinite;
+    animation-duration: 18s;
+    animation-timing-function: linear;   /* смягчение — внутри кейфреймов */
+    animation-iteration-count: infinite;
 }
 
-.s-04__step--1 { animation-name: s04-lift1; }
-.s-04__step--2 { animation-name: s04-lift2; }
-.s-04__step--3 { animation-name: s04-lift3; }
+.s-04__step--1 {   animation-name: s04-lift1; }
+.s-04__step--2 {   animation-name: s04-lift2; }
+.s-04__step--3 {   animation-name: s04-lift3; }
 
-.s-04__step--1::before { animation-name: s04-warm1; }
-.s-04__step--2::before { animation-name: s04-warm2; }
-.s-04__step--3::before { animation-name: s04-warm3; }
+.s-04__step--1::before {   animation-name: s04-warm1; }
+.s-04__step--2::before {   animation-name: s04-warm2; }
+.s-04__step--3::before {   animation-name: s04-warm3; }
 
-.s-04__step--1 .s-04__num::before { animation-name: s04-fill1; }
-.s-04__step--2 .s-04__num::before { animation-name: s04-fill2; }
-.s-04__step--3 .s-04__num::before { animation-name: s04-fill3; }
+.s-04__step--1 .s-04__num::before {   animation-name: s04-fill1; }
+.s-04__step--2 .s-04__num::before {   animation-name: s04-fill2; }
+.s-04__step--3 .s-04__num::before {   animation-name: s04-fill3; }
 
-.s-04__step--1 .s-04__num::after { animation-name: s04-ring1; }
-.s-04__step--2 .s-04__num::after { animation-name: s04-ring2; }
-.s-04__step--3 .s-04__num::after { animation-name: s04-ring3; }
+.s-04__step--1 .s-04__num::after {   animation-name: s04-ring1; }
+.s-04__step--2 .s-04__num::after {   animation-name: s04-ring2; }
+.s-04__step--3 .s-04__num::after {   animation-name: s04-ring3; }
 
-.s-04__wire--1 .s-04__wire-fill { animation-name: s04-wire1; }
-.s-04__wire--2 .s-04__wire-fill { animation-name: s04-wire2; }
+.s-04__wire--1 .s-04__wire-fill {   animation-name: s04-wire1; }
+.s-04__wire--2 .s-04__wire-fill {   animation-name: s04-wire2; }
 
-.s-04__wire--1 .s-04__pip { animation-name: s04-pip1; }
-.s-04__wire--2 .s-04__pip { animation-name: s04-pip2; }
+.s-04__wire--1 .s-04__pip {   animation-name: s04-pip1; }
+.s-04__wire--2 .s-04__pip {   animation-name: s04-pip2; }
 
-.s-04__flow { animation-name: s04-flow-gate; }
+.s-04__flow {   animation-name: s04-flow-gate; }
 
 .s-04__flow-dot {
-  animation: s04-flow 3s linear infinite;
+    animation: s04-flow 3s linear infinite;
 }
 
 /* Вторая связка отстаёт на пол-периода: точки идут не строем, а
    вереницей — по всей цепи видно непрерывное движение.
    Отрицательная задержка на амбиентной петле — приём из s-06. */
-.s-04__wire--2 .s-04__flow-dot { animation-delay: -1.5s; }
+.s-04__wire--2 .s-04__flow-dot {   animation-delay: -1.5s; }
 
 /* --- 1. Подъём карточек -----------------------------------------------------
    Связка — потомок своей карточки, поэтому рисуется только тогда, когда
@@ -579,23 +584,7 @@
 }
 
 /* --- Адаптив -------------------------------------------------------------- */
-@media (max-width: 1280px) {
-  .s-04 {
-    --s04-gap: 24px;
 
-    padding-block: 96px;
-  }
-
-  .s-04__title {
-    font-size: 56px;
-    line-height: 62px;
-    letter-spacing: -1.6px;
-  }
-
-  .s-04__steps { margin-top: 60px; }
-
-  .s-04 .card.s-04__step { padding: 36px 28px; }
-}
 
 /* --- Стопка: связка поворачивается на 90° ----------------------------------
    Горизонтальная линия между карточками в одну колонку не имеет смысла,
@@ -606,87 +595,7 @@
    (--s04-track-angle, --s04-clip-*, --s04-run) и точка привязки.
    Зазор поднят с 20 до 28px: вертикальному спуску нужна дистанция,
    иначе передача читается как случайный штрих. */
-@media (max-width: 900px) {
-  .s-04 {
-    --s04-gap: 28px;
-    --s04-node-x: 52px;   /* padding-left 28 + 48/2 */
 
-    --s04-track-angle: 180deg;
-    /* inset() читается «сверху справа снизу слева», поэтому 100% в ПЕРВОМ
-       слоте схлопывает слой к НИЗУ, а не к верху. Связка в стопке идёт
-       сверху вниз (бегунок едет на +Y), значит стартовый срез должен быть
-       снизу (`0 0 100% 0`), а уход — сверху (`100% 0 0 0`): свет уходит
-       дальше вниз, к следующему шагу, а не втягивается обратно в первый. */
-    --s04-clip-hide: 0 0 100% 0;   /* ещё не начата: срез снизу, растёт вниз */
-    --s04-clip-full: 0 0 0 0;
-    --s04-clip-out:  100% 0 0 0;   /* свет ушёл вниз, за следующий шаг */
-    --s04-run: 0px, var(--s04-len);
-
-    padding-block: 80px;
-  }
-
-  .s-04__title {
-    font-size: 40px;
-    line-height: 48px;
-    letter-spacing: -1.2px;
-  }
-
-  .s-04__steps {
-    grid-template-columns: minmax(0, 1fr);
-    margin-top: 48px;
-  }
-
-  .s-04__wire {
-    top: 100%;
-    left: var(--s04-node-x);
-    width: 2px;
-    height: var(--s04-len);
-    margin-top: 0;
-    margin-left: -1px;
-  }
-
-  .s-04__pip {
-    top: 0;
-    left: 1px;
-  }
-
-  .s-04__flow-dot {
-    top: 0;
-    left: 1px;
-  }
-}
-
-@media (max-width: 600px) {
-  .s-04 {
-    --s04-num: 44px;
-    --s04-num-radius: 12px;
-    --s04-node-x: 44px;   /* padding-left 22 + 44/2 */
-
-    padding-block: 64px;
-  }
-
-  .s-04__head { gap: 14px; }
-
-  .s-04__title {
-    font-size: 30px;
-    line-height: 38px;
-    letter-spacing: -0.8px;
-  }
-
-  .s-04__steps { margin-top: 36px; }
-
-  .s-04 .card.s-04__step {
-    gap: 10px;
-    padding: 28px 22px;
-  }
-
-  .s-04__num { font-size: 18px; }
-
-  .s-04__step-text {
-    font-size: 14px;
-    line-height: 24px;
-  }
-}
 
 /* --- Уважение к prefers-reduced-motion --------------------------------------
    Сброс в 00-base.css схлопывает каждую анимацию в ПОСЛЕДНИЙ кадр. Здесь на
@@ -737,5 +646,120 @@
   .s-04__flow-dot {
     animation: none !important;
     transform: none;
+  }
+}
+
+/* --- Адаптив: снизу вверх ---------------------------------------------------
+   Всё выше — телефонные значения. Здесь они дорастают до широкого экрана.
+   Блоки идут строго по возрастанию порога: правила равной силы, побеждает
+   последнее подошедшее. Пороги смещены на пиксел (601 вместо 600): при
+   max-width граница входила в узкий диапазон, при min-width должна войти
+   в широкий. -------------------------------------------------------------- */
+
+@media (min-width: 601px) {
+  .s-04 {
+    --s04-num: 48px;
+    --s04-num-radius: 14px;
+    --s04-node-x: 52px;
+    padding-block: 80px;
+  }
+  .s-04__head {
+    gap: 16px;
+  }
+  .s-04__title {
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -1.2px;
+  }
+  .s-04__steps {
+    margin-top: 48px;
+  }
+  .s-04 .card.s-04__step {
+    gap: 12px;
+    padding: 36px 28px;
+  }
+  .s-04__num {
+    font-size: 20px;
+  }
+  .s-04__step-text {
+    font-size: 15px;
+    line-height: 26px;
+  }
+}
+
+@media (min-width: 901px) {
+  .s-04 {
+    --s04-gap: 24px;
+    --s04-node-x: 56px;
+    /* --- Ориентация связки ---------------------------------------------------
+    На десктопе связка горизонтальная, в стопке — вертикальная. Вместо двух
+    наборов кейфреймов держим ГЕОМЕТРИЮ в переменных: такты остаются едиными,
+    меняется только ось. Значения подставляются в inset() и translate(). */
+    --s04-track-angle: 90deg;
+    /* направление пунктира дорожки */
+    --s04-clip-hide: 0 100% 0 0;
+    /* заливка на всю длину */
+    --s04-clip-out: 0 0 0 100%;
+    /* свет ушёл дальше по конвейеру (срез слева) */
+    --s04-run: var(--s04-len), 0px;
+    padding-block: 96px;
+  }
+  .s-04__title {
+    font-size: 56px;
+    line-height: 62px;
+    letter-spacing: -1.6px;
+  }
+  .s-04__steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 60px;
+  }
+  .s-04__wire {
+    top: var(--s04-node-y);
+    /* left: 100% отсчитывается от padding-box, то есть на толщину границы
+    ВНУТРЬ карточки — связка заходила под неё на пиксель с каждой стороны.
+    Пока карточка была глухой, этот пиксель просто прятался. Со стеклом он
+    стал просвечивать светлым призраком у самого стыка.
+    
+    Сдвигаем на границу наружу и на две укорачиваем: теперь связка ровно
+    упирается в кромку обеих карточек и никуда не заходит. */
+    left: calc(100% + 1px);
+    width: calc(var(--s04-len) - 2px);
+    height: 2px;
+    margin-top: -1px;
+    /* Оба значения выписаны явно ради стопки: там связка встаёт вертикально,
+    укорачивается и центруется отрицательным полем. Без этих двух строк
+    вертикальные настройки нечем было бы снять на широком экране.
+    --s04-len наследуется от секции — inherit возвращает ровно её. */
+    --s04-len: inherit;
+    margin-left: 0;
+  }
+  .s-04__pip {
+    top: 1px;
+    left: 0;
+  }
+  .s-04__flow-dot {
+    top: 1px;
+    left: 0;
+  }
+}
+
+@media (min-width: 1281px) {
+  .s-04 {
+    /* Геометрия сетки и узлов. Держим в переменных, потому что от них
+    считаются и раскладка, и длина связки, и парковка в reduced-motion. */
+    --s04-gap: 32px;
+    /* пробег бегунка на всю длину связки */
+    padding-block: 120px;
+  }
+  .s-04__title {
+    font-size: 64px;
+    line-height: 70px;
+    letter-spacing: -2px;
+  }
+  .s-04__steps {
+    margin-top: 72px;
+  }
+  .s-04 .card.s-04__step {
+    padding: 40px 32px;
   }
 }

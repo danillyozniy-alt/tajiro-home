@@ -5,7 +5,17 @@
     <div class="s-14__top">
 
       <div class="s-14__brand">
-        <p class="s-14__wordmark">tajiro</p>
+        <!-- Тот же знак, что в шапке: заглавная T, точки над ȷ и ı
+             отдельными узлами (зелёная и песочная). Буквы взяты без
+             собственных точек — ȷ и ı, — иначе над ними стояло бы по две.
+             Классы точек общие с шапкой: смещения заданы в em и живут в
+             одном месте, в 00-header.css. -->
+        <p class="s-14__wordmark">
+          <span aria-hidden="true">Taȷıro</span>
+          <span class="nav-logo__dot nav-logo__dot--green" aria-hidden="true"></span>
+          <span class="nav-logo__dot nav-logo__dot--sand" aria-hidden="true"></span>
+          <span class="visually-hidden">Tajiro</span>
+        </p>
         <p class="s-14__about">The ecommerce platform built for everyday people. Free store, real products, personal support, real people.</p>
         <address class="s-14__address">
           Tajiro Technologies Corporation<br>
@@ -141,7 +151,7 @@
       <p class="s-14__copyright">© 2026 Tajiro Technologies Corporation · Dubai, UAE</p>
       <ul class="s-14__badges">
         <li>SSL Secured</li>
-        <li>US Company</li>
+        <li>UAE Company</li>
         <li>30-Day Guarantee</li>
       </ul>
     </div>

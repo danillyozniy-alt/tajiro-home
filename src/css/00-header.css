@@ -85,8 +85,11 @@ html { scroll-padding-top: var(--nav-h); }
   border-radius: 50%;
 }
 
-.nav-logo__dot--green { left: 0.96875em; background: #2a3d2e; }
-.nav-logo__dot--sand  { left: 1.1875em;  background: var(--c-sand); }
+/* Точка над ȷ — тем же зелёным, что кнопки. Прежний #2a3d2e читался
+   чёрным, и зелёного в логотипе не было видно вовсе. Смещения ниже
+   выставлены под ЗАГЛАВНУЮ T: она шире строчной, и от неё едут обе точки. */
+.nav-logo__dot--green { left: 1.1em; background: var(--c-green); }
+.nav-logo__dot--sand  { left: 1.334em; background: var(--c-sand); }
 
 /* --- Десктопная навигация ------------------------------------------------- */
 .nav,
