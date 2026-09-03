@@ -15,24 +15,24 @@
 
 /* Высота бара живёт в :root — её использует scroll-padding-top документа,
    чтобы якорные переходы не заезжали под липкую шапку. */
-:root { --nav-h: 96px; }
+:root {   --nav-h: 72px; }
 
-html { scroll-padding-top: var(--nav-h); }
+html {   scroll-padding-top: var(--nav-h); }
 
 .site-header {
-  --nav-line: rgba(43, 38, 33, 0.10);        /* хайрлайн доски — нейтральный, не золотой */
-  --nav-panel-line: rgba(43, 38, 33, 0.09);
+    --nav-line: rgba(43, 38, 33, 0.10);        /* хайрлайн доски — нейтральный, не золотой */
+    --nav-panel-line: rgba(43, 38, 33, 0.09);
   /* Кромка стекла светлая, а не тёмная: тёмная линия по периметру
      превращает панель обратно в плашку с рамкой. */
-  --nav-glass-edge: rgba(255, 255, 255, 0.58);
-  --nav-chev: rgba(43, 38, 33, 0.45);
-  --nav-foot-bg: #f4eee4;                    /* между --c-bg и --c-bg-alt, токена нет */
-  --nav-hover: rgba(43, 38, 33, 0.04);
-  --nav-shadow: 0 16px 40px rgba(31, 26, 18, 0.10);
+    --nav-glass-edge: rgba(255, 255, 255, 0.58);
+    --nav-chev: rgba(43, 38, 33, 0.45);
+    --nav-foot-bg: #f4eee4;                    /* между --c-bg и --c-bg-alt, токена нет */
+    --nav-hover: rgba(43, 38, 33, 0.04);
+    --nav-shadow: 0 16px 40px rgba(31, 26, 18, 0.10);
 
-  position: sticky;
-  top: 0;
-  z-index: 50;                                /* панели и бар поверх секций */
+    position: sticky;
+    top: 0;
+    z-index: 50;                                /* панели и бар поверх секций */
   /* Стекло вместо глухой заливки: контент под баром просвечивает и
      размывается, бар перестаёт быть отрезанной полосой.
 
@@ -42,111 +42,120 @@ html { scroll-padding-top: var(--nav-h); }
      цифрах — у них нет флага или засечки, по которой глаз достроил бы
      недостающий верх. На 0.9 стекло осталось стеклом, а проезжающий текст
      стал намёком. */
-  background: rgba(245, 240, 235, 0.9);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  border-bottom: 1px solid var(--nav-line);
+    background: rgba(245, 240, 235, 0.9);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border-bottom: 1px solid var(--nav-line);
 }
 
 .site-header__inner {
-  display: flex;
-  height: var(--nav-h);
-  align-items: center;
-  gap: 54px;
+    display: flex;
+    height: var(--nav-h);
+    align-items: center;
+    gap: 54px;
 }
 
 .site-header__right {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  gap: 28px;
+    display: none;
+    align-items: center;
+    margin-left: auto;
+    gap: 28px;
 }
 
 /* --- Логотип -------------------------------------------------------------- */
 /* Буквы без точек + две цветные точки поверх ȷ и ı. Смещения в em — точки
    едут вместе с кеглем на брейкпоинтах. */
 .nav-logo {
-  position: relative;
-  flex: none;
-  height: 32px;
-  font-family: var(--f-display);
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 32px;
-  letter-spacing: -0.64px;
-  color: var(--c-text-strong);
+    position: relative;
+    flex: none;
+    height: 26px;
+    font-family: var(--f-display);
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 26px;
+    letter-spacing: -0.52px;
+    color: var(--c-text-strong);
 }
 
 .nav-logo__dot {
-  position: absolute;
-  top: 0.125em;             /* 4px */
-  width: 0.15625em;         /* 5px */
-  height: 0.15625em;
-  border-radius: 50%;
+    position: absolute;
+    top: 0.125em;             /* 4px */
+    width: 0.15625em;         /* 5px */
+    height: 0.15625em;
+    border-radius: 50%;
 }
 
 /* Точка над ȷ — тем же зелёным, что кнопки. Прежний #2a3d2e читался
    чёрным, и зелёного в логотипе не было видно вовсе. Смещения ниже
    выставлены под ЗАГЛАВНУЮ T: она шире строчной, и от неё едут обе точки. */
-.nav-logo__dot--green { left: 1.1em; background: var(--c-green); }
-.nav-logo__dot--sand  { left: 1.334em; background: var(--c-sand); }
+.nav-logo__dot--green {   left: 1.1em;   background: var(--c-green); }
+.nav-logo__dot--sand {   left: 1.334em;   background: var(--c-sand); }
 
 /* --- Десктопная навигация ------------------------------------------------- */
 .nav,
 .nav__list,
-.nav__item { height: 100%; }
+.nav__item {   height: 100%; }
+
+/* Обычный блок — то есть значение по умолчанию, выписанное явно. Ниже 900
+   десктопная навигация убирается целиком, и вернуть её выше порога можно
+   только этой строкой. */
+.nav {   display: none; }
 
 .nav__list {
-  display: flex;
-  align-items: stretch;
-  gap: 38px;
+    display: flex;
+    align-items: stretch;
+    gap: 38px;
 }
 
-.nav__item { position: relative; display: flex; }
+.nav__item {   position: relative;   display: flex; }
+
+/* То же значение, что у соседей выше: ниже 1140 мега-пункт перестаёт быть
+   якорем для панели, и отменить это можно только явным relative. */
+.nav__item--mega {   position: static; }
 
 .nav__trigger,
 .nav__link,
 .nav__login {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--f-body);
-  font-size: 15px;
-  color: var(--c-text-strong);
-  transition: color 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--f-body);
+    font-size: 15px;
+    color: var(--c-text-strong);
+    transition: color 0.18s ease;
 }
 
 /* Триггер тянется на всю высоту бара — панель цепляется к его низу,
    а зона наведения покрывает весь бар. */
 .nav__trigger,
 .nav__link {
-  height: 100%;
-  letter-spacing: 0.2px;
+    height: 100%;
+    letter-spacing: 0.2px;
 }
 
 .nav__trigger:hover,
 .nav__link:hover,
-.nav__login:hover { color: var(--c-gold); }
+.nav__login:hover {   color: var(--c-gold); }
 
 /* Шеврон — сплошной треугольник 8×5, остриём вниз (геометрия из Figma).
    На доске он НЕ переворачивается при раскрытии, только меняет цвет. */
 .nav__chev {
-  flex: none;
-  width: 8px;
-  height: 5px;
-  color: var(--nav-chev);
-  transition: color 0.18s ease;
+    flex: none;
+    width: 8px;
+    height: 5px;
+    color: var(--nav-chev);
+    transition: color 0.18s ease;
 }
 
-.nav__trigger[aria-expanded="true"] { color: var(--c-gold); }
-.nav__trigger[aria-expanded="true"] .nav__chev { color: var(--c-gold); }
+.nav__trigger[aria-expanded="true"] {   color: var(--c-gold); }
+.nav__trigger[aria-expanded="true"] .nav__chev {   color: var(--c-gold); }
 
 /* --- Выпадающие панели ---------------------------------------------------- */
 .nav-panel {
-  position: absolute;
-  z-index: 10;
-  top: calc(100% + 8px);    /* 8px под нижней границей бара */
-  left: 0;
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 8px);    /* 8px под нижней границей бара */
+    left: 0;
   /* overflow: hidden здесь стоял ради нижних скруглений подвала — и заодно
      срезал мостик через зазор до шапки, из-за чего меню закрывалось на
      полпути к нему. Скругления теперь заданы подвалу и блику напрямую,
@@ -154,30 +163,30 @@ html { scroll-padding-top: var(--nav-h); }
   /* Граница прозрачна и работает распоркой: в её толщину видно нижний
      слой фона — градиентную кромку, обрезанную по border-box. Слои
      поверхности обрезаны по padding-box и внутрь границы не заходят. */
-  border: 1.5px solid transparent;
-  border-radius: var(--r-card);
+    border: 1.5px solid transparent;
+    border-radius: var(--r-card);
 
   /* Материал общий со всеми плашками страницы, описан в 00-base.css.
      Здесь берётся «плавающая» глубина: панель висит над содержимым, а не
      лежит на нём. */
-  background-image: var(--glass-bg-solid), var(--glass-edge);
-  background-origin: padding-box, padding-box, border-box;
-  background-clip: padding-box, padding-box, border-box;
-  box-shadow: var(--glass-shadow-float);
+    background-image: var(--glass-bg-solid), var(--glass-edge);
+    background-origin: padding-box, padding-box, border-box;
+    background-clip: padding-box, padding-box, border-box;
+    box-shadow: var(--glass-shadow-float);
 
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-6px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
   /* visibility в transition залипает: панель остаётся visible при opacity 0,
      то есть ловит курсор и висит в таб-порядке. Переключаем её мгновенно,
      анимируем только opacity и transform. */
-  transition: opacity 0.18s ease, transform 0.18s ease;
+    transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
 .nav-panel.is-open {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
 }
 
 /* Раскрытие по наведению — на чистом CSS, чтобы не зависеть от JS.
@@ -215,27 +224,28 @@ html { scroll-padding-top: var(--nav-h); }
    полоса наискось по верхнему углу, обрезана скруглением панели. Своего
    события у неё нет: она просто лежит, как отражение окна на плоскости. */
 .nav-panel::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 42%;
-  border-radius: var(--r-card) var(--r-card) 0 0;
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 42%;
+    border-radius: var(--r-card) var(--r-card) 0 0;
   /* Под содержимое, а не поверх. Отрицательный z-index кладёт слой между
      фоном панели и её текстом: сверху блик выбеливал подписи колонок и
      первый пункт списка. */
-  z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(168deg,
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(168deg,
       rgba(255, 255, 255, 0.9) 0%,
       rgba(255, 255, 255, 0.35) 46%,
       rgba(255, 255, 255, 0) 100%);
 }
 
-.nav-panel--mega  { width: 812px; }
-.nav-panel--small { width: 388px; }
+/* right/left выписаны явно: ниже 1140 панель растягивается от поля до поля,
+   и вернуть её к привязке по левому краю можно только этими строками. */
+.nav-panel--mega {   width: auto;   right: var(--gutter);   left: var(--gutter); }
+.nav-panel--small {   width: 388px; }
 
 /* Мостик через 8px зазор между баром и панелью — иначе курсор «выходит»
    из пункта по дороге к панели и меню схлопывается.
@@ -244,60 +254,65 @@ html { scroll-padding-top: var(--nav-h); }
    идёт наискось, срезая угол мимо узкой полоски. Сверху перекрываем на
    пиксель больше зазора, чтобы не оставалось щели на дробных масштабах. */
 .nav-panel::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  right: -24px;
-  left: -24px;
-  height: 11px;
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: -24px;
+    left: -24px;
+    height: 11px;
 }
 
 
 .nav-panel--mega .nav-panel__body {
-  display: flex;
-  align-items: flex-start;
-  gap: 30px;
-  padding: 26px 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 26px 32px;
 }
 
-.nav-panel--small .nav-panel__body { padding: 22px 28px; }
+.nav-panel--small .nav-panel__body {   padding: 22px 28px; }
 
 .nav-col {
-  display: flex;
-  flex: 0 0 376px;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+  /* Расписано покомпонентно, а не сокращением: ниже 1140 колонки переходят
+     на равные доли, и лестнице нужно одно имя свойства на всех ступенях. */
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    min-width: 0;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.nav-col--trade { flex-basis: 330px; }
+.nav-col--trade {   flex-basis: 0; }
 
 /* Надзаголовок колонки + хайрлайн под ним */
 .nav-col__kicker {
-  padding-bottom: 11px;
-  border-bottom: 1px solid var(--nav-line);
-  font-size: 11px;
-  letter-spacing: 2px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid var(--nav-line);
+    font-size: 11px;
+    letter-spacing: 2px;
 }
 
 .nav-col__list {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
   /* Пункт уже несёт свои отступы (padding ниже) — именно они и разводят
      строки. Зазор поверх них дублировал ту же работу второй раз, отчего
      список и выглядел раздутым: между соседними подписями набегало 34 px
      пустоты при высоте самой подписи в 20. */
-  gap: 4px;
+    gap: 4px;
 }
 
 /* --- Пункт меню (общий для панелей и мобильного аккордеона) --------------- */
 .nav-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 8px 12px 9px;
-  margin-inline: -12px;      /* подложка ховера шире текста, текст не съезжает */
-  border-radius: var(--r-btn);
-  transition: background-color 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 12px 9px;
+    margin-inline: -12px;      /* подложка ховера шире текста, текст не съезжает */
+    border-radius: var(--r-btn);
+    transition: background-color 0.18s ease;
 }
 
 /* Строку делает строкой не линия под ней, а признак того, что отсюда
@@ -309,311 +324,324 @@ html { scroll-padding-top: var(--nav-h); }
    бледная и не спорит с подписями, под курсором наливается и делает шаг
    вправо — тем же приёмом, что стрелка в подвале панели. */
 .nav-item {
-  position: relative;
-  padding-right: 30px;
+    position: relative;
+    padding-right: 30px;
 }
 
 .nav-item::after {
-  content: '';
-  position: absolute;
+    content: '';
+    position: absolute;
   /* Центр шеврона совпадает с центром строки заголовка: 8 px верхнего
      отступа пункта плюс половина двадцатипиксельной строки. */
-  top: 14px;
-  right: 12px;
-  width: 8px;
-  height: 8px;
-  border-top: 1.8px solid currentColor;
-  border-right: 1.8px solid currentColor;
-  transform: rotate(45deg);
+    top: 14px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    border-top: 1.8px solid currentColor;
+    border-right: 1.8px solid currentColor;
+    transform: rotate(45deg);
   /* Бронза, а не приглушённый серый. Серого на треть непрозрачности не было
      видно вовсе, а именно эта стрелка и объясняет, что перед тобой меню, —
      значит она обязана читаться до наведения, а не после. Бронза при этом
      не спорит с чёрным заголовком: у них разный тон, а не разная сила. */
-  color: var(--c-gold);
-  opacity: 0.75;
-  transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
+    color: var(--c-gold);
+    opacity: 0.75;
+    transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
 }
 
 .nav-item:hover::after {
-  opacity: 1;
-  transform: rotate(45deg) translate(3px, -3px);
+    opacity: 1;
+    transform: rotate(45deg) translate(3px, -3px);
 }
 
-.nav-item:hover { background: var(--nav-hover); }
+.nav-item:hover {   background: var(--nav-hover); }
 
-.nav-item__title { transition: color 0.18s ease; }
-.nav-item:hover .nav-item__title { color: var(--c-gold); }
+.nav-item__title {   transition: color 0.18s ease; }
+.nav-item:hover .nav-item__title {   color: var(--c-gold); }
 
 .nav-item__title {
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 20px;
-  color: var(--c-ink-surface-2);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    color: var(--c-ink-surface-2);
 }
 
 .nav-item__desc {
-  font-size: 13px;
-  line-height: 18px;
-  color: var(--c-text-muted);
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--c-text-muted);
 }
 
 /* --- Подвал панели -------------------------------------------------------- */
 .nav-panel__foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 20px 38px 21px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px 38px 21px;
   /* Подвал темнее полотна на четверть тона и отделён волосяной линией:
      ступенька читается как грань, а не как приклеенная плашка. */
-  border-top: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 0 0 var(--r-card) var(--r-card);
-  background: #f4efe7;
+    border-top: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 0 0 var(--r-card) var(--r-card);
+    background: #f4efe7;
 }
 
-.nav-panel--small .nav-panel__foot { padding: 18px 32px; }
-.nav-panel__foot--end { justify-content: flex-start; }
+.nav-panel--small .nav-panel__foot {   padding: 18px 32px; }
+.nav-panel__foot--end {   justify-content: flex-start; }
 
 .nav-panel__tagline {
-  font-family: var(--f-display);
-  font-size: 16px;
-  line-height: 20px;
-  color: var(--c-text);
+    font-family: var(--f-display);
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--c-text);
 }
 
 .nav-panel__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 18px;
-  color: var(--c-gold);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 18px;
+    color: var(--c-gold);
 }
 
-.nav-panel__arrow { transition: transform 0.18s ease; }
-.nav-panel__link:hover .nav-panel__arrow { transform: translateX(3px); }
+.nav-panel__arrow {   transition: transform 0.18s ease; }
+.nav-panel__link:hover .nav-panel__arrow {   transform: translateX(3px); }
 
 /* Узкий десктоп: 812px уже не влезают справа от триггера — панель
    прижимается к контейнеру, колонки становятся резиновыми.
    Идёт после правил .nav-col, иначе те перебьют flex-basis. */
-@media (max-width: 1140px) {
-  .nav__item--mega { position: static; }   /* якорь — шапка, а не пункт */
 
-  .nav-panel--mega {
-    width: auto;
-    right: var(--gutter);
-    left: var(--gutter);
-  }
 
-  .nav-col,
-  .nav-col--trade {
-    flex: 1 1 0;
-    min-width: 0;
-  }
-}
-
-/* --- Бургер и мобильный лист: скрыты на десктопе -------------------------- */
-.nav-burger,
-.nav-sheet { display: none; }
+/* --- Бургер и мобильный лист ----------------------------------------------
+   Правила разведены по одному селектору на каждое: ниже 900 у них разные
+   значения display (бургер — flex, лист — flex со своей раскладкой), а
+   групповое правило лестница переписала бы по первому из них. */
+.nav-burger {   display: flex; }
+.nav-sheet {   display: flex; }
 
 /* ==========================================================================
    Мобильная шапка — с 900px
    ========================================================================== */
-@media (max-width: 900px) {
 
-  :root { --nav-h: 72px; }
-
-  /* Десктопная навигация уходит, бургер приходит */
-  .nav,
-  .site-header__right { display: none; }
-
-  .nav-burger {
-    display: flex;
-    width: 44px;                /* тап-таргет: на доске нарисовано 20×8 */
-    height: 44px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-right: -10px;
-    margin-left: auto;
-    gap: 6px;                   /* шаг линий 7px */
-    color: var(--c-text-strong);
-  }
-
-  .nav-burger__line {
-    width: 20px;
-    height: 1px;
-    background: currentColor;
-  }
-
-  /* --- Лист ---------------------------------------------------------------- */
-  .nav-sheet {
-    position: fixed;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    inset: 0;
-    padding: 0 22px calc(28px + env(safe-area-inset-bottom, 0px));
-    background: var(--c-bg-alt);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: opacity 0.22s ease, transform 0.22s ease;
-  }
-
-  .nav-sheet.is-open {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-  }
-
-  /* Пока лист открыт, у шапки снимаем размытие подложки.
-
-     Иначе меню не работает вовсе. Элемент с backdrop-filter становится
-     точкой отсчёта для любого position: fixed внутри себя — то есть лист с
-     inset: 0 растягивался не на экран, а на шапку, 375x72. Полоса с
-     крестиком была видна, а всё остальное схлопывалось: .nav-sheet__scroll
-     получал нулевую высоту и обрезал навигацию целиком.
-
-     Терять тут нечего: открытый лист закрывает экран, и размывать шапке
-     всё равно нечего. */
-  body.nav-open .site-header {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
-  /* Шапка листа не уезжает — закрыть можно с любой позиции прокрутки */
-  .nav-sheet__bar {
-    display: flex;
-    flex: none;
-    height: var(--nav-h);
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .nav-sheet__close {
-    display: flex;
-    width: 44px;
-    height: 44px;
-    align-items: center;
-    justify-content: center;
-    margin-right: -10px;
-    color: var(--c-ink-surface-2);
-  }
-
-  .nav-sheet__scroll {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
-
-  /* --- Аккордеон ----------------------------------------------------------- */
-  .nav-acc__row { border-bottom: 1px solid var(--nav-line); }
-
-  .nav-acc__trigger {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    padding-block: 20px;        /* 20 + 20 + 20 = строка 60px */
-    /* Тот же шрифт, что в десктопной навигации. Здесь стоял --f-display, и
-     мобильное меню оказывалось единственным местом на странице, набранным
-     Outfit. Хуже того, у Outfit подключено одно начертание — 600, а строка
-     просит 400: браузер подставлял единственное доступное, и пункты выходили
-     ещё и жирнее положенного. */
-    font-family: var(--f-body);
-    font-size: 16px;
-    line-height: 20px;
-    text-align: left;
-    color: var(--c-ink-surface-2);
-    transition: color 0.18s ease;
-  }
-
-  .nav-acc__chev {
-    flex: none;
-    width: 10px;
-    height: 6px;
-    color: var(--nav-chev);
-    transition: color 0.18s ease, transform 0.18s ease;
-  }
-
-  /* Раскрытая строка: золотая, шеврон вверх, своя нижняя линия снимается —
-     закрывающий хайрлайн переезжает под список. */
-  .nav-acc__row.is-open { border-bottom-color: transparent; }
-  .nav-acc__row.is-open .nav-acc__trigger { color: var(--c-gold); }
-
-  .nav-acc__row.is-open .nav-acc__chev {
-    color: var(--c-gold);
-    transform: rotate(180deg);
-  }
-
-  .nav-acc__panel {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.22s ease;
-  }
-
-  .nav-acc__row.is-open .nav-acc__panel { grid-template-rows: 1fr; }
-
-  /* Клип-обёртка схлопывается до нуля; отступы и линия живут внутри неё,
-     иначе padding не дал бы строке сложиться полностью. */
-  .nav-acc__clip {
-    overflow: hidden;
-    min-height: 0;
-    visibility: hidden;         /* убирает пункты из таб-порядка в свёрнутом виде */
-  }
-
-  .nav-acc__row.is-open .nav-acc__clip { visibility: visible; }
-
-  .nav-acc__list {
-    padding-top: 2px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--nav-line);
-  }
-
-  .nav-item--tight {
-    gap: 3px;
-    padding: 9px 0;
-    margin-inline: 0;
-  }
-
-  .nav-item--tight:hover { background: none; }
-  .nav-item--tight .nav-item__desc { line-height: 19px; }
-
-  /* --- Log in и кнопка ----------------------------------------------------- */
-  .nav-sheet__login {
-    display: block;
-    margin-top: 18px;
-    padding-block: 12px;        /* 18 + 12 = 30px до линии, тап-таргет 45px */
-    font-size: 16px;
-    line-height: 21px;
-    color: var(--c-ink-surface-2);
-  }
-
-  .nav-sheet__cta {
-    flex: none;
-    width: 100%;
-    height: 54px;
-    margin-top: 30px;
-  }
-
-  /* Фон под листом не прокручивается */
-  body.nav-open { overflow: hidden; }
-}
-
-@media (max-width: 600px) {
-  .nav-logo {
-    height: 26px;
-    font-size: 26px;
-    line-height: 26px;
-    letter-spacing: -0.52px;
-  }
-}
 
 /* Без backdrop-filter бар обязан остаться непрозрачным — под ним едет
    контент, и полупрозрачная заливка превратила бы навигацию в кашу. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .site-header { background: var(--c-bg); }
 
+}
+
+
+/* --- Телефонные правила без базового двойника --------------------------- */
+.nav-col--trade {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+}
+.nav-burger {
+  width: 44px;
+  /* тап-таргет: на доске нарисовано 20×8 */
+  height: 44px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: -10px;
+  margin-left: auto;
+  gap: 6px;
+  /* шаг линий 7px */
+  color: var(--c-text-strong);
+}
+.nav-burger__line {
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+}
+.nav-sheet {
+  position: fixed;
+  z-index: 100;
+  flex-direction: column;
+  inset: 0;
+  padding: 0 22px calc(28px + env(safe-area-inset-bottom, 0px));
+  background: var(--c-bg-alt);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.nav-sheet.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+body.nav-open .site-header {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.nav-sheet__bar {
+  display: flex;
+  flex: none;
+  height: var(--nav-h);
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-sheet__close {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  margin-right: -10px;
+  color: var(--c-ink-surface-2);
+}
+.nav-sheet__scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.nav-acc__row {
+  border-bottom: 1px solid var(--nav-line);
+}
+.nav-acc__trigger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 20px;
+  /* 20 + 20 + 20 = строка 60px */
+  /* Тот же шрифт, что в десктопной навигации. Здесь стоял --f-display, и
+  мобильное меню оказывалось единственным местом на странице, набранным
+  Outfit. Хуже того, у Outfit подключено одно начертание — 600, а строка
+  просит 400: браузер подставлял единственное доступное, и пункты выходили
+  ещё и жирнее положенного. */
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 20px;
+  text-align: left;
+  color: var(--c-ink-surface-2);
+  transition: color 0.18s ease;
+}
+.nav-acc__chev {
+  flex: none;
+  width: 10px;
+  height: 6px;
+  color: var(--nav-chev);
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+.nav-acc__row.is-open {
+  border-bottom-color: transparent;
+}
+.nav-acc__row.is-open .nav-acc__trigger {
+  color: var(--c-gold);
+}
+.nav-acc__row.is-open .nav-acc__chev {
+  color: var(--c-gold);
+  transform: rotate(180deg);
+}
+.nav-acc__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.22s ease;
+}
+.nav-acc__row.is-open .nav-acc__panel {
+  grid-template-rows: 1fr;
+}
+.nav-acc__clip {
+  overflow: hidden;
+  min-height: 0;
+  visibility: hidden;
+}
+.nav-acc__row.is-open .nav-acc__clip {
+  visibility: visible;
+}
+.nav-acc__list {
+  padding-top: 2px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--nav-line);
+}
+.nav-item--tight {
+  gap: 3px;
+  padding: 9px 0;
+  margin-inline: 0;
+}
+.nav-item--tight:hover {
+  background: none;
+}
+.nav-item--tight .nav-item__desc {
+  line-height: 19px;
+}
+.nav-sheet__login {
+  display: block;
+  margin-top: 18px;
+  padding-block: 12px;
+  /* 18 + 12 = 30px до линии, тап-таргет 45px */
+  font-size: 16px;
+  line-height: 21px;
+  color: var(--c-ink-surface-2);
+}
+.nav-sheet__cta {
+  flex: none;
+  width: 100%;
+  height: 54px;
+  margin-top: 30px;
+}
+body.nav-open {
+  overflow: hidden;
+}
+
+/* --- Адаптив: снизу вверх ---------------------------------------------------
+   Всё выше — телефонные значения. Здесь они дорастают до широкого экрана.
+   Блоки идут строго по возрастанию порога: правила равной силы, побеждает
+   последнее подошедшее. Пороги смещены на пиксел (601 вместо 600): при
+   max-width граница входила в узкий диапазон, при min-width должна войти
+   в широкий. -------------------------------------------------------------- */
+
+@media (min-width: 601px) {
+  .nav-logo {
+    height: 32px;
+    font-size: 32px;
+    line-height: 32px;
+    letter-spacing: -0.64px;
+  }
+}
+
+@media (min-width: 901px) {
+  :root {
+    --nav-h: 96px;
+  }
+  .site-header__right {
+    display: flex;
+  }
+  .nav {
+    display: block;
+  }
+  .nav-burger {
+    display: none;
+  }
+  .nav-sheet {
+    display: none;
+  }
+}
+
+@media (min-width: 1141px) {
+  .nav__item--mega {
+    position: relative;
+  }
+  .nav-panel--mega {
+    width: 812px;
+    right: auto;
+    left: 0;
+  }
+  .nav-col {
+    /* Расписано покомпонентно, а не сокращением: ниже 1140 колонки переходят
+    на равные доли, и лестнице нужно одно имя свойства на всех ступенях. */
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 376px;
+    min-width: auto;
+  }
+  .nav-col--trade {
+    flex-basis: 330px;
+  }
 }
