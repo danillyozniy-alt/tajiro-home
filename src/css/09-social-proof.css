@@ -1,13 +1,16 @@
 /* ==========================================================================
-   09 · Social proof — тёмная секция с одним отзывом
+   09 · Social proof — светлая секция с одним отзывом
    Figma: HoPojxNiFElmltha1NOl3N, node 511:518
    ========================================================================== */
 
 .s-09 {
     overflow: hidden;   /* карточка уезжает на 44px в свайпе — режем по краю секции */
   /* значения, которых нет в токенах 00-base */
-    --s09-bg: #1a1714;
-    --s09-headline: #f2ede5;
+  /* Кремовый, а не тёмный. Секция «No inventory…» ниже стала тёмной, и две
+     тёмные подряд сливались в одну полосу. Кремовый выбран, а не белёсый:
+     слева от неё маркетинг белёсый, справа тёмная — чередование сходится. */
+    --s09-bg: var(--c-bg);
+    --s09-headline: var(--c-ink-surface-2);
     --s09-star: #8a6a2e;
     --s09-avatar-bg: rgba(201, 169, 106, 0.2);   /* = --s09-star @ 20% */
     --s09-author: #6b645a;
@@ -41,7 +44,7 @@
     font-size: 12px;
     line-height: 18px;
     letter-spacing: 1.1px;
-    color: var(--c-green-on-dark);
+    color: var(--c-green-text);
 }
 
 .s-09__kicker-rule {
@@ -289,7 +292,7 @@
     font-size: 12px;
     line-height: 16px;
     text-align: center;
-    color: var(--c-on-dark-soft);   /* секция тёмная — приглушённый тёмный тут нечитаем */
+    color: var(--c-text-muted);
     opacity: 0.8;
 }
 

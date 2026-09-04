@@ -183,6 +183,11 @@
     flex-direction: column;
     gap: 28px;
     width: 100%;
+    padding: 20px;
+    border: 1px solid var(--c-line-soft);
+    border-radius: var(--r-card);
+    background: var(--c-bg-plain);
+    box-shadow: var(--sh-card);
     text-align: left;
 }
 
@@ -248,32 +253,42 @@
 .s-11__online {
     position: absolute;
     z-index: 2;
-    bottom: 14px;
-    left: 14px;
+    bottom: 8px;
+    left: 6px;
 
     display: inline-flex;
     align-items: center;
-    gap: 9px;
-    padding: 8px 17px 8px 11px;
-    border-radius: var(--r-pill);
+    gap: 8px;
+    padding: 7px 14px 7px 10px;
 
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(20px) saturate(1.5);
-    -webkit-backdrop-filter: blur(20px) saturate(1.5);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  /* Стекло, общее со всеми крупными плашками страницы: токены в
+     00-base.css. Граница прозрачна и работает распоркой — в её толщину
+     видно градиентную кромку. */
+    border: 1px solid transparent;
+  /* Ровно тот же рецепт, что у карточек секции: та же заливка --glass-bg,
+     та же кромка, тот же радиус. Плотный вариант я пробовал — он светлее и
+     на глаз это уже не то стекло. */
+    border-radius: 18px;
+    background-image: var(--glass-bg), var(--glass-edge);
+    background-origin: padding-box, padding-box, border-box;
+    background-clip: padding-box, padding-box, border-box;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
 
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 18px;
-    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+  /* Стекло стало светлым — белые буквы на нём не выживают */
+    color: var(--c-text);
     white-space: nowrap;
 }
 
 .s-11__online-dot {
     position: relative;
     flex: none;
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: var(--c-green-bright);
 
@@ -307,6 +322,10 @@
 /* Цитата шла жирной двадцать второй — это осталось от времён, когда она
    стояла узкой колонкой рядом с маленьким снимком. Под кадром во всю ширину
    две строки такого веса читаются криком; здесь она обычная речь. */
+/* Зелёная сердцевина — как в образце: выделено то, ради чего цитата на
+   странице стоит. Курсив пробовали и убрали. */
+.s-11__quote-hi {   color: var(--c-green-text); }
+
 .s-11__quote-text {
     font-size: 18px;
     font-weight: 400;
@@ -316,12 +335,33 @@
 }
 
 .s-11__quote-author {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
     font-size: 14px;
     line-height: 20px;
     color: var(--s11-card-text);
 }
 
-.s-11__quote-author cite {   font-style: normal; }
+.s-11__quote-name {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--c-text);
+}
+
+.s-11__quote-role {   color: var(--c-text-muted); }
+
+.s-11__quote-actions {
+    display: flex;
+    margin-top: 8px;
+}
+
+.s-11__quote-cta img {
+    flex: none;
+    transition: transform 0.18s ease;
+}
+
+.s-11__quote-cta:hover img {   transform: translateX(3px); }
 
 /* --- Адаптив -------------------------------------------------------------- */
 
@@ -368,6 +408,12 @@
      вырастает под семьсот пикселей и перевешивает собой всю секцию;
      на двух пятых он остаётся портретом, а не плакатом. */
   .s-11__quote {
+  /* Размеры сняты с образца: карточка 1006 при поле 38, снимок 259,
+     промежуток 44. Ширина по содержимому, а не по сетке — на всю сетку
+     справа от реплики оставалось поле в треть карточки. */
+    max-width: 1006px;
+    margin-inline: auto;
+    padding: 38px;
     flex-direction: row;
 
   /* ПО ЦЕНТРУ. Портрет высокий, реплика короткая, и весь вопрос в том,
@@ -382,12 +428,12 @@
      прежними 19 пикселами центрирование не работало — реплика была
      слишком лёгкой и действительно висела в пустоте. */
     align-items: center;
-    gap: 56px;
+    gap: 44px;
   }
 
   .s-11__manager-card {
-    flex: 0 0 40%;
-    max-width: 40%;
+    flex: 0 0 259px;
+    max-width: 259px;
   }
 
   /* Здесь кадр уже настоящий портрет: рядом колонка текста, и высота
@@ -417,16 +463,16 @@
     min-height: 266px;
   }
   .s-11__online {
-    bottom: 26px;
-    left: 26px;
-    gap: 11px;
-    padding: 10px 23px 10px 13px;
-    font-size: 15px;
-    line-height: 21px;
+    bottom: 15px;
+    left: 14px;
+    gap: 8px;
+    padding: 6px 14px 6px 10px;
+    font-size: 13px;
+    line-height: 18px;
   }
   .s-11__online-dot {
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
   }
   /* ВРЕЗКА, а не абзац.
 
@@ -437,10 +483,11 @@
      Ширина строки ограничена: на всю колонку в 634 пиксела при этом
      кегле выходило под семьдесят знаков — для крупного набора длинно. */
   .s-11__quote-text {
-    max-width: 17em;
-    font-size: 27px;
-    line-height: 38px;
-    letter-spacing: -0.5px;
+  /* Кегль с образца. Потолок строки в 17em снят: он был написан под
+     прежний портрет в 455px и резал колонку вдвое. */
+    font-size: 22px;
+    line-height: 36px;
+    letter-spacing: -0.2px;
     color: var(--c-text);
   }
 
@@ -451,8 +498,8 @@
 
 @media (min-width: 1281px) {
   .s-11__quote-text {
-    font-size: 30px;
-    line-height: 42px;
+    font-size: 22px;
+    line-height: 36px;
   }
 
   .s-11 {
