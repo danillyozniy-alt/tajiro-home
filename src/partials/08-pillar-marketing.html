@@ -45,24 +45,16 @@
     </div>
 
     <figure class="s-08__visual">
-      <figcaption class="visually-hidden">Sample performance dashboard: revenue, traffic by channel and recent orders for the last 7 days.</figcaption>
+      <!-- Оговорка ВИДИМАЯ, а не только для озвучки. Панель показывает
+           конкретные числа, и без подписи они читаются как обещание
+           типичного результата. Стояла она и раньше, но в visually-hidden —
+           то есть ровно для тех, кто и так ничего не видел. -->
 
       <div class="s-08__panel" aria-hidden="true">
 
         <!-- Шапка панели -->
         <div class="s-08__panel-head">
           <p class="s-08__panel-title">Sample dashboard</p>
-          <p class="s-08__live">
-            <span class="s-08__live-dot"></span>
-            <span class="s-08__live-count">
-              <span class="s-08__ticker s-08__ticker--live">
-                <span class="s-08__ticker-track">
-                  <span>47</span><span>52</span><span>49</span><span>56</span><span>51</span><span>58</span><span>47</span>
-                </span>
-              </span>
-              SHOPPERS LIVE
-            </span>
-          </p>
         </div>
 
         <!-- Герой: накопительный трафик + легенда каналов -->
@@ -223,46 +215,9 @@
           </div>
         </dl>
 
-        <!-- Лента заходов: шесть строк в одном слоте + скелетон загрузки -->
-        <div class="s-08__feed">
-          <ul class="s-08__orders">
-            <li class="s-08__order s-08__order--1 s-08__order--google">
-              <span class="s-08__avatar"><img src="assets/img/people/shopper-layla.webp" width="30" height="30" alt="" loading="lazy" decoding="async"></span>
-              <span class="s-08__order-text">Layla from Dubai opened Medical Bill Finder<span class="s-08__via">·<span class="s-08__via-dot"></span>via Google</span></span>
-            </li>
-            <li class="s-08__order s-08__order--2 s-08__order--facebook">
-              <span class="s-08__avatar"><img src="assets/img/people/shopper-omar.webp" width="30" height="30" alt="" loading="lazy" decoding="async"></span>
-              <span class="s-08__order-text">Omar from Doha opened Side Hustle Guide<span class="s-08__via">·<span class="s-08__via-dot"></span>via Facebook</span></span>
-            </li>
-            <li class="s-08__order s-08__order--3 s-08__order--google">
-              <span class="s-08__avatar"><img src="assets/img/people/shopper-rania.webp" width="30" height="30" alt="" loading="lazy" decoding="async"></span>
-              <span class="s-08__order-text">Rania from Riyadh opened Anxiety Toolkit<span class="s-08__via">·<span class="s-08__via-dot"></span>via Google</span></span>
-            </li>
-            <li class="s-08__order s-08__order--4 s-08__order--instagram">
-              <span class="s-08__avatar"><img src="assets/img/people/shopper-yusuf.webp" width="30" height="30" alt="" loading="lazy" decoding="async"></span>
-              <span class="s-08__order-text">Yusuf from Kuwait City opened Puppy Training Plan<span class="s-08__via">·<span class="s-08__via-dot"></span>via Instagram</span></span>
-            </li>
-            <li class="s-08__order s-08__order--5 s-08__order--google">
-              <span class="s-08__avatar"><img src="assets/img/people/shopper-hassan.webp" width="30" height="30" alt="" loading="lazy" decoding="async"></span>
-              <span class="s-08__order-text">Hassan from Manama opened Career Reset Kit<span class="s-08__via">·<span class="s-08__via-dot"></span>via Google</span></span>
-            </li>
-            <li class="s-08__order s-08__order--6 s-08__order--facebook">
-              <span class="s-08__avatar"><img src="assets/img/people/shopper-noor.webp" width="30" height="30" alt="" loading="lazy" decoding="async"></span>
-              <span class="s-08__order-text">Noor from Muscat opened Sleep Reset Programme<span class="s-08__via">·<span class="s-08__via-dot"></span>via Facebook</span></span>
-            </li>
-          </ul>
-
-          <div class="s-08__skeleton">
-            <span class="s-08__sk-avatar"></span>
-            <span class="s-08__sk-lines">
-              <span class="s-08__sk-line s-08__sk-line--wide"></span>
-              <span class="s-08__sk-line s-08__sk-line--short"></span>
-            </span>
-            <span class="s-08__sk-sheen"></span>
-          </div>
-        </div>
-
       </div>
+
+      <figcaption class="s-08__disclaimer">Illustration only. Not a real store, and not a typical result.</figcaption>
     </figure>
 
   </div>
