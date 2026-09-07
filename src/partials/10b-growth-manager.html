@@ -26,14 +26,22 @@
       <p class="lead s-10b__lead">Every store comes with a dedicated Growth Manager &mdash; a real person who knows the platform, knows your store and picks up when you call.</p>
     </header>
 
-    <!-- Кадр целиком на CSS. role="img" с подписью закрывает всю внутренность
-         от скринридера: фигуры внутри декоративные, а текст плашки дублирует
-         подпись. -->
-    <div class="s-10b__mock reveal" role="img" aria-label="A store owner on a video call with her Growth Manager">
-      <span class="s-10b__mock-win" aria-hidden="true"></span>
-      <span class="s-10b__mock-person" aria-hidden="true"></span>
-      <span class="s-10b__mock-desk" aria-hidden="true"></span>
-      <span class="s-10b__mock-call" aria-hidden="true"><i></i></span>
+    <!-- Кадр звонка: большой снимок менеджера и врезка владельца магазина в
+         правом нижнем углу — так выглядит окно созвона. Было четыре span-а
+         с фигурами на CSS.
+
+         role="img" на обёртке снят: у каждого снимка теперь своя подпись, и
+         прятать их от скринридера незачем. Плашка «онлайн» декоративная —
+         она дублирует то, что и так сказано в лиде секции. -->
+    <div class="s-10b__mock reveal">
+      <img class="s-10b__mock-feed" src="assets/img/people/call-manager.webp"
+           alt="A Tajiro Growth Manager on a video call from his desk"
+           width="1400" height="608" loading="lazy" decoding="async">
+
+      <img class="s-10b__mock-self" src="assets/img/people/call-user.webp"
+           alt="A Tajiro store owner on the same call"
+           width="640" height="480" loading="lazy" decoding="async">
+
       <span class="s-10b__live" aria-hidden="true">
         <i class="s-10b__live-dot"></i>Your Growth Manager is online
       </span>
