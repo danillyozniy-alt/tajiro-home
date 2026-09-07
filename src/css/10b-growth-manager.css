@@ -324,38 +324,6 @@
 }
 
 
-/* --- Каналы связи ---------------------------------------------------------
-   Полоса между двумя волосками. Разделители мягкие: полоса перечисляет
-   способы связаться, а не спорит за внимание с карточками над ней.
-   -------------------------------------------------------------------------- */
-.s-10b__channels {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px 28px;
-    width: 100%;
-    max-width: 1200px;
-    padding-block: 22px;
-    border-top: 1px solid var(--c-line-soft);
-    border-bottom: 1px solid var(--c-line-soft);
-    font-size: 15px;
-    color: var(--c-text-strong);
-}
-
-.s-10b__channel {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.s-10b__channel svg {
-    flex: none;
-    width: 18px;
-    height: 18px;
-    color: var(--c-green-bright);
-}
-
-
 /* --- Цитата ---------------------------------------------------------------- */
 .s-10b__quote {
     display: grid;
@@ -518,8 +486,6 @@
     }
 
     .s-10b__cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
-    .s-10b__channels { gap: 20px 44px; }
 
     .s-10b__quote { padding: 32px; }
 }
