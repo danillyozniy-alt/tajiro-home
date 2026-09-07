@@ -4,15 +4,34 @@
    ========================================================================== */
 
 .s-12 {
-    --s12-ink: #1f1c1a;                  /* заголовки карточек и секции */
-    --s12-soft: #6e675c;                  /* лид, даты — text/on-dark-soft */
-    --s12-icon-bg: rgba(201, 169, 106, 0.12);
-    --s12-icon-line: rgba(201, 169, 106, 0.24);
-    --s12-press-line: rgba(217, 209, 199, 0.6);
-    --s12-badge-line: rgba(217, 209, 199, 0.5);
+  /* ТЁМНАЯ. Вторая из двух секций, перекрашенных ради ритма: тёмные идут
+     через одну — 04, 07, 09, 11, 13–14. Без неё нижняя треть страницы шла
+     одним светлым куском в четырнадцать тысяч пикселей, и «разбитости»
+     референса не получалось.
+
+     Выбрана эта, а не соседние: у 10 сверху тёмный сосед (09), а 12 снизу
+     только что собрана по образцу со светлыми карточками. Эта же стоит
+     ровно посередине светлой полосы и режет её надвое. Разговор про
+     регистрацию, шифрование и гарантию на тёмном звучит уместнее прочих. */
+    --s12-ink: var(--c-on-dark);          /* заголовки карточек и секции */
+    --s12-soft: var(--c-on-dark-soft);    /* лид, даты */
+    --s12-faint: var(--c-on-dark-muted);  /* подписи под фигурами */
+
+  /* Песочные тинты подняты: на белёсом хватало 12 и 24 %, на тёмном они
+     пропадали вовсе. */
+    --s12-icon-bg: rgba(212, 163, 115, 0.16);
+    --s12-icon-line: rgba(212, 163, 115, 0.30);
+    --s12-press-line: var(--c-line-on-dark);
+    --s12-badge-line: var(--c-line-on-dark);
+
+  /* Плашка карточки. Не стекло: --glass-* собран из белых градиентов и на
+     тёмном превращается в молочное пятно. Берём плоскую поверхность с
+     волосяной кромкой — ровно так были сделаны плитки витрины в 03b,
+     пока та была тёмной. */
+    --s12-card: var(--c-ink-surface);
 
     padding-block: 64px;
-    background: var(--c-bg-plain);
+    background: #1a1714;
 }
 
 /* --- Подложка под стекло ----------------------------------------------------
@@ -32,10 +51,13 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: radial-gradient(52% 44% at 18% 22%, rgba(212, 163, 115, 0.24) 0%, transparent 68%),
-    radial-gradient(46% 40% at 84% 74%, rgba(61, 143, 99, 0.16) 0%, transparent 66%),
+    background: radial-gradient(52% 44% at 18% 22%, rgba(212, 163, 115, 0.18) 0%, transparent 68%),
+    radial-gradient(46% 40% at 84% 74%, rgba(61, 143, 99, 0.14) 0%, transparent 66%),
     url("../assets/img/decor/girih-pattern.svg") center / 620px repeat;
-    opacity: 0.55;
+  /* Решётка гириха нарисована тёмным по прозрачному и на тёмном фоне
+     пропадает. Оставлена ради двух цветовых пятен, её собственный вклад
+     теперь около нуля — поэтому и прозрачность ниже. */
+    opacity: 0.32;
 }
 
 
@@ -54,7 +76,7 @@
     font-size: 13px;
     letter-spacing: 1.3px;
     line-height: 18px;
-    color: var(--c-green-text);
+    color: var(--c-green-on-dark);
 }
 
 .s-12__kicker-rule {
@@ -100,28 +122,19 @@
     gap: 14px;
     min-height: 0;
     padding: 22px;
-  /* Граница прозрачна и работает распоркой: в её толщину видно нижний
-     слой фона — градиентную кромку, обрезанную по border-box. Слои
-     поверхности обрезаны по padding-box и внутрь границы не заходят. */
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-
   /* Ровно один пиксель, а не полтора: дробную границу браузер округляет до
-     целого, и заявленные 1.5 всё равно превращались в 1. Лучше задать то,
-     что действительно нарисуется. */
-    border: 1px solid transparent;
+     целого, и заявленные 1.5 всё равно превращались в 1. */
+    border: 1px solid var(--c-line-on-dark);
     border-radius: 16px;
-    background-image: var(--glass-bg), var(--glass-edge);
-    background-origin: padding-box, padding-box, border-box;
-    background-clip: padding-box, padding-box, border-box;
-    box-shadow: var(--glass-shadow);
+    background: var(--s12-card);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .s-12__trust-item:hover {
     transform: translateY(-2px);
-    border-color: var(--c-line-gold);
-    box-shadow: var(--sh-card);
+    border-color: var(--c-line-strong);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.3);
 }
 
 .s-12__trust-body {
@@ -142,7 +155,7 @@
 .s-12__trust-text {
     font-size: 14px;
     line-height: 23px;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
 }
 
 /* Изразец вместо плоской иконки — тот же приём, что в секции 11: там
@@ -194,7 +207,7 @@
 .s-12__trust-text {
     font-size: 14px;
     line-height: 23px;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
 }
 
 .s-12__trust-icon {
@@ -232,7 +245,7 @@
 .s-12__trust-text {
     font-size: 14px;
     line-height: 23px;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
 }
 
 /* --- Доказательство --------------------------------------------------------
@@ -267,7 +280,7 @@
     height: 18px;
     font-size: 13px;
     line-height: 18px;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
 }
 
 /* --- 1. Регистрация --------------------------------------------------------- */
@@ -277,7 +290,7 @@
 
 .s-12__state-line {
     fill: color-mix(in srgb, var(--c-sand) 16%, transparent);
-    stroke: var(--c-gold);
+    stroke: var(--c-sand);
     stroke-width: 2.4;
     stroke-linejoin: round;
     transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -288,12 +301,12 @@
     position: absolute;
     right: -11px;
     bottom: 2px;
-    color: var(--c-green-text);
+    color: var(--c-green-on-dark);
     transition: opacity 0.4s ease 0.42s,
               transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) 0.42s;
 }
 
-.s-12__stamp circle {   fill: var(--c-bg-plain);   stroke: currentColor;   stroke-width: 1.1; }
+.s-12__stamp circle {   fill: var(--s12-card);   stroke: currentColor;   stroke-width: 1.1; }
 .s-12__stamp path {
     fill: none;   stroke: currentColor;   stroke-width: 1.9;
     stroke-linecap: round;   stroke-linejoin: round;
@@ -330,7 +343,7 @@
 
 .s-12__cipher-code {
     letter-spacing: 0.4px;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
     clip-path: inset(0 0 0 0);
 }
 
@@ -343,7 +356,7 @@
     bottom: 1px;
     left: 100%;
     width: 1px;
-    background: var(--c-gold);
+    background: var(--c-sand);
     opacity: 0;
     transition: left 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.15s,
               opacity 0.3s ease 1.1s;
@@ -378,7 +391,7 @@
     font-size: 4px;
     line-height: 7px;
     text-align: justify;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
     opacity: 0;
     transform: scale(0.95);
 }
@@ -419,7 +432,7 @@
     justify-content: space-between;
     font-size: 13px;
     line-height: 18px;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
     transition: opacity 0.5s ease 0.72s;
 }
 
@@ -454,7 +467,7 @@
 .s-12__trust-text {
     font-size: 14px;
     line-height: 23px;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
 }
 
 .s-12__trust-icon {
@@ -489,7 +502,7 @@
     padding: 22px;
     border: 1px solid var(--s12-press-line);
     border-radius: 16px;
-    background: var(--c-surface);
+    background: var(--s12-card);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
@@ -504,7 +517,7 @@
     font-weight: 800;
     letter-spacing: 0.6px;
     line-height: 16px;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
 }
 
 .s-12__press-title {
@@ -538,12 +551,12 @@
     flex: none;
     font-weight: 700;
     white-space: nowrap;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
     transition: color 0.18s ease;
 }
 
 .s-12__press-link:hover {
-    color: var(--c-gold);
+    color: var(--c-sand);
 }
 
 /* --- Способы оплаты ------------------------------------------------------- */
@@ -576,11 +589,11 @@
     padding: 7px 12px;
     border: 1px solid var(--s12-badge-line);
     border-radius: 8px;
-    background: var(--c-surface);
+    background: var(--s12-card);
     font-size: 12px;
     font-weight: 700;
     line-height: 16px;
-    color: var(--c-text-muted);
+    color: var(--s12-faint);
     white-space: nowrap;
 }
 

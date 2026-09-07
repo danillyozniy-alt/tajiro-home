@@ -10,22 +10,42 @@
    заголовок, лид, список с зелёными галочками, ряд показателей, кнопка.
    Раскладка, шаги ширины и брейкпоинты — те же, что у 06.
 
-   Отличие одно и намеренное: фон тёмный. Поэтому все тона на тёмном —
-   зелёный берётся --c-green-on-dark, текст --c-on-dark-soft, плашка
-   надзаголовка светлее подложки, а не темнее.
+   Секция была тёмной — и в этом была ошибка ритма: следом идёт «The Math»
+   с глобусом, которая тёмной быть обязана. Две тёмные подряд сливались в
+   одну полосу почти в две тысячи пикселей, и граница между ними не читалась.
+   Светлеть пришлось этой: у глобуса тёмный фон — часть самой картинки.
+
+   Тон кремовый: сверху белёсый маркетинг, снизу тёмный глобус — чередование
+   сходится. Все цвета переехали с «на тёмном» на обычные токены страницы,
+   и роли для этого выписаны локальными переменными: --s03b-soft, --s03b-faint,
+   --s03b-line, --s03b-green. Так видно, что чему соответствует, и следующая
+   перекраска правит четыре строки, а не двадцать шесть.
+
+   Глубина внутри секции осталась той же лесенкой, только вывернутой: раньше
+   каждая ступень была светлее подложки, теперь тоже светлее — крем, витрина,
+   плитка. Направление совпало, потому что и там и там ступень означает
+   «ближе к зрителю».
 
    Мобильный первым: колонки в стопке. Ряд появляется с 901.
    ========================================================================== */
 
 .s-03b {
-  /* Тот же тёмный тон, что у 05 и 09 — своего токена под него нет */
-    --s03b-bg: #1a1714;
-    --s03b-ink: #f2ede5;
-    --s03b-muted: #d9d1c7;
+  /* Кремовый — тёплый якорь страницы. Сосед сверху белёсый, снизу тёмный. */
+    --s03b-bg: var(--c-bg);
+    --s03b-ink: var(--c-text);          /* заголовок, значения показателей */
+    --s03b-muted: var(--c-text-body);   /* базовый текст секции */
 
-  /* Витрина чуть светлее фона: она плашка на плоскости, а не дыра */
-    --s03b-mkt: #221e1a;
-    --s03b-tile: #2b2621;
+  /* Роли, которые на тёмном брались из --c-*-on-dark. Выписаны переменными,
+     чтобы перекраска секции была правкой этого блока, а не всего файла. */
+    --s03b-soft: var(--c-text-body);    /* галочки, подписи витрины */
+    --s03b-faint: var(--c-text-muted);  /* мета, рубрики, строка поиска */
+    --s03b-line: var(--c-line);
+    --s03b-green: var(--c-green-text);  /* зелёный на светлом, AA */
+
+  /* Витрина светлее фона, плитка светлее витрины: каждая ступень ближе к
+     зрителю. На тёмном лесенка шла теми же тремя шагами. */
+    --s03b-mkt: var(--c-bg-alt);
+    --s03b-tile: var(--c-surface);
 
     padding-block: 64px;
     background: var(--s03b-bg);
@@ -71,8 +91,9 @@
     font-weight: 600;
     line-height: 1;
     letter-spacing: -2px;
-    color: var(--c-sand);
-    opacity: 0.55;
+  /* Золото, как у столпов 06 и 07. Песок здесь стоял только потому, что на
+     тёмном фоне золото гасло; на креме гаснет уже песок. */
+    color: var(--c-gold);
 }
 
 /* Плашка надзаголовка. У светлых столпов она зелёный тинт на кремовом;
@@ -81,10 +102,10 @@
     align-self: flex-start;
     padding: 5px 14px;
     border-radius: var(--r-pill);
-    background: rgba(127, 201, 160, 0.12);
+    background: rgba(61, 143, 99, 0.12);
     letter-spacing: 1.44px;
     line-height: 16px;
-    color: var(--c-green-on-dark);
+    color: var(--s03b-green);
 }
 
 .s-03b__title {
@@ -113,7 +134,7 @@
     gap: 10px;
     font-size: 15px;
     line-height: 23px;
-    color: var(--c-on-dark-soft);
+    color: var(--s03b-soft);
 }
 
 /* Галочка выровнена по верху строки, как у столпов, а не по центру */
@@ -154,7 +175,7 @@
     line-height: 16px;
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    color: var(--c-on-dark-muted);
+    color: var(--s03b-faint);
 }
 
 
@@ -185,10 +206,10 @@
   /* Снизу запас под плашку кампании: она ложится на пустое поле панели,
      а не на цены нижнего ряда, как было. */
     padding: 16px 16px 76px;
-    border: 1px solid var(--c-line-on-dark);
+    border: 1px solid var(--s03b-line);
     border-radius: var(--r-card);
     background: var(--s03b-mkt);
-    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 20px 48px rgba(43, 38, 33, 0.10);
 }
 
 .s-03b__mkt-bar {
@@ -203,7 +224,7 @@
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1.4px;
-    color: var(--c-on-dark-soft);
+    color: var(--s03b-soft);
 }
 
 /* Поисковая строка — картинка строки, а не поле ввода: кликать нечего */
@@ -211,11 +232,11 @@
     flex: 1 1 auto;
     max-width: 180px;
     padding: 8px 14px;
-    border: 1px solid var(--c-line-on-dark);
+    border: 1px solid var(--s03b-line);
     border-radius: var(--r-pill);
     font-size: 12px;
     line-height: 16px;
-    color: var(--c-on-dark-muted);
+    color: var(--s03b-faint);
 }
 
 .s-03b__grid {
@@ -255,17 +276,17 @@
     line-height: 14px;
     font-weight: 700;
     letter-spacing: 1px;
-    color: var(--c-on-dark-muted);
+    color: var(--s03b-faint);
 }
 
-.s-03b__tile--mine .s-03b__tile-cat { color: var(--c-green-on-dark); }
+.s-03b__tile--mine .s-03b__tile-cat { color: var(--s03b-green); }
 
 .s-03b__tile-t {
     display: block;
     font-size: 12px;
     line-height: 17px;
     font-weight: 700;
-    color: var(--c-on-dark-soft);
+    color: var(--s03b-soft);
 }
 
 .s-03b__tile-p {
@@ -273,7 +294,7 @@
     margin-top: 2px;
     font-size: 12px;
     line-height: 17px;
-    color: var(--c-on-dark-muted);
+    color: var(--s03b-faint);
 }
 
 /* Соседи уходят на шаг назад: обложка притушена и обесцвечена. Размер и
@@ -288,10 +309,10 @@
 /* Ваша плитка: обложка в полную силу, рамка ярче, зелёный ореол наружу
    и лёгкий подъём. */
 .s-03b__tile--mine {
-    border-color: rgba(127, 201, 160, 0.85);
-    background: #322d26;
-    box-shadow: 0 0 0 4px rgba(127, 201, 160, 0.12),
-                0 14px 30px rgba(0, 0, 0, 0.34);
+    border-color: rgba(61, 143, 99, 0.7);
+    background: var(--c-surface);
+    box-shadow: 0 0 0 4px rgba(61, 143, 99, 0.12),
+                0 14px 30px rgba(43, 38, 33, 0.14);
     transform: translateY(-4px);
 }
 
@@ -322,28 +343,29 @@
     margin-top: 6px;
     padding: 2px 8px;
     border-radius: var(--r-pill);
-    background: rgba(127, 201, 160, 0.16);
+    background: rgba(61, 143, 99, 0.14);
     font-size: 10px;
     line-height: 15px;
     font-style: normal;
     font-weight: 700;
     letter-spacing: 0.4px;
-    color: var(--c-green-on-dark);
+    color: var(--s03b-green);
 }
 
 
 /* --- Плашка кампании ------------------------------------------------------ */
-/* Светлая на тёмном намеренно: это не часть витрины, а сообщение системы
-   поверх неё. */
+/* Не часть витрины, а сообщение системы поверх неё. На тёмном её отделял
+   сам факт светлоты; на светлом отделяют кромка и тень. */
 .s-03b__camp {
     position: absolute;
     right: 14px;
     bottom: 0;
     left: 14px;
     padding: 14px 16px;
+    border: 1px solid var(--c-line-soft);
     border-radius: var(--r-card);
-    background: var(--c-on-dark);
-    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.34);
+    background: var(--c-surface);
+    box-shadow: 0 16px 38px rgba(43, 38, 33, 0.16);
 }
 
 .s-03b__camp-k {

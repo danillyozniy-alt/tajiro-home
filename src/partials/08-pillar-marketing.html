@@ -1,224 +1,138 @@
+<!-- ==========================================================================
+     08 · Столп 03 — Marketing
+
+     Слияние двух блоков в один. Было: секция 03 «Meet your AI team» (текст +
+     телефон с роликом) и секция 08 «Marketing made easy.» (анатомия столпа +
+     панель «Playhead»). Обе говорили об одном — как магазин получает
+     покупателей, — и стояли в разных концах страницы.
+
+     Что откуда взято:
+       каркас  — от 08: номер, плашка, заголовок, лид, галочки, показатели;
+       правая колонка — от 03: телефон с роликом вместо панели дашборда;
+       тексты  — из макета экомзи, блок part-marketing (03 · Your marketing).
+
+     Телефон перенесён КАК ЕСТЬ, вместе с классами s-03__* и всеми id:
+     на них держатся стили 03-ai-influencers.css и скрипт 03-ai-team.js,
+     который ведёт подпись и полосу проигрывания по таймкодам ролика.
+     Переименовывать их значило бы переписывать и то, и другое ради
+     косметики. Правила там плоские, предка .s-03 ни одно не требует,
+     поэтому телефон работает в любой секции.
+
+     Оговорки «Illustration only» больше нет: она объясняла числа панели
+     дашборда, а панели здесь не осталось.
+     ========================================================================== -->
 <section class="section s-08" id="pillar-marketing">
   <div class="container s-08__inner">
 
     <div class="s-08__text reveal">
       <div class="s-08__block">
         <p class="s-08__num" aria-hidden="true">03</p>
-        <p class="kicker s-08__label">WE BRING CUSTOMERS</p>
-        <h2 class="h2 s-08__title">Marketing made easy.</h2>
-        <p class="lead s-08__lead">This is what makes Tajiro different from everything else. Launch automated ads in one click, or promote your store yourself on social media using your built-in AI influencers. No marketing skills, no guesswork, no agencies.</p>
+        <p class="kicker s-08__label">YOUR MARKETING</p>
+        <h2 class="h2 s-08__title">Meet your AI influencers. Marketing made easy.</h2>
+        <p class="lead s-08__lead">Every store comes with AI influencers &mdash; presenters who introduce your products in short videos and posts, generated for you and ready to publish. Add promo posts and videos in your brand&rsquo;s look, pick the ones you like, and post. No filming, no editing, no agency.</p>
       </div>
 
       <ul class="s-08__features">
         <li class="s-08__feature">
           <img class="s-08__check" src="assets/img/icons/check-green.svg" alt="" width="16" height="16">
-          <span>Traffic from Google, Facebook &amp; Instagram to Tajiro Mall</span>
+          <span>AI influencers who present your products in short videos and posts</span>
         </li>
         <li class="s-08__feature">
           <img class="s-08__check" src="assets/img/icons/check-green.svg" alt="" width="16" height="16">
-          <span>Your store promoted inside our marketplace</span>
-        </li>
-        <li class="s-08__feature s-08__feature--offer">
-          <img class="s-08__check" src="assets/img/icons/check-green.svg" alt="" width="16" height="16">
-          <span><strong>$40 coupon</strong> toward your first campaign</span>
+          <span>Promo posts and videos in your brand&rsquo;s look, made in minutes</span>
         </li>
         <li class="s-08__feature">
           <img class="s-08__check" src="assets/img/icons/check-green.svg" alt="" width="16" height="16">
-          <span>Personal growth manager included</span>
+          <span>Formatted for Instagram, TikTok and YouTube Shorts</span>
+        </li>
+        <li class="s-08__feature">
+          <img class="s-08__check" src="assets/img/icons/check-green.svg" alt="" width="16" height="16">
+          <span>You choose what goes out and when &mdash; nothing posts without you</span>
         </li>
       </ul>
 
       <dl class="s-08__stats">
         <div class="s-08__stat">
-          <dt class="s-08__stat-value">3</dt>
-          <dd class="s-08__stat-label">Ad platforms</dd>
+          <dt class="s-08__stat-value">Minutes</dt>
+          <dd class="s-08__stat-label">From product to promo</dd>
         </div>
         <div class="s-08__stat">
-          <dt class="s-08__stat-value">24/7</dt>
-          <dd class="s-08__stat-label">Campaigns running</dd>
+          <dt class="s-08__stat-value">9:16</dt>
+          <dd class="s-08__stat-label">Built for vertical video</dd>
         </div>
         <div class="s-08__stat">
-          <dt class="s-08__stat-value">$40</dt>
-          <dd class="s-08__stat-label">Ad coupon</dd>
+          <dt class="s-08__stat-value">0</dt>
+          <dd class="s-08__stat-label">Cameras, crews or agencies</dd>
         </div>
       </dl>
+
+      <!-- Кнопки у 08 раньше не было — единственный столп без неё. В анатомии
+           столпа она есть (см. комментарий в 03b), и в макете экомзи у этого
+           блока она тоже стоит. Подпись оттуда же. -->
+      <div class="s-08__actions">
+        <a class="btn btn--primary s-08__cta" href="#footer-cta">
+          Create your first promo
+          <img src="assets/img/icons/arrow-right-white.svg" alt="" width="18" height="18">
+        </a>
+      </div>
     </div>
 
-    <figure class="s-08__visual">
-      <!-- Оговорка ВИДИМАЯ, а не только для озвучки. Панель показывает
-           конкретные числа, и без подписи они читаются как обещание
-           типичного результата. Стояла она и раньше, но в visually-hidden —
-           то есть ровно для тех, кто и так ничего не видел. -->
+    <div class="s-08__visual">
+      <figure class="s-03__phone">
+        <div class="s-03__screen">
 
-      <div class="s-08__panel" aria-hidden="true">
+          <!-- Ролик и постер взяты прямо с экомзи по правке. Постер держит
+               первый кадр, пока mp4 не подъехал, и остаётся единственным
+               кадром в цельном файле: 7-мегабайтный mp4 туда не вшивается,
+               иначе письмо перестанет уходить. -->
+          <video class="s-03__video" id="aiTeamVideo"
+                 poster="assets/img/people/ai-team-poster.webp"
+                 width="272" height="564"
+                 autoplay loop muted playsinline preload="metadata">
+            <source src="assets/video/ai-team.mp4" type="video/mp4">
+          </video>
 
-        <!-- Шапка панели -->
-        <div class="s-08__panel-head">
-          <p class="s-08__panel-title">Sample dashboard</p>
-        </div>
+          <div class="s-03__ui" aria-hidden="true">
 
-        <!-- Герой: накопительный трафик + легенда каналов -->
-        <div class="s-08__hero">
-          <div class="s-08__hero-metric">
-            <p class="s-08__hero-label">VISITORS · LAST 7 DAYS</p>
-            <div class="s-08__hero-row">
-              <span class="s-08__ticker s-08__ticker--hero">
-                <span class="s-08__ticker-track">
-                  <span>3,180</span><span>6,940</span><span>10,410</span><span>14,120</span><span>18,060</span><span>21,340</span><span>23,780</span><span>24,110</span><span>24,240</span>
-                </span>
-              </span>
-              <span class="s-08__delta">
-                <svg class="s-08__delta-arrow" width="8" height="8" viewBox="0 0 8 8" focusable="false"><path d="M4 1 L7.2 5.6 H0.8 Z" fill="currentColor"/></svg>18.4%
-              </span>
+            <ul class="s-03__rail">
+              <li class="s-03__rail-item s-03__rail-item--like">
+                <img class="s-03__heart" src="assets/img/icons/heart-filled.svg" alt="" width="26" height="26">
+                <span class="s-03__count" id="s03-likes">142K</span>
+              </li>
+              <li class="s-03__rail-item">
+                <img src="assets/img/icons/comment.svg" alt="" width="26" height="26">
+                <span class="s-03__count" id="s03-comments">8.2K</span>
+              </li>
+              <li class="s-03__rail-item">
+                <img src="assets/img/icons/share.svg" alt="" width="26" height="26">
+                <span>Share</span>
+              </li>
+            </ul>
+
+            <div class="s-03__meta">
+              <!-- Ролик склеен из пяти инфлюенсеров подряд, и подпись обязана
+                   ехать вместе с ними: неподвижное имя поверх меняющегося
+                   человека читается как ошибка. Переключает js/03-ai-team.js
+                   по таймкодам сегментов. -->
+              <p class="s-03__handle">
+                <span id="s03-handle">@sophia.caldwell</span>
+                <img src="assets/img/icons/verified-badge.svg" alt="" width="15" height="15">
+              </p>
+
+              <p class="s-03__niche">
+                <span id="s03-niche">Fashion</span>&nbsp; · &nbsp;<span id="s03-count">50 videos</span>
+              </p>
+            </div>
+
+            <!-- Полоса проигрывания идёт по самому ролику, а не по своему
+                 такту: с живым видео выдуманный отсчёт разошёлся бы с ним. -->
+            <div class="s-03__progress">
+              <span class="s-03__progress-fill" id="s03-progress"></span>
             </div>
           </div>
-
-          <ul class="s-08__legend">
-            <li class="s-08__legend-row s-08__legend-row--google">
-              <span class="s-08__legend-dot"></span>
-              <span class="s-08__legend-name">Google</span>
-              <span class="s-08__legend-bar"><span class="s-08__legend-fill"></span></span>
-              <span class="s-08__legend-pct">46%</span>
-            </li>
-            <li class="s-08__legend-row s-08__legend-row--facebook">
-              <span class="s-08__legend-dot"></span>
-              <span class="s-08__legend-name">Facebook</span>
-              <span class="s-08__legend-bar"><span class="s-08__legend-fill"></span></span>
-              <span class="s-08__legend-pct">33%</span>
-            </li>
-            <li class="s-08__legend-row s-08__legend-row--instagram">
-              <span class="s-08__legend-dot"></span>
-              <span class="s-08__legend-name">Instagram</span>
-              <span class="s-08__legend-bar"><span class="s-08__legend-fill"></span></span>
-              <span class="s-08__legend-pct">21%</span>
-            </li>
-          </ul>
         </div>
-
-        <!-- Карточка графика -->
-        <div class="s-08__chart">
-          <div class="s-08__chart-head">
-            <p class="s-08__chart-label">VISITS PER DAY</p>
-            <p class="s-08__chart-range">7D</p>
-          </div>
-
-          <div class="s-08__plot">
-            <svg class="s-08__chart-base" viewBox="0 0 436 140" preserveAspectRatio="none" focusable="false">
-              <g class="s-08__grid">
-                <line x1="0" y1="8" x2="436" y2="8" vector-effect="non-scaling-stroke"/>
-                <line x1="0" y1="34" x2="436" y2="34" vector-effect="non-scaling-stroke"/>
-                <line x1="0" y1="60" x2="436" y2="60" vector-effect="non-scaling-stroke"/>
-                <line x1="0" y1="86" x2="436" y2="86" vector-effect="non-scaling-stroke"/>
-              </g>
-              <line class="s-08__baseline" x1="0" y1="112" x2="436" y2="112" vector-effect="non-scaling-stroke"/>
-              <path class="s-08__compare" pathLength="100" vector-effect="non-scaling-stroke"
-                    d="M0 100 L31 100 C57 100 67 96 93 96 C119 96 130 101 156 101 C182 101 192 90 218 90 C244 90 254 86 280 86 C306 86 317 92 343 92 C369 92 379 78 405 78 L436 78"/>
-            </svg>
-
-            <svg class="s-08__chart-live" viewBox="0 0 436 140" preserveAspectRatio="none" focusable="false">
-              <defs>
-                <linearGradient id="s08-area" x1="0" y1="0" x2="0" y2="1">
-                  <stop class="s-08__area-stop s-08__area-stop--0" offset="0%"/>
-                  <stop class="s-08__area-stop s-08__area-stop--1" offset="55%"/>
-                  <stop class="s-08__area-stop s-08__area-stop--2" offset="100%"/>
-                </linearGradient>
-              </defs>
-              <path class="s-08__area" fill="url(#s08-area)"
-                    d="M0 92 L31 92 C57 92 67 82 93 82 C119 82 130 88 156 88 C182 88 192 64 218 64 C244 64 254 50 280 50 C306 50 317 56 343 56 C369 56 379 28 405 28 L436 28 L436 112 L0 112 Z"/>
-              <path class="s-08__line" vector-effect="non-scaling-stroke"
-                    d="M0 92 L31 92 C57 92 67 82 93 82 C119 82 130 88 156 88 C182 88 192 64 218 64 C244 64 254 50 280 50 C306 50 317 56 343 56 C369 56 379 28 405 28 L436 28"/>
-              <circle class="s-08__pt s-08__pt--1" cx="31"  cy="92" r="3.5" vector-effect="non-scaling-stroke"/>
-              <circle class="s-08__pt s-08__pt--2" cx="93"  cy="82" r="3.5" vector-effect="non-scaling-stroke"/>
-              <circle class="s-08__pt s-08__pt--3" cx="156" cy="88" r="3.5" vector-effect="non-scaling-stroke"/>
-              <circle class="s-08__pt s-08__pt--4" cx="218" cy="64" r="3.5" vector-effect="non-scaling-stroke"/>
-              <circle class="s-08__pt s-08__pt--5" cx="280" cy="50" r="3.5" vector-effect="non-scaling-stroke"/>
-              <circle class="s-08__pt s-08__pt--6" cx="343" cy="56" r="3.5" vector-effect="non-scaling-stroke"/>
-              <circle class="s-08__pt s-08__pt--7" cx="405" cy="28" r="3.5" vector-effect="non-scaling-stroke"/>
-              <circle class="s-08__pulse" cx="405" cy="28" r="4" vector-effect="non-scaling-stroke"/>
-            </svg>
-
-            <svg class="s-08__chart-cursor" viewBox="0 0 436 140" preserveAspectRatio="none" focusable="false">
-              <g class="s-08__cursor-x">
-                <line class="s-08__cursor-line" x1="0" y1="4" x2="0" y2="112" vector-effect="non-scaling-stroke"/>
-                <g class="s-08__cursor-y">
-                  <circle class="s-08__cursor-dot" cx="0" cy="0" r="4" vector-effect="non-scaling-stroke"/>
-                </g>
-              </g>
-            </svg>
-
-            <div class="s-08__flag">
-              <span class="s-08__ticker s-08__ticker--flag">
-                <span class="s-08__ticker-track">
-                  <span>4,180</span><span>4,240</span><span>4,290</span>
-                </span>
-              </span>
-            </div>
-          </div>
-
-          <div class="s-08__days">
-            <span class="s-08__daymark"></span>
-            <span class="s-08__day">Mon</span>
-            <span class="s-08__day">Tue</span>
-            <span class="s-08__day">Wed</span>
-            <span class="s-08__day">Thu</span>
-            <span class="s-08__day">Fri</span>
-            <span class="s-08__day">Sat</span>
-            <span class="s-08__day">Sun</span>
-          </div>
-        </div>
-
-        <!-- Три плитки с искролиниями -->
-        <dl class="s-08__tiles">
-          <div class="s-08__tile s-08__tile--impressions">
-            <dt class="s-08__tile-label">IMPRESSIONS</dt>
-            <dd class="s-08__tile-value">
-              <span class="s-08__ticker s-08__ticker--tile">
-                <span class="s-08__ticker-track">
-                  <span>312K</span><span>348K</span><span>379K</span><span>404K</span><span>428K</span>
-                </span>
-              </span>
-              <svg class="s-08__spark" viewBox="0 0 120 24" preserveAspectRatio="none" focusable="false">
-                <path pathLength="100" vector-effect="non-scaling-stroke"
-                      d="M2 19 C12 19 15 17 25 17 C35 17 38 18 48 18 C58 18 61 13 71 13 C81 13 84 10 94 10 C105 10 108 5 118 5"/>
-              </svg>
-            </dd>
-          </div>
-
-          <div class="s-08__tile s-08__tile--clicks">
-            <dt class="s-08__tile-label">CLICKS</dt>
-            <dd class="s-08__tile-value">
-              <span class="s-08__ticker s-08__ticker--tile">
-                <span class="s-08__ticker-track">
-                  <span>11.2K</span><span>12.6K</span><span>14.0K</span><span>15.7K</span><span>16.1K</span><span>16.4K</span>
-                </span>
-              </span>
-              <svg class="s-08__spark" viewBox="0 0 120 24" preserveAspectRatio="none" focusable="false">
-                <path pathLength="100" vector-effect="non-scaling-stroke"
-                      d="M2 20 C12 20 15 16 25 16 C35 16 38 17 48 17 C58 17 61 12 71 12 C81 12 84 11 94 11 C105 11 108 4 118 4"/>
-              </svg>
-            </dd>
-          </div>
-
-          <div class="s-08__tile s-08__tile--ctr">
-            <dt class="s-08__tile-label">CTR</dt>
-            <dd class="s-08__tile-value">
-              <span class="s-08__ticker s-08__ticker--tile">
-                <span class="s-08__ticker-track">
-                  <span>3.1%</span><span>3.5%</span><span>3.8%</span>
-                </span>
-              </span>
-              <svg class="s-08__spark" viewBox="0 0 120 24" preserveAspectRatio="none" focusable="false">
-                <path pathLength="100" vector-effect="non-scaling-stroke"
-                      d="M2 18 C12 18 15 14 25 14 C35 14 38 19 48 19 C58 19 61 12 71 12 C81 12 84 15 94 15 C105 15 108 7 118 7"/>
-              </svg>
-            </dd>
-          </div>
-        </dl>
-
-      </div>
-
-      <figcaption class="s-08__disclaimer">Illustration only. Not a real store, and not a typical result.</figcaption>
-    </figure>
+      </figure>
+    </div>
 
   </div>
 </section>

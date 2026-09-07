@@ -1,0 +1,571 @@
+/* ==========================================================================
+   tajiro — Home · 10b · Growth manager
+
+   Перенос блока .mgr из макета экомзи. Разметка исходная, вся кожа заменена
+   на здешнюю. Таблица замен, чтобы потом не сверять по памяти:
+
+     фон #f4f5f7          → --c-bg (кремовый; сосед сверху тёмный, снизу
+                            почти белый, так что крем разводит обоих)
+     текст #14161a/#5b6068 → --c-text / --c-text-body / --c-text-muted
+     мятный --teal #2f9a86 → зелёная шкала: --c-green-bright на графике,
+                            --c-green-text на тексте (роль та же, см. 00-base)
+     serif                 → --f-body (Almarai 800) через утилиты .h2 / .h3
+     белые карточки + #e6e8eb → стекло страницы (--glass-*), как в секции 11
+     радиусы 20–24         → 18 у карточек (как в 11), --r-btn у кнопки
+
+   Шапка по центру — как у 02, 05, 06, 08–13; левое выравнивание здесь было бы
+   единственным на всю нижнюю половину страницы.
+
+   Мокап — заглушка из экомзи, композиция не тронута: окно, силуэт, стол,
+   ноутбук. Перекрашен в песок страницы, экран ноутбука взял --c-ink-surface-2,
+   кружок аватара — зелёный вместо сине-фиолетового (фиолетового в палитре
+   нет вовсе). Все размеры в процентах от кадра, поэтому кадр можно менять
+   пропорциями, ничего внутри не пересчитывая.
+
+   Мобильный первым. 601 — двe колонки в карточках, 901 — три и цитата в ряд.
+   ========================================================================== */
+
+.s-10b {
+  /* Кадр и портрет: песок страницы, разложенный по глубине. Свет приходит
+     сверху слева, как у всех теней на странице, — отсюда угол 160deg. */
+    --s10b-frame-1: #efe4d5;
+    --s10b-frame-2: #d9bd97;
+    --s10b-frame-3: #a8845b;
+    --s10b-desk-1:  #a8845b;
+    --s10b-desk-2:  #85643f;
+    --s10b-head:    #8a6a52;
+    --s10b-body:    #bb9a7b;
+
+  /* Портрет в цитате теплее кадра: он ближе к зрителю. */
+    --s10b-portrait-1: #e6bd8e;
+    --s10b-portrait-2: #b8794c;
+    --s10b-portrait-3: #6b4630;
+
+  /* Плашка «онлайн». Не чёрная, а цвета заголовков: чистый чёрный на
+     кремовой странице не встречается нигде. */
+    --s10b-pill: rgba(43, 38, 33, 0.72);
+
+    position: relative;
+    isolation: isolate;
+    padding-block: 64px;
+    background: var(--c-bg);
+}
+
+
+/* --- Раскладка ------------------------------------------------------------ */
+.s-10b__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+
+/* --- Шапка ---------------------------------------------------------------- */
+.s-10b__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 840px;
+    text-align: center;
+}
+
+.s-10b__kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    letter-spacing: 1.3px;
+    line-height: 18px;
+    color: var(--c-green-text);
+}
+
+.s-10b__kicker-rule {
+    width: 24px;
+    border-radius: 2px;
+}
+
+.s-10b__title {
+    max-width: 900px;
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.8px;
+}
+
+/* 54ch — мера из исходника, и она здесь работает: строка держится в трёх
+   строках на планшете и в двух на широком. */
+.s-10b__lead {
+    max-width: 54ch;
+}
+
+
+/* --- Кадр (заглушка) --------------------------------------------------------
+   Ни одной картинки: всё лежит на четырёх span-ах и их псевдоэлементах.
+   Пропорция 2.3/1 из исходника — на телефоне она вырождается в полоску,
+   поэтому там 4/3, а ноутбук прячется (в узкий кадр он не помещается,
+   не наезжая на силуэт).
+   -------------------------------------------------------------------------- */
+.s-10b__mock {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 18px;
+    background: linear-gradient(160deg,
+        var(--s10b-frame-1) 0%,
+        var(--s10b-frame-2) 45%,
+        var(--s10b-frame-3) 100%);
+    box-shadow: var(--sh-card);
+}
+
+/* Окно слева: светлая плоскость, источник света в кадре. */
+.s-10b__mock-win {
+    position: absolute;
+    left: 8%;
+    top: 10%;
+    width: 26%;
+    height: 70%;
+    border-radius: 8px;
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.35));
+    opacity: 0.6;
+}
+
+/* Силуэт: голова кружком, плечи аркой. Арка построена на двух радиусах,
+   как михрабная арка страницы, — только положе. */
+.s-10b__mock-person {
+    position: absolute;
+    left: 38%;
+    bottom: 0;
+    width: 26%;
+    height: 82%;
+}
+
+.s-10b__mock-person::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 36%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--s10b-head);
+}
+
+.s-10b__mock-person::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 36%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 70%;
+    border-radius: 45% 45% 0 0 / 40% 40% 0 0;
+    background: var(--s10b-body);
+}
+
+.s-10b__mock-desk {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 22%;
+    background: linear-gradient(180deg, var(--s10b-desk-1), var(--s10b-desk-2));
+}
+
+/* Ноутбук со звонком. Кружок аватара — зелёный градиент вместо мятно-
+   фиолетового из исходника: фиолетового в палитре нет, а зелёный здесь
+   единственное цветное пятно кадра и работает точкой внимания. */
+.s-10b__mock-call {
+    position: absolute;
+    right: 9%;
+    bottom: 24%;
+    display: grid;
+    place-items: center;
+    width: 22%;
+    aspect-ratio: 16 / 10;
+    border-radius: 10px;
+    background: var(--c-ink-surface-2);
+    box-shadow: 0 20px 40px rgba(43, 38, 33, 0.35);
+}
+
+.s-10b__mock-call i {
+    width: 38%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--c-green-bright), var(--c-green));
+}
+
+/* Подставка ноутбука */
+.s-10b__mock-call::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 8%;
+    transform: translateX(-50%);
+    width: 34%;
+    height: 8%;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* Плашка «онлайн» — она же и в цитате, потому оформление вынесено сюда
+   один раз, а различия по размеру описаны у .s-10b__badge. */
+.s-10b__live {
+    position: absolute;
+    left: 20px;
+    bottom: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    border-radius: var(--r-pill);
+    background: var(--s10b-pill);
+    color: var(--c-on-dark);
+    font-size: 14px;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.s-10b__live-dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-green-bright);
+    box-shadow: 0 0 10px var(--c-green-bright);
+}
+
+
+/* --- Подзаголовок --------------------------------------------------------- */
+.s-10b__sub {
+    max-width: 760px;
+    text-align: center;
+}
+
+.s-10b__sub-title {
+    margin-bottom: 12px;
+    font-size: 24px;
+    line-height: 31px;
+    letter-spacing: -0.6px;
+}
+
+.s-10b__sub-text {
+    font-size: 16px;
+    line-height: 26px;
+    color: var(--c-text-body);
+}
+
+
+/* --- Карточки -------------------------------------------------------------
+   Стекло страницы, один в один с секцией 11: те же слои, та же кромка, тот
+   же подъём на наведении. Иначе блок читался бы вставкой из чужого макета —
+   ровно та ошибка, которую разбирали на 03b.
+   -------------------------------------------------------------------------- */
+.s-10b__cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.s-10b__card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 26px 22px;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    background-image: var(--glass-bg), var(--glass-edge);
+    background-origin: padding-box, padding-box, border-box;
+    background-clip: padding-box, padding-box, border-box;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.s-10b__card:hover {
+    transform: translateY(-2px);
+    border-color: var(--c-line);
+    box-shadow: var(--sh-card);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .s-10b__card { transition: none; }
+    .s-10b__card:hover { transform: none; }
+}
+
+/* Знак в плашке. У секции 11 на этом месте изразец в 128 px, здесь —
+   контурный знак в 52: карточек столько же, но текста в них больше, и
+   плитка увела бы блок в разворот на полтора экрана. */
+.s-10b__ic {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 6px;
+    border: 1px solid var(--c-line-green);
+    border-radius: 12px;
+    background: var(--c-green-mist);
+    color: var(--c-green-text);
+}
+
+.s-10b__card-title {
+    font-size: 18px;
+    line-height: 25px;
+}
+
+.s-10b__card-text {
+    font-size: 15px;
+    line-height: 24px;
+    color: var(--c-text-muted);
+}
+
+
+/* --- Каналы связи ---------------------------------------------------------
+   Полоса между двумя волосками. Разделители мягкие: полоса перечисляет
+   способы связаться, а не спорит за внимание с карточками над ней.
+   -------------------------------------------------------------------------- */
+.s-10b__channels {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px 28px;
+    width: 100%;
+    max-width: 1200px;
+    padding-block: 22px;
+    border-top: 1px solid var(--c-line-soft);
+    border-bottom: 1px solid var(--c-line-soft);
+    font-size: 15px;
+    color: var(--c-text-strong);
+}
+
+.s-10b__channel {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.s-10b__channel svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    color: var(--c-green-bright);
+}
+
+
+/* --- Цитата ---------------------------------------------------------------- */
+.s-10b__quote {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1000px;
+    padding: 24px;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    background-image: var(--glass-bg), var(--glass-edge);
+    background-origin: padding-box, padding-box, border-box;
+    background-clip: padding-box, padding-box, border-box;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    text-align: center;
+}
+
+/* --- Кадр менеджера ---------------------------------------------------------
+   Здесь была заглушка — градиент и две фигуры светом по тёмному. Заменена
+   настоящим роликом из секции 11 при слиянии блоков. Градиент остался
+   подложкой: он виден ровно до того, как подъедет постер, и держит цвет
+   вместо чёрного прямоугольника.
+   -------------------------------------------------------------------------- */
+.s-10b__portrait {
+    position: relative;
+    justify-self: center;
+    width: 200px;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 16px;
+    background: linear-gradient(160deg,
+        var(--s10b-portrait-1) 0%,
+        var(--s10b-portrait-2) 55%,
+        var(--s10b-portrait-3) 100%);
+}
+
+/* Пропорция кадра, а не пропорция файла: исходник горизонтальный, 1280×731,
+   и вертикальное окно вырезает из него середину.
+
+   Сдвиг влево, а не по центру: человек сидит правее середины, а машет рукой
+   левее — при обрезке от центра рука уходит за край. Значение снято в
+   секции 11 и перенесено как есть. */
+.s-10b__portrait-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 28% 42%;
+}
+
+/* По умолчанию виден ролик, снимок лежит под сукном. При запрете движения
+   меняются местами: остановить зациклённое видео из CSS нельзя. */
+.s-10b__portrait-media--still {   display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .s-10b__portrait-media--motion { display: none; }
+    .s-10b__portrait-media--still  { display: block; }
+}
+
+/* Затемнение по нижнему краю. Без него плашка не работает: она держится на
+   белом тексте, а кадр под ней светлый. Заглушка была тёмной сама, поэтому
+   раньше подложка не требовалась. */
+.s-10b__portrait::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(0deg, rgba(28, 25, 22, 0.34) 0%, transparent 40%);
+}
+
+.s-10b__badge {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+  /* Выше затемнения кадра (оно на 1), иначе плашка уходит под него. */
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: var(--r-pill);
+    background: var(--s10b-pill);
+    color: var(--c-on-dark);
+    font-size: 12px;
+    font-weight: 700;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.s-10b__badge .s-10b__live-dot {
+    width: 7px;
+    height: 7px;
+    box-shadow: 0 0 8px var(--c-green-bright);
+}
+
+/* Курсива нет намеренно. В исходнике цитата набрана курсивным serif-ом;
+   у Almarai курсивного начертания не существует вовсе, и браузер рисовал бы
+   его наклоном — то есть подделкой. Роль курсива берёт кегль. */
+.s-10b__quote-text {
+    font-size: 19px;
+    line-height: 30px;
+    letter-spacing: -0.3px;
+    color: var(--c-text);
+}
+
+/* Выделенная фраза — то же место, где в исходнике стоял мятный. */
+.s-10b__quote-hi {
+    color: var(--c-green-text);
+    font-weight: 700;
+}
+
+.s-10b__quote-author {
+    margin-top: 18px;
+    font-size: 15px;
+    color: var(--c-text-muted);
+}
+
+.s-10b__quote-name {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 17px;
+    font-weight: 700;
+    font-style: normal;
+    color: var(--c-text);
+}
+
+.s-10b__quote-actions {
+    margin-top: 22px;
+}
+
+
+/* --- Адаптив: снизу вверх ---------------------------------------------------
+   Всё выше — телефонные значения. Пороги те же, что у соседних секций:
+   601 и 901, смещены на пиксел, чтобы граница уходила в широкий диапазон.
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 601px) {
+    .s-10b { padding-block: 80px; }
+
+    .s-10b__inner { gap: 48px; }
+
+    .s-10b__title {
+        font-size: 38px;
+        line-height: 46px;
+        letter-spacing: -1px;
+    }
+
+    .s-10b__sub-title {
+        font-size: 28px;
+        line-height: 36px;
+    }
+
+    .s-10b__cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .s-10b__channels { gap: 20px 44px; }
+
+    .s-10b__quote { padding: 32px; }
+}
+
+
+@media (min-width: 901px) {
+    .s-10b { padding-block: 96px; }
+
+    .s-10b__inner { gap: 56px; }
+
+    /* Кадр разворачивается в исходную пропорцию, ноутбук возвращается. */
+    .s-10b__mock { aspect-ratio: 2.3 / 1; }
+
+    .s-10b__title {
+        font-size: 44px;
+        line-height: 52px;
+    }
+
+    .s-10b__cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    /* Портрет уходит влево, текст занимает остаток. */
+    .s-10b__quote {
+        grid-template-columns: 240px minmax(0, 1fr);
+        gap: 40px;
+        align-items: center;
+        padding: 36px 44px 36px 36px;
+        text-align: left;
+    }
+
+    .s-10b__portrait { width: 240px; }
+
+    .s-10b__quote-text {
+        font-size: 22px;
+        line-height: 34px;
+    }
+}
+
+
+@media (min-width: 1281px) {
+    .s-10b__title {
+        font-size: 48px;
+        line-height: 56px;
+    }
+}

@@ -1,6 +1,21 @@
+<!-- ==========================================================================
+     09 · Social proof — истории владельцев
+
+     Была карусель: три карточки в две колонки ехали лентой, соседи
+     выглядывали по краям, ленту можно было тянуть пальцем. Ведший её
+     js/09-stories.js снят вместе с ней.
+
+     Стало — сетка карточек по образцу блока .stories из макета экомзи:
+     квадратный кадр с именем поверх, под ним оценка, заголовок и короткая
+     цитата. Всё видно сразу, листать нечего.
+
+     Люди и снимки прежние, тексты свои. Цитаты укорочены: в карточке шириной
+     в треть сетки прежние пять строк превращались в стену. Резалось по живому
+     их же словами — ничего не дописано.
+     ========================================================================== -->
 <section class="section s-09" id="social-proof">
-  <!-- Фон. Тёмная секция была плоской заливкой: на ней свечение читается
-       так же хорошо, как на экомзи, и не пользоваться этим было странно. -->
+  <!-- Фон: неподвижное тёплое зарево и три медленных пятна по своим орбитам.
+       Оба слоя живут за содержимым и ничего не перекрывают. -->
   <div class="s-09__glow" aria-hidden="true"></div>
   <div class="s-09__orbs" aria-hidden="true">
     <span></span><span></span><span></span>
@@ -16,109 +31,115 @@
       <h2 class="h2 s-09__title">People like you, building real businesses</h2>
     </header>
 
-    <!-- Карусель, а не колода. Раньше три истории лежали в одной ячейке
-         грида и подменялись на месте: карточка возникала из ниоткуда, и
-         понять, что это лента, было нельзя.
+    <ul class="s-09__grid reveal-set">
 
-         Теперь соседние истории видны по краям — приглушённые и уменьшенные.
-         Смена читается как сдвиг ленты, а не как подмена.
-
-         Копию набора для бесшовной петли делает js/09-stories.js: в
-         разметке она вшила бы те же три портрета повторно. -->
-    <div class="s-09__deck">
-      <div class="s-09__track">
-
-      <figure class="s-09__card s-09__card--1">
-        <div class="s-09__photo">
-          <img class="s-09__shot" draggable="false" src="assets/img/people/testimonial-yasmin.webp" alt="Yasmin H."
+      <li class="s-09__card">
+        <div class="s-09__cover">
+          <img class="s-09__shot" src="assets/img/people/testimonial-yasmin.webp" alt="Yasmin H."
                width="864" height="1184" loading="lazy" decoding="async">
+          <p class="s-09__who">
+            <span class="s-09__who-name">Yasmin H.</span>
+            <span class="s-09__who-role">Primary school teacher, Dubai 🇦🇪</span>
+          </p>
         </div>
 
         <div class="s-09__body">
-          <div class="s-09__card-head">
-            <h3 class="s-09__card-title">It fits around my day</h3>
-            <p class="s-09__stars">
-              <span aria-hidden="true">★★★★★</span>
-              <span class="visually-hidden">Rated 5 out of 5</span>
-            </p>
-          </div>
-
+          <p class="s-09__stars">
+            <span aria-hidden="true">★★★★★</span>
+            <span class="visually-hidden">Rated 5 out of 5</span>
+          </p>
+          <h3 class="s-09__card-title">It fits around my day</h3>
           <blockquote class="s-09__quote">
-            <p class="s-09__quote-full">“I teach all week, so I needed something that didn’t want me at a desk every evening. Setting the store up took one sitting, at this table, after the marking was done. Now I look at what sold overnight before the children are up, and the rest of the day still belongs to my class.”</p>
-            <p class="s-09__quote-brief">“I teach all week, so I needed something that didn’t want me at a desk every evening. Setting the store up took one sitting. Now I look at what sold overnight before the children are up.”</p>
+            <p>&ldquo;I teach all week, so I needed something that didn&rsquo;t want me at a desk every evening. Now I look at what sold overnight before the children are up.&rdquo;</p>
           </blockquote>
-
-          <figcaption class="s-09__author">
-            <cite class="s-09__author-name">Yasmin H.</cite>
-            <span class="s-09__author-role">Primary school teacher, Dubai 🇦🇪</span>
-          </figcaption>
         </div>
-      </figure>
+      </li>
 
-      <figure class="s-09__card s-09__card--2">
-        <div class="s-09__photo">
-          <img class="s-09__shot" draggable="false" src="assets/img/people/testimonial-tariq.webp" alt="Tariq A."
+      <li class="s-09__card">
+        <div class="s-09__cover">
+          <img class="s-09__shot" src="assets/img/people/testimonial-tariq.webp" alt="Tariq A."
                width="864" height="1184" loading="lazy" decoding="async">
+          <p class="s-09__who">
+            <span class="s-09__who-name">Tariq A.</span>
+            <span class="s-09__who-role">Logistics supervisor, Sharjah 🇦🇪</span>
+          </p>
         </div>
 
         <div class="s-09__body">
-          <div class="s-09__card-head">
-            <h3 class="s-09__card-title">I was sure I’d break it</h3>
-            <p class="s-09__stars">
-              <span aria-hidden="true">★★★★★</span>
-              <span class="visually-hidden">Rated 5 out of 5</span>
-            </p>
-          </div>
-
+          <p class="s-09__stars">
+            <span aria-hidden="true">★★★★★</span>
+            <span class="visually-hidden">Rated 5 out of 5</span>
+          </p>
+          <h3 class="s-09__card-title">I was sure I&rsquo;d break it</h3>
           <blockquote class="s-09__quote">
-            <p class="s-09__quote-full">“I’m the one in my family who calls somebody else when the router blinks. I put off starting for weeks because I was certain I’d break something. There was nothing to break — the store arrived finished and I only chose what went in it. I lost more time being afraid of it than I ever spent setting it up.”</p>
-            <p class="s-09__quote-brief">“I’m the one in my family who calls somebody else when the router blinks. I put it off for weeks, certain I’d break something. There was nothing to break — the store arrived finished.”</p>
+            <p>&ldquo;I&rsquo;m the one in my family who calls somebody else when the router blinks. There was nothing to break &mdash; the store arrived finished.&rdquo;</p>
           </blockquote>
-
-          <figcaption class="s-09__author">
-            <cite class="s-09__author-name">Tariq A.</cite>
-            <span class="s-09__author-role">Logistics supervisor, Sharjah 🇦🇪</span>
-          </figcaption>
         </div>
-      </figure>
+      </li>
 
-      <figure class="s-09__card s-09__card--3">
-        <div class="s-09__photo">
-          <img class="s-09__shot" draggable="false" src="assets/img/people/testimonial-saeed.webp" alt="Saeed R."
+      <li class="s-09__card">
+        <div class="s-09__cover">
+          <img class="s-09__shot" src="assets/img/people/testimonial-saeed.webp" alt="Saeed R."
                width="864" height="1184" loading="lazy" decoding="async">
+          <p class="s-09__who">
+            <span class="s-09__who-name">Saeed R.</span>
+            <span class="s-09__who-role">Retired engineer, Dammam 🇸🇦</span>
+          </p>
         </div>
 
         <div class="s-09__body">
-          <div class="s-09__card-head">
-            <h3 class="s-09__card-title">My name on it</h3>
-            <p class="s-09__stars">
-              <span aria-hidden="true">★★★★★</span>
-              <span class="visually-hidden">Rated 5 out of 5</span>
-            </p>
-          </div>
-
+          <p class="s-09__stars">
+            <span aria-hidden="true">★★★★★</span>
+            <span class="visually-hidden">Rated 5 out of 5</span>
+          </p>
+          <h3 class="s-09__card-title">My name on it</h3>
           <blockquote class="s-09__quote">
-            <p class="s-09__quote-full">“I spent twenty-eight years running somebody else’s plant. When I retired everyone assumed I’d sit down for good. My son set the store up with me in one evening, and now I look in on it over morning tea, before the street gets hot. It is small and it is mine, and at my age that turns out to matter more than I expected.”</p>
-            <p class="s-09__quote-brief">“I spent twenty-eight years running somebody else’s plant. My son set the store up with me in one evening, and now I look in on it over morning tea. It is small and it is mine.”</p>
+            <p>&ldquo;My son set the store up with me in one evening, and now I look in on it over morning tea. It is small and it is mine.&rdquo;</p>
           </blockquote>
-
-          <figcaption class="s-09__author">
-            <cite class="s-09__author-name">Saeed R.</cite>
-            <span class="s-09__author-role">Retired engineer, Dammam 🇸🇦</span>
-          </figcaption>
         </div>
-      </figure>
-      </div>
-    </div>
+      </li>
 
-    <!-- Индикаторы: показывают, что историй три и какая идёт сейчас -->
-    <ol class="s-09__dots" aria-hidden="true">
-      <li class="s-09__dot s-09__dot--1"></li>
-      <li class="s-09__dot s-09__dot--2"></li>
-      <li class="s-09__dot s-09__dot--3"></li>
-    </ol>
+      <!-- Четвёртая история дописана, когда сетку довели до четырёх карточек,
+           как в образце. Снимка под неё в проекте не было: шесть свободных
+           файлов people оказались аватарками 96×96, на обложке в 380 px они
+           рассыпаются. Кадр сгенерирован под тот же регистр, что и три
+           остальных, и приведён к их размеру 864×1184. -->
+      <li class="s-09__card">
+        <div class="s-09__cover">
+          <img class="s-09__shot" src="assets/img/people/testimonial-huda.webp" alt="Huda K."
+               width="864" height="1184" loading="lazy" decoding="async">
+          <p class="s-09__who">
+            <span class="s-09__who-name">Huda K.</span>
+            <span class="s-09__who-role">Nursery assistant, Abu Dhabi 🇦🇪</span>
+          </p>
+        </div>
 
+        <div class="s-09__body">
+          <p class="s-09__stars">
+            <span aria-hidden="true">★★★★★</span>
+            <span class="visually-hidden">Rated 5 out of 5</span>
+          </p>
+          <h3 class="s-09__card-title">I started on my phone</h3>
+          <blockquote class="s-09__quote">
+            <p>&ldquo;I did the whole thing on my phone, on my break at work. By the time I got home there was a store with my name on it.&rdquo;</p>
+          </blockquote>
+        </div>
+      </li>
+
+    </ul>
+
+    <!-- Оговорка стоит НАД кнопкой. Под кнопкой она была последней строкой
+         секции и читалась подписью ко всему блоку разом; здесь она замыкает
+         истории — то, к чему и относится, — а кнопка остаётся последней и
+         забирает внимание себе. -->
     <p class="s-09__note">Individual results vary and depend on the work you put in.</p>
+
+    <div class="s-09__actions">
+      <a class="btn btn--primary s-09__cta" href="#footer-cta">
+        Start your own story
+        <img src="assets/img/icons/arrow-right-white.svg" alt="" width="18" height="18">
+      </a>
+    </div>
 
   </div>
 </section>
