@@ -53,72 +53,17 @@
         </div>
       </div>
 
-      <!-- Сцена. Перенесена из макета и целиком перекрашена в палитру
-           Tajiro: зелень вместо мятного, песок вместо фиолетового,
-           кремовая подложка вместо тёмной — секция светлая. -->
-      <div class="s-04__scene reveal" role="img" aria-label="A new store owner at a laptop, celebrating">
-        <svg viewBox="0 0 600 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <radialGradient id="s04Glow" cx="50%" cy="45%" r="55%">
-              <stop offset="0" stop-color="#3d8f63" stop-opacity=".22"/>
-              <stop offset="1" stop-color="#3d8f63" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <rect width="600" height="560" fill="url(#s04Glow)"/>
+      <!-- Сцена. Была мультяшной SVG из макета экомзи, перекрашенной в
+           палитру Tajiro. Заменена фотографией: на странице люди везде
+           показаны снимками, и одна рисованная сцена читалась вставкой.
 
-          <!-- конфетти -->
-          <g opacity=".95">
-            <circle cx="452" cy="150" r="5" fill="#3d8f63"/>
-            <circle cx="500" cy="210" r="4" fill="#d4a373"/>
-            <rect x="470" y="110" width="10" height="10" rx="2" fill="#d4a373" transform="rotate(25 475 115)"/>
-            <rect x="520" y="160" width="8" height="8" rx="2" fill="#865b2a" opacity=".55" transform="rotate(-20 524 164)"/>
-            <circle cx="140" cy="190" r="4" fill="#3d8f63"/>
-            <rect x="110" y="240" width="9" height="9" rx="2" fill="#d4a373" transform="rotate(40 114 244)"/>
-            <circle cx="180" cy="130" r="3" fill="#865b2a" opacity=".5"/>
-            <path d="M430 92l6 12" stroke="#3d8f63" stroke-width="3" stroke-linecap="round"/>
-            <path d="M540 260l-8 10" stroke="#3d8f63" stroke-width="3" stroke-linecap="round"/>
-            <path d="M92 300l10 -6" stroke="#d4a373" stroke-width="3" stroke-linecap="round"/>
-          </g>
-
-          <!-- кресло -->
-          <rect x="230" y="232" width="170" height="190" rx="34" fill="#2b2621" opacity=".9"/>
-          <!-- корпус -->
-          <path d="M258 300q0-46 46-46h48q46 0 46 46v110h-140z" fill="#2f7352"/>
-          <!-- шея -->
-          <rect x="298" y="222" width="30" height="40" rx="8" fill="#d9a585"/>
-          <!-- голова -->
-          <circle cx="313" cy="196" r="46" fill="#e4b190"/>
-          <!-- волосы -->
-          <path d="M267 196a46 46 0 0 1 92 0v-6q-10-22-46-22q-36 0-46 22z" fill="#2b211e"/>
-          <!-- глаза и улыбка -->
-          <path d="M292 200q7-7 14 0" stroke="#3a2a24" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-          <path d="M320 200q7-7 14 0" stroke="#3a2a24" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-          <path d="M296 214q17 18 34 0" stroke="#3a2a24" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-          <circle cx="288" cy="210" r="5" fill="#c9836f" opacity=".4"/>
-          <circle cx="338" cy="210" r="5" fill="#c9836f" opacity=".4"/>
-
-          <!-- рука на столе -->
-          <path d="M266 300q-30 40-36 84" stroke="#2f7352" stroke-width="28" fill="none" stroke-linecap="round"/>
-          <circle cx="230" cy="386" r="15" fill="#e4b190"/>
-          <!-- поднятая рука -->
-          <path d="M394 296q40-20 56-84" stroke="#2f7352" stroke-width="28" fill="none" stroke-linecap="round"/>
-          <circle cx="452" cy="206" r="16" fill="#e4b190"/>
-
-          <!-- ноутбук со спины -->
-          <rect x="262" y="318" width="126" height="86" rx="7" fill="#332d27" stroke="#4d453d" stroke-width="2"/>
-          <circle cx="325" cy="361" r="6" fill="#3d8f63"/>
-
-          <!-- стол -->
-          <rect x="120" y="400" width="400" height="20" rx="6" fill="#3a332c"/>
-          <rect x="150" y="420" width="12" height="90" fill="#332d27"/>
-          <rect x="478" y="420" width="12" height="90" fill="#332d27"/>
-
-          <!-- кружка -->
-          <rect x="428" y="376" width="26" height="26" rx="4" fill="#865b2a"/>
-          <path d="M454 384h8a6 6 0 0 1 0 12h-8" stroke="#865b2a" stroke-width="4" fill="none"/>
-
-          <ellipse cx="320" cy="522" rx="200" ry="14" fill="#2b2621" opacity=".14"/>
-        </svg>
+           Градиентная подложка под снимком осталась — её видно, пока кадр
+           грузится. Плашка поверх переключается вместе с шагом, её ведёт
+           js/04-how-it-works.js. -->
+      <div class="s-04__scene reveal">
+        <img class="s-04__shot" src="assets/img/people/how-it-works.webp"
+             alt="A Tajiro store owner working on their store at home"
+             width="1200" height="900" loading="lazy" decoding="async">
 
         <!-- Плашка идёт за активным шагом. Текста своего у неё нет — она
              показывает заголовок текущего шага, чтобы не заводить копию,
