@@ -145,40 +145,6 @@
 }
 
 
-/* --- Ряд показателей ------------------------------------------------------ */
-.s-03b__stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px 28px;
-    margin: 0;
-}
-
-/* dt→dd в разметке (термин перед значением), column-reverse — для вида */
-.s-03b__stat {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 2px;
-}
-
-.s-03b__stat-value {
-    margin: 0;
-    font-family: var(--f-display);
-    font-size: 26px;
-    font-weight: 600;
-    line-height: 32px;
-    letter-spacing: -0.6px;
-    color: var(--s03b-ink);
-}
-
-.s-03b__stat-label {
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: var(--s03b-faint);
-}
-
-
 /* --- Кнопка --------------------------------------------------------------- */
 .s-03b__actions {
     display: flex;
