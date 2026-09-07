@@ -142,12 +142,6 @@
 .s-hero__cta-icon { transition: transform 0.18s ease; }
 .s-hero__cta:hover .s-hero__cta-icon { transform: translateX(3px); }
 
-.s-hero__arrow {
-  font-size: 15px;
-  transition: transform 0.18s ease;
-}
-.s-hero__talk:hover .s-hero__arrow { transform: translateX(2px); }
-
 /* --- Фигура ---------------------------------------------------------------
    Снимок вырезан по контуру и лежит прямо на фоне: ни плашки, ни тени,
    ни скругления — границей служит сам силуэт.
