@@ -186,23 +186,23 @@
 .s-10b__live {
     position: absolute;
     z-index: 2;
-    left: 16px;
-    bottom: 14px;
+    left: 18px;
+    bottom: 16px;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 7px 14px 7px 10px;
+    gap: 10px;
+    padding: 10px 18px 10px 13px;
     border: 1px solid transparent;
-    border-radius: 18px;
+    border-radius: 22px;
     background-image: var(--glass-bg), var(--glass-edge);
     background-origin: padding-box, padding-box, border-box;
     background-clip: padding-box, padding-box, border-box;
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     box-shadow: var(--glass-shadow);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
-    line-height: 16px;
+    line-height: 20px;
   /* Стекло светлое — белые буквы на нём не выживают */
     color: var(--c-text);
     white-space: nowrap;
@@ -214,8 +214,8 @@
 .s-10b__live-dot {
     position: relative;
     flex: none;
-    width: 7px;
-    height: 7px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     background: var(--c-green-bright);
     animation: dot-blink 1.6s ease-in-out infinite;
@@ -536,6 +536,15 @@
     .s-10b__mock-self {
         top: 24px;
         right: 24px;
+    }
+
+    /* Кадр здесь вдвое крупнее телефонного, и плашка на нём иначе теряется */
+    .s-10b__live {
+        left: 24px;
+        bottom: 22px;
+        padding: 12px 22px 12px 16px;
+        font-size: 15px;
+        line-height: 22px;
     }
 
     .s-10b__title {
