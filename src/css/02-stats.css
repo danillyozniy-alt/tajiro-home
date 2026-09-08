@@ -126,9 +126,12 @@
     line-height: 44px;
     letter-spacing: -1.1px;
   }
+  /* Подпись про комиссию длиннее остальных на четыре слова и просила
+     245 px при 237 доступных — ложилась в две строки, а соседние
+     оставались в одну. Кегль на полтора пункта меньше выравнивает ряд. */
   .s-02__label {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 15px;
+    line-height: 21px;
   }
 }
 
@@ -170,4 +173,25 @@
     line-height: 42px;
     letter-spacing: -1px;
   }
+}
+
+
+/* --- Сноски --------------------------------------------------------------
+   Мельче подписей и приглушены: это оговорка, а не часть показателя. */
+.s-02__note {
+    margin-top: 26px;
+    color: var(--c-text-muted);
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.s-02__note .s-02__ref { margin-left: 10px; }
+.s-02__note .s-02__ref:first-child { margin-left: 0; }
+
+/* Верхний индекс не должен растягивать строку показателя */
+.s-02__ref {
+    font-size: 0.62em;
+    line-height: 0;
+    vertical-align: super;
 }

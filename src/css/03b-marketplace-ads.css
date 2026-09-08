@@ -454,3 +454,23 @@
     .s-03b__mkt { padding: 20px 20px 80px; }
     .s-03b__grid { gap: 12px; }
 }
+
+
+/* --- Пункт с заголовком ---------------------------------------------------
+   В пункте теперь две строки: короткий заголовок и пояснение под ним.
+   Галочка выравнивается по первой строке, а не по середине блока. */
+.s-03b__feature-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.s-03b__feature-t {
+    font-weight: 700;
+    color: var(--s03b-ink, var(--c-text));
+}
+
+.s-03b__feature-d {
+    color: var(--c-text-body);
+}

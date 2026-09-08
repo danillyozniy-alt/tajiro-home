@@ -355,3 +355,57 @@
     gap: 40px;
   }
 }
+
+
+/* --- Соцсети --------------------------------------------------------------
+   Ряд квадратных кнопок под описанием — как в референсе. Иконка внутри
+   одна на кнопку, размер держит сама кнопка. */
+.s-14__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 22px 0 26px;
+}
+
+.s-14__social {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--s14-line, rgba(255, 255, 255, 0.16));
+    border-radius: 12px;
+    color: inherit;
+    opacity: 0.7;
+    transition: opacity 0.2s ease,
+              border-color 0.2s ease,
+              background-color 0.2s ease,
+              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* На тёмном подвале одной прозрачности мало: кнопка должна заливаться и
+   слегка подниматься, иначе наведение читается только по курсору. */
+.s-14__social:hover,
+.s-14__social:focus-visible {
+    opacity: 1;
+    border-color: var(--c-green-on-dark, #7fc9a0);
+    background-color: rgba(127, 201, 160, 0.14);
+    color: var(--c-green-on-dark, #7fc9a0);
+    transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-14__social { transition: none; }
+  .s-14__social:hover { transform: none; }
+}
+
+/* Resources и Company — один столбец на двоих */
+.s-14__col-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Копирайт переехал под адрес */
+.s-14__copyright {
+    margin-top: 14px;
+}

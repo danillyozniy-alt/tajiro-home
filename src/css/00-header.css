@@ -645,3 +645,46 @@ body.nav-open {
     flex-basis: 330px;
   }
 }
+
+
+
+
+/* --- Язык -----------------------------------------------------------------
+   Не капсула и не список: рядом стоят простая ссылка «Log in» и зелёная
+   кнопка, третий элемент с рамкой спорил бы с обоими. Надпись повторяет
+   вид «Log in», а написан на ней тот язык, на который переключишься. */
+.nav__lang {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--c-text-strong);
+    font-family: var(--f-body);
+  /* Арабское начертание при равном кегле выглядит крупнее латинского:
+     у него выше очко и длиннее выносные. Поэтому 14 против 15 у «Log in» —
+     на глаз строки получаются одного роста. Вес не поднимаем: рядом
+     обычные ссылки, и жирная надпись выбивалась. */
+    font-size: 14px;
+    line-height: 22px;
+    cursor: pointer;
+    transition: color 0.18s ease;
+}
+
+.nav__lang:hover { color: var(--c-gold); }
+
+.nav-sheet__lang {
+    align-self: flex-start;
+    margin-bottom: 12px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--c-text-strong);
+    font-family: var(--f-body);
+    font-size: 17px;
+        line-height: 26px;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) { .nav__lang { display: none; } }
+@media (min-width: 901px) { .nav-sheet__lang { display: none; } }

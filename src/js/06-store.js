@@ -27,14 +27,14 @@
 
   /* Товары — из каталога, который секция и продаёт */
   var PRODUCTS = [
-    'New Puppy 90-Day Plan',
+    'New Puppy Checklist',
     'Medical Bill Audit Kit',
-    'Career Reboot System',
-    'Small Claims Toolkit',
-    'Sleep Improvement System',
-    'Family Meal Planner',
-    'Mindfulness Course',
-    'Home Budget Blueprint'
+    'Focus Planner',
+    'Budget Reset Planner',
+    'Sleep Better Guide',
+    'Meal Prep Checklist',
+    'Morning Routine Quiz',
+    'Focus Planner'
   ];
 
   /* У каждого города своя сторона, и она за ним закреплена: волна приходит
@@ -58,7 +58,7 @@
   ];
 
   var revenue = 2340;
-  var loaded  = 187;
+  var loaded  = 100;
 
   /* Свой генератор вместо Math.random: последовательность заказов одинакова
      от загрузки к загрузке — секцию можно сравнивать по скриншотам. */
@@ -186,14 +186,14 @@
       }, { once: true });
     }
 
-    sparkTimer = setTimeout(spark, 180 + rnd() * 280);
+    sparkTimer = setTimeout(spark, 430 + rnd() * 640);
   }
 
   /* Фронт волны доходит до корпуса примерно за секунду — на столько плашка
      и отстаёт. Порядок обязан быть причинным: заказ прилетает, попадает в
      магазин, и только потом появляется уведомление о нём. Одновременно —
      и связь между ними уже не читается. */
-  var ARRIVAL = 420;
+  var ARRIVAL = 600;
 
   function sale() {
     var product = pick(PRODUCTS);
@@ -262,7 +262,14 @@
 
     toast.appendChild(icon);
     toast.appendChild(copy);
-    toast.appendChild(el('span', 's-06__toast-amount', '+' + money(amount) + '.00'));
+    /* Плюс отдельным span-ом: цифры набираются «Tajiro Figures», а в этой
+       подрезанной гарнитуре знак нарисован узким и с высокой перекладиной —
+       на экране он читается перевёрнутым крестом. Шрифт нужен цифрам, не
+       знаку. */
+    var sum = el('span', 's-06__toast-amount');
+    sum.appendChild(el('span', 's-06__toast-sign', '+'));
+    sum.appendChild(document.createTextNode(money(amount) + '.00'));
+    toast.appendChild(sum);
 
     ctr.appendChild(toast);
     live.unshift(toast);
@@ -291,10 +298,12 @@
        висеть вечно.
 
        Уход отдельным классом, а не удалением: иначе плашка исчезает рывком. */
-    setTimeout(function () { retire(toast); }, 5200);
+    setTimeout(function () { retire(toast); }, 7400);
 
     /* --- показатели --- */
-    countTo(revenueE, revenue, revenue + amount, 420, money);
+    /* Плашка выручки уступила место домену — счётчик остался только
+       у числа товаров. */
+    if (revenueE) countTo(revenueE, revenue, revenue + amount, 420, money);
     countTo(loadedE, loaded, loaded + 1, 320, String);
     revenue += amount;
     loaded += 1;
@@ -308,13 +317,13 @@
   function schedule() {
     clearTimeout(timer);
     if (!running) return;
-    timer = setTimeout(sale, 1700 + rnd() * 1500);
+    timer = setTimeout(sale, 3400 + rnd() * 2600);
   }
 
   function start() {
     if (running) return;
     running = true;
-    timer = setTimeout(sale, 600);
+    timer = setTimeout(sale, 1200);
     if (!still && !sparkTimer) spark();
   }
 

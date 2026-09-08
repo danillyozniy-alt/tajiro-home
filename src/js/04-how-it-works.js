@@ -20,16 +20,19 @@
 
   var card = document.getElementById('s04-card');
   var label = card && card.querySelector('.s-04__card-t');
+  var desc  = card && card.querySelector('.s-04__card-d');
   var reduce = window.matchMedia &&
                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function setCard(step) {
     if (!card || !label) return;
     var next = step.getAttribute('data-card');
+    var note = step.getAttribute('data-card-desc') || '';
     if (!next || next === label.textContent) return;
     card.classList.add('is-swapping');
     setTimeout(function () {
       label.textContent = next;
+      if (desc) desc.textContent = note;
       card.classList.remove('is-swapping');
     }, 130);   /* 280 мс читались как отставание плашки от шага */
   }

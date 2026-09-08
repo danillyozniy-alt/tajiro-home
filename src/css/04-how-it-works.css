@@ -94,6 +94,14 @@
     color: var(--c-green-text);
 }
 
+/* Курсивная вставка в заголовке: пробел вокруг неё съедает отрицательный
+   трекинг вместе с наклоном, и «$0» слипается со следующим словом.
+   Возвращаем зазор оптически. */
+.s-04__title em {
+    margin-right: 0.1em;
+    padding-left: 0.02em;
+}
+
 .s-04__title {
     margin-top: 14px;
     font-size: 30px;
@@ -250,7 +258,7 @@
     left: 18px;
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: flex-start;
     max-width: calc(100% - 36px);
     margin: 0;
     padding: 10px 15px;
@@ -265,11 +273,28 @@
 
 .s-04__card-dot {
     flex: none;
+    margin-top: 5px;   /* к первой строке, а не к середине блока */
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: var(--c-green-bright);
     box-shadow: 0 0 0 4px rgba(61, 143, 99, 0.16);
+}
+
+/* Две строки в столбик: точка стоит рядом с обеими, поэтому текст
+   уходит в отдельную обёртку, а не лежит рядом с точкой напрямую. */
+.s-04__card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.s-04__card-d {
+    font-family: var(--f-body);
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--c-text-muted);
 }
 
 .s-04__card-t {

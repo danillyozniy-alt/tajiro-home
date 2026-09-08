@@ -300,16 +300,25 @@
 /* Знак в плашке. У секции 11 на этом месте изразец в 128 px, здесь —
    контурный знак в 52: карточек столько же, но текста в них больше, и
    плитка увела бы блок в разворот на полтора экрана. */
-.s-10b__ic {
-    display: grid;
-    place-items: center;
-    width: 52px;
-    height: 52px;
+.s-10b__tile {
+    display: block;
+    flex: none;
+    width: 56px;
+    height: 56px;
     margin-bottom: 6px;
-    border: 1px solid var(--c-line-green);
     border-radius: 12px;
-    background: var(--c-green-mist);
-    color: var(--c-green-text);
+  /* Кадр снят так, что плитка занимает его целиком — обрезать нечего */
+    object-fit: fill;
+    box-shadow: 0 1px 2px rgba(43, 38, 33, 0.06),
+    0 4px 12px -8px rgba(43, 38, 33, 0.26);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.3s ease;
+}
+
+.s-10b__card:hover .s-10b__tile {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(43, 38, 33, 0.08),
+    0 9px 18px -10px rgba(43, 38, 33, 0.32);
 }
 
 .s-10b__card-title {

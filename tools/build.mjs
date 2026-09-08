@@ -56,7 +56,7 @@ const PAGES = [
   { template: 'index.html',       out: 'index.html',       send: 'Tajiro-home.html' }
 ];
 
-const PORT = 4173;
+const PORT = Number(process.env.PORT) || 4173;
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
