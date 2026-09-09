@@ -260,7 +260,9 @@
     align-items: flex-start;
     max-width: calc(100% - 36px);
     margin: 0;
-    padding: 10px 15px;
+  /* Боковые поля шире вертикальных: у капсулы торцы круглые, и при равных
+     полях текст подходит к закруглению вплотную. */
+    padding: 11px 22px;
     border: 1px solid var(--c-line-soft);
     border-radius: var(--r-pill);
   /* Плотнее прежних 0.86: плашка лежит на снимке, а в левом верхнем углу

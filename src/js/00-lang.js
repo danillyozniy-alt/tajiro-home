@@ -14,9 +14,11 @@
   var btns = Array.prototype.slice.call(document.querySelectorAll('[data-lang-switch]'));
   if (!btns.length) return;
 
-  var KEY = 'tajiro-lang';
+  /* Выбор не запоминается. Пока переводов нет, сохранённое «ar» означало
+     бы, что при каждой загрузке страница объявляет себя арабской, оставаясь
+     английской по содержанию. Стартуем всегда с английского; запоминание
+     возвращается вместе с переводами. */
   var cur = 'en';
-  try { cur = localStorage.getItem(KEY) === 'ar' ? 'ar' : 'en'; } catch (e) { cur = 'en'; }
 
   function apply(code) {
     cur = code;
@@ -27,7 +29,6 @@
       b.setAttribute('lang', other);
       b.setAttribute('aria-label', other === 'ar' ? 'Switch to Arabic' : 'Switch to English');
     });
-    try { localStorage.setItem(KEY, code); } catch (e) { /* приватный режим */ }
   }
 
   btns.forEach(function (b) {
