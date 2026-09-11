@@ -374,40 +374,12 @@
     height: 16px;
 }
 
-/* --- Строка цифр ---------------------------------------------------------- */
-.s-07__stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px 24px;
-}
+/* --- Ряд показателей -------------------------------------------------------
+   Геометрия и типографика общие для 06, 07 и 08 — заданы один раз в
+   00-base.css. Здесь только цвета. */
+.s-07__stat-value { color: var(--c-text); }
 
-/* В разметке dt — подпись (термин), dd — значение; визуально значение сверху */
-.s-07__stat {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 4px;
-}
-
-.s-07__stat-value {
-    font-family: var(--f-display);
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 27px;
-    color: var(--c-text);
-    white-space: nowrap;
-}
-
-.s-07__stat-label {
-  /* Заглавными в разрядку, как в референсе: так подпись читается
-     служебной строкой при числе, а не второй строкой текста. */
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 11px;
-    line-height: 15px;
-    letter-spacing: 0.55px;
-    color: var(--s07-muted);
-    white-space: nowrap;
-}
+.s-07__stat-label { color: var(--s07-muted); }
 
 /* --- Адаптив -------------------------------------------------------------- */
 
@@ -482,13 +454,6 @@
   .s-07__feature {
     font-size: 15px;
     line-height: 23px;
-  }
-  .s-07__stats {
-    gap: 32px;
-  }
-  .s-07__stat-value {
-    font-size: 28px;
-    line-height: 30px;
   }
 }
 

@@ -94,6 +94,10 @@
     color: var(--c-green-text);
 }
 
+/* «$0» и слово после него — одна смысловая единица: браузер рвал строку
+   между ними, и «investment» оставалось одно на второй строке. */
+.s-04__nobr { white-space: nowrap; }
+
 .s-04__title em {
   /* Выделение только цветом: курсив в общем правиле .h2 em, здесь он не
      нужен. Заодно снимается оптический зазор — он компенсировал наклон,
@@ -102,6 +106,8 @@
 }
 
 .s-04__title {
+  /* Строки выравниваются по длине сами */
+    text-wrap: balance;
     margin-top: 14px;
     font-size: 30px;
     line-height: 38px;
@@ -370,4 +376,41 @@
     }
 
     .s-04__card { transition: none; }
+}
+
+
+/* --- Телефон: плашка под кадром -------------------------------------------
+   Разбор — в scratchpad/s04card.mjs. Коротко: на 4:3 левый верхний угол
+   занят лицом, свободного угла в кадре нет, поэтому плашка уходит из кадра
+   вниз и становится вторым этажом коробки. */
+@media (max-width: 600px) {
+    .s-04__scene {
+        display: flex;
+        flex-direction: column;
+      /* Пропорцию держит теперь снимок: коробка выше него на плашку. */
+        aspect-ratio: auto;
+    }
+
+    .s-04__shot {
+        position: static;
+        height: auto;
+        aspect-ratio: 4 / 3;
+    }
+
+    .s-04__card {
+        position: static;
+        align-items: center;
+      /* Плашка во всю ширину коробки: капсула шириной с кадр читалась бы
+         кнопкой. Здесь это полоса подписи, и углы у неё общие с коробкой. */
+        max-width: none;
+        min-height: 78px;
+        padding: 12px 16px;
+        border: 0;
+        border-top: 1px solid var(--c-line-soft);
+        border-radius: 0;
+        background: #fbf8f3;
+        box-shadow: none;
+    }
+
+    .s-04__card-dot { margin-top: 0; }
 }

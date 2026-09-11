@@ -105,37 +105,12 @@
     height: 16px;
 }
 
-/* --- Ряд метрик ----------------------------------------------------------- */
-.s-06__stats {
-    display: flex;
-  /* Показатели в строку. Ниже 600 они переносятся, и вернуть строку можно
-     только явным nowrap. */
-    flex-wrap: wrap;
-    gap: 20px 28px;
-}
+/* --- Ряд показателей -------------------------------------------------------
+   Геометрия и типографика общие для 06, 07 и 08 — заданы один раз в
+   00-base.css. Здесь только цвета. */
+.s-06__stat-value { color: var(--s06-ink); }
 
-/* dt→dd в разметке (термин перед значением), column-reverse — для вида */
-.s-06__stat {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: flex-start;
-    gap: 4px;
-}
-
-.s-06__stat-value {
-    font-family: var(--f-display);
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 28px;
-    color: var(--s06-ink);
-}
-
-.s-06__stat-label {
-    font-size: 11px;
-    line-height: 15px;
-    letter-spacing: 0.55px;
-    color: var(--s06-muted);
-}
+.s-06__stat-label { color: var(--s06-muted); }
 
 
 /* --- Кнопка ----------------------------------------------------------------
@@ -849,16 +824,6 @@
     font-size: 38px;
     line-height: 46px;
     letter-spacing: -1px;
-  }
-  .s-06__stats {
-    /* Показатели в строку. Ниже 600 они переносятся, и вернуть строку можно
-    только явным nowrap. */
-    flex-wrap: nowrap;
-    gap: 32px;
-  }
-  .s-06__stat-value {
-    font-size: 28px;
-    line-height: 30px;
   }
   .s-06__visual {
     /* Ниже 600 сцене добавляют боковое поле; ноль здесь — то, чем его снять. */

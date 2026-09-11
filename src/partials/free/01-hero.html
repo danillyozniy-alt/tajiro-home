@@ -1,0 +1,86 @@
+<section class="fb-section fb-section--sand fb-decor fb-hero" id="hero">
+  <div class="container fb-hero__wrap">
+
+    <div class="fb-hero__text">
+      <!-- Пилюля с живой точкой — общий компонент базы: та же, что на
+           первом экране главной. В прототипе здесь была строчка с кружком. -->
+      <p class="eyebrow fb-hero__eyebrow">
+        <i class="eyebrow__dot" aria-hidden="true"></i>
+        Free to start &middot; Ready in minutes
+      </p>
+
+      <h1 class="h1 fb-hero__title">Launch your online business today&nbsp;— <em class="fb-nowrap">for free</em></h1>
+
+      <p class="lead fb-hero__lede">Get a ready-made store loaded with 100 products people actually buy. Create your own, too. We handle the marketing. You keep your margin.</p>
+
+      <div class="fb-actions fb-hero__actions">
+        <a class="btn btn--primary" href="#" data-stub="checkout">Start your free store</a>
+      </div>
+
+      <!-- Выбор рынка. В прототипе стоял в шапке; шапка здесь общая с
+           главной и про страны не знает, поэтому селект переехал сюда — к
+           строке условий, где и говорится про цену.
+
+           Класс .market-pick оставлен намеренно: по нему скрипт цен
+           находит селект. Переименуешь — цены перестанут пересчитываться. -->
+      <div class="fb-market__row">
+        <select class="market-pick fb-market" aria-label="Choose your country">
+          <option value="AE">🇦🇪 UAE</option>
+          <option value="SA">🇸🇦 Saudi</option>
+          <option value="QA">🇶🇦 Qatar</option>
+          <option value="BH">🇧🇭 Bahrain</option>
+          <option value="OM">🇴🇲 Oman</option>
+        </select>
+        <p class="meta fb-terms">Free 14-day trial &middot; Nothing to ship &middot; No experience needed</p>
+      </div>
+    </div>
+
+    <!-- Панель аналитики. В прототипе была плоской белой карточкой с
+         рамкой; здесь стеклянная плашка на токенах — тот же материал, что
+         у панелей главной. Под секцией для этого лежит гирих: стеклу нужна
+         фактура, иначе материал не читается. -->
+    <div class="fb-panel fb-dash" aria-hidden="true">
+      <div class="fb-dash__top">
+        <p class="fb-dash__brand">
+          <span aria-hidden="true">Taȷıro</span>
+          <span class="fb-logo__dot fb-logo__dot--green" aria-hidden="true"></span>
+          <span class="fb-logo__dot fb-logo__dot--sand" aria-hidden="true"></span>
+        </p>
+        <p class="fb-dash__live"><i class="fb-dash__pulse"></i> Store is live</p>
+      </div>
+
+      <div class="fb-dash__body">
+        <div class="fb-dash__row">
+          <div class="fb-stat">
+            <span class="fb-stat__k">This week</span>
+            <span class="fb-stat__v" data-week>AED 6,760</span>
+            <span class="fb-stat__up">▲ 24%</span>
+          </div>
+          <div class="fb-stat">
+            <span class="fb-stat__k">Products sold</span>
+            <span class="fb-stat__v">38</span>
+            <span class="fb-stat__up">▲ 11 this week</span>
+          </div>
+        </div>
+
+        <ul class="fb-dash__list">
+          <li class="fb-dash__li">
+            <span class="fb-dash__name">Golden Visa Eligibility Check<span class="fb-dash__time">6 min ago</span></span>
+            <span class="fb-dash__paid">Paid</span>
+          </li>
+          <li class="fb-dash__li">
+            <span class="fb-dash__name">End-of-Service Calculator<span class="fb-dash__time">28 min ago</span></span>
+            <span class="fb-dash__paid">Paid</span>
+          </li>
+          <li class="fb-dash__li">
+            <span class="fb-dash__name">School Admission Roadmap<span class="fb-dash__time">1 hr ago</span></span>
+            <span class="fb-dash__paid">Paid</span>
+          </li>
+        </ul>
+      </div>
+
+      <p class="fb-dash__note">Illustrative dashboard &middot; figures are sample data</p>
+    </div>
+
+  </div>
+</section>

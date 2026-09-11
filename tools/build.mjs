@@ -53,7 +53,8 @@ const SEND = path.join(ROOT, 'send');
    не правкой в четырёх местах. Отчёт, очистка старых цельных файлов и
    выбор стартовой страницы сервера строятся отсюда же. */
 const PAGES = [
-  { template: 'index.html',       out: 'index.html',       send: 'Tajiro-home.html' }
+  { template: 'index.html',       out: 'index.html',       send: 'Tajiro-home.html' },
+  { template: 'free-basic.html',  out: 'free-basic.html',  send: 'Tajiro-free-basic.html' }
 ];
 
 const PORT = Number(process.env.PORT) || 4173;

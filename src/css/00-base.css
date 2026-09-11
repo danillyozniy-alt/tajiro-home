@@ -390,8 +390,8 @@ body {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  height: 52px;
-  padding-inline: 26px;
+  height: 56px;
+  padding-inline: 34px;
   border-radius: var(--r-btn);
   /* Вес задан здесь, а не в модификаторах: у .btn--ghost стояло 700, а
      основная кнопка веса не имела вовсе и наследовала 400 от body. Рядом
@@ -563,12 +563,13 @@ body {
   .h2 { font-size: 34px; line-height: 42px; }
   .h3 { font-size: 22px; line-height: 30px; }
   .lead { font-size: 18px; line-height: 29px; }
-  .btn { height: 56px; padding-inline: 38px; font-size: 16px; }
+  .btn { height: 60px; padding-inline: 44px; font-size: 16px; }
   .btn--ghost { padding-inline: 28px; }
 
   /* Строго после .btn: компактная кнопка шапки должна перебивать общий
      размер, а не наоборот. */
   .btn--sm { height: 50px; padding-inline: 30px; font-size: 15px; }
+
 }
 
 @media (min-width: 901px) {
@@ -580,4 +581,124 @@ body {
 
 @media (min-width: 1281px) {
   :root { --gutter: 120px; }
+}
+
+
+
+
+
+/* --- Кнопки на телефоне ---------------------------------------------------
+   Во всю ширину колонки: на узком экране кнопка по содержимому висит
+   слева от пустоты, а палец целится в первый попавшийся край. Компактная
+   кнопка шапки исключена — она живёт в баре, а не в потоке. */
+@media (max-width: 600px) {
+  .btn:not(.btn--sm) {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  /* Обёртки кнопок сжимаются по содержимому, и «во всю ширину» считалось
+     от них, а не от колонки. Растягиваем сами обёртки. */
+  .s-03b__actions,
+  .s-04__actions,
+  .s-06__actions,
+  .s-07__actions,
+  .s-08__actions,
+  .s-09__actions,
+  .s-10b__quote-actions,
+  .s-12__actions,
+  .s-13__actions {
+    display: flex;
+    width: 100%;
+  }
+
+  /* Подвал блока историй сжимался по содержимому, и кнопка выходила уже
+     прочих на 45 px. */
+  .s-09__foot { width: 100%; }
+}
+
+
+/* --- Заголовки на телефоне ------------------------------------------------
+   Базовые кегли задавались под узкую колонку с выключкой по левому краю.
+   После центрирования и кнопок во всю ширину они стали мелковаты рядом с
+   ними: поднимаем на две-три ступени, интерлиньяж следом. */
+@media (max-width: 600px) {
+  .h1 { font-size: 42px; line-height: 48px; letter-spacing: -1.1px; }
+  .h2 { font-size: 32px; line-height: 39px; letter-spacing: -0.9px; }
+  .h3 { font-size: 21px; line-height: 29px; }
+  .lead { font-size: 18px; line-height: 28px; }
+}
+
+
+/* --- Ряд показателей в столпах ---------------------------------------------
+   Один компонент на 06, 07 и 08. Разбор — в scratchpad/stats-unify.mjs.
+   Коротко: раньше у каждой секции были свои правила на один и тот же
+   элемент, и ряды разошлись — три в строку, два и один, каждый со своей
+   строки; подписи где прописными, где строчными.
+
+   Здесь вся геометрия и вся типографика. В файлах секций остаются только
+   цвета — фон у столпов разный, у 08 тёмный.
+   -------------------------------------------------------------------------- */
+.s-06__stats,
+.s-07__stats,
+.s-08__stats {
+  /* Сетка, а не поток: в потоке ширина ячейки равна её содержимому, и
+     колонки в разных секциях вставали по-разному. */
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+    margin: 0;
+}
+
+/* В разметке подпись идёт первой (dt — термин, dd — значение), на экране
+   значение сверху. Отсюда column-reverse. */
+.s-06__stat,
+.s-07__stat,
+.s-08__stat {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+}
+
+.s-06__stat-value,
+.s-07__stat-value,
+.s-08__stat-value {
+    margin: 0;
+    font-family: var(--f-display);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+  /* Числа не переносятся: «10,000+» на двух строках — уже не число. */
+    white-space: nowrap;
+}
+
+.s-06__stat-label,
+.s-07__stat-label,
+.s-08__stat-label {
+    font-size: 10px;
+    line-height: 14px;
+  /* Прописными в разрядку: подпись читается служебной строкой при числе,
+     а не второй строкой текста. */
+    text-transform: uppercase;
+    letter-spacing: 0.55px;
+  /* Резерв на две строки. Длинные подписи в узкую долю в одну не влезают,
+     и без резерва ряды разъезжаются по высоте. */
+    min-height: 28px;
+}
+
+@media (min-width: 601px) {
+  .s-06__stats,
+  .s-07__stats,
+  .s-08__stats { gap: 24px; }
+
+  .s-06__stat-value,
+  .s-07__stat-value,
+  .s-08__stat-value { font-size: 28px; line-height: 30px; }
+
+  .s-06__stat-label,
+  .s-07__stat-label,
+  .s-08__stat-label { font-size: 11px; line-height: 15px; min-height: 30px; }
 }

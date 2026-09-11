@@ -1,0 +1,65 @@
+/* ==========================================================================
+   tajiro — Free Basic · 09 · Вопросы
+
+   Секция кремовая, узкая колонка — как в прототипе. Плюс поворачивается в
+   крестик на раскрытии; при «меньше движения» поворот снимает общее
+   правило базы, и знак просто меняет состояние без вращения.
+   ========================================================================== */
+
+.fb-faq__container { max-width: 900px; }
+
+.fb-faq {
+    margin-top: 30px;
+    border-top: 1px solid var(--c-line);
+}
+
+.fb-faq__item { border-bottom: 1px solid var(--c-line); }
+
+.fb-faq__q {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 20px 0;
+    list-style: none;
+    cursor: pointer;
+    font-size: 17px;
+    line-height: 26px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--c-text);
+}
+
+/* Маркер убирается в двух местах: webkit рисует свой треугольник даже при
+   list-style: none. */
+.fb-faq__q::-webkit-details-marker { display: none; }
+
+.fb-faq__pm {
+    flex: none;
+    font-family: var(--f-display);
+    font-size: 22px;
+    line-height: 22px;
+    color: var(--c-green-text);
+    transition: transform 0.2s ease;
+}
+
+.fb-faq__item[open] .fb-faq__pm { transform: rotate(45deg); }
+
+.fb-faq__a {
+    padding-bottom: 20px;
+    max-width: 52em;
+    font-size: 16px;
+    line-height: 26px;
+    color: var(--c-text-body);
+}
+
+/* Цена в ответе — тем же зелёным, что и остальные показатели страницы.
+   Её текст подставляет скрипт цен по выбранной стране. */
+.fb-faq__a strong { color: var(--c-green-text); }
+
+
+/* --- Адаптив ------------------------------------------------------------------- */
+@media (min-width: 601px) {
+  .fb-faq { margin-top: 36px; }
+  .fb-faq__q { font-size: 18px; line-height: 28px; }
+}

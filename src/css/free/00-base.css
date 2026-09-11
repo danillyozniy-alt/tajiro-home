@@ -1,0 +1,429 @@
+/* ==========================================================================
+   tajiro — Free Basic · 00 · Оболочка страницы и общие компоненты
+
+   Страница переодета из прототипа Tajiro_Landing. Разметка и тексты
+   прототипа сохранены один в один — менялось только оформление.
+
+   ЧТО ПРИШЛОСЬ ПОМЕНЯТЬ И ПОЧЕМУ
+   · Серифный дисплейный шрифт (Fraunces) убран целиком: в системе Tajiro
+     заголовки набраны Almarai 800, серифа в ней нет вовсе. Крупные числа
+     отданы Outfit — так же, как на главной.
+   · Бирюзовый #0B4F4A заменён тёплым зелёным --c-green. Бирюза холодная, и
+     на кремовой странице читалась чужой: фон тёплый, акцент холодный, и
+     вместе они спорят.
+   · Скругления сведены к шкале Tajiro: 4px кнопки, 6px мелкие карточки,
+     18px крупные плашки. В прототипе было 14/10.
+   · Тени переведены в тёплые rgba(43,38,33,…). Холодные из прототипа
+     (rgba(8,59,55,…)) на песке отдают зеленью.
+
+   ЗДЕСЬ ЛЕЖИТ только то, чего нет в общей базе: компоненты, которые
+   повторяются в нескольких секциях. Токены, типографика, кнопки, стекло и
+   доступность приходят из 00-base.css без правок. Шапка и подвал — общие
+   с главной, своих здесь нет.
+   ========================================================================== */
+
+.fb {
+  /* Тёмные плоскости страницы. Своего токена под фон тёмной секции в базе
+     нет — на главной он тоже вписан числом, — поэтому держим его здесь
+     одним местом на всю страницу. Значения ровно те же, что на главной. */
+    --fb-dark: #1a1714;
+    --fb-dark-soft: #1f1b17;   /* призыв: на ступень светлее подвала */
+    --fb-sand-bg: #eae4d8;     /* песок первого экрана */
+}
+
+/* Часть фразы, которую нельзя рвать переносом */
+.fb-nowrap { white-space: nowrap; }
+
+
+/* --- Ритм секций -----------------------------------------------------------
+   Лесенка отступов общая для всей страницы: 64 → 80 → 96 → 120.
+
+   ТОН СЕКЦИЙ. Правило Tajiro: соседние секции одного тона не совпадают, а
+   тёмные идут через одну, а не полосой. В прототипе светлое шло сплошняком,
+   а три тёмных стояли подряд в конце (призыв, доверие, подвал) — конец
+   страницы читался одной чёрной полосой. Раскладка переставлена:
+
+      1  hero          песок
+      2  counters      крем  (прозрачная, берёт фон body)
+      3  platform      ТЁМНАЯ
+      4  store         белёсый
+      5  how           крем
+      6  sell          белёсый
+      7  create        крем
+      8  marketing     ТЁМНАЯ
+      9  all-in-one    крем
+     10  reviews       белёсый
+     11  band          крем + тёмная плашка внутри
+     12  trust         белёсый   ← была тёмной
+     13  faq           крем
+     14  final         ТЁМНАЯ  #1f1b17
+     15  footer        ТЁМНАЯ  #1a1714
+
+   Тёмное приходится на 3, 8 и 14–15 — ни одна тёмная не стоит рядом с
+   другой, кроме пары «призыв + подвал»: они читаются одной опорой страницы
+   и разведены не тоном, а глубиной. ---------------------------------------- */
+.fb-section {
+    position: relative;
+    isolation: isolate;
+    padding-block: 64px;
+}
+
+.fb-section--plain { background: var(--c-bg-plain); }
+.fb-section--sand  { background: var(--fb-sand-bg); }
+
+/* Тёмная секция. Цвета переведены по таблице пар из свода стиля: на тёмном
+   заголовок --c-on-dark, текст --c-on-dark-soft, мета --c-on-dark-muted,
+   зелёный акцент --c-green-on-dark, тёплый акцент --c-sand. Без этой замены
+   акценты гаснут: --c-green-text и --c-gold на #1a1714 нечитаемы. */
+.fb-section--dark {
+    background: var(--fb-dark);
+    color: var(--c-on-dark-soft);
+}
+
+.fb-section--dark .h1,
+.fb-section--dark .h2,
+.fb-section--dark .h3 { color: var(--c-on-dark); }
+
+.fb-section--dark .h1 em,
+.fb-section--dark .h2 em { color: var(--c-green-on-dark); }
+
+.fb-section--dark .lead { color: var(--c-on-dark-soft); }
+.fb-section--dark .meta { color: var(--c-on-dark-muted); }
+.fb-section--dark .kicker { color: var(--c-green-on-dark); }
+.fb-section--dark .rule { background: var(--c-green-on-dark); }
+
+
+/* --- Фактура под секцией ----------------------------------------------------
+   Два мягких цветовых пятна и решётка гириха. Существует затем, чтобы
+   стеклянным плашкам было что искажать: по своду стекло на ровной заливке
+   не читается вовсе. Кладётся только под теми секциями, где плашки есть.
+
+   НА ТЁМНОМ ФАКТУРЫ НЕТ, и это не упущение. На светлом решётку почти не
+   видно, а на тёмном она работает наоборот: подсвечивает плоскость, и
+   #1a1714 уезжает в серо-коричневый. Рядом с главной, где тёмные секции
+   чистые, разница читается сразу — будто взят другой цвет, хотя цвет тот
+   же. Под тёмным не лежит ничего. -------------------------------------- */
+.fb-decor::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(54% 46% at 16% 20%, rgba(212, 163, 115, 0.16) 0%, transparent 66%),
+      radial-gradient(48% 42% at 86% 76%, rgba(61, 143, 99, 0.12) 0%, transparent 64%),
+      url("../../assets/img/decor/girih-pattern.svg") center / 620px repeat;
+    opacity: 0.30;
+}
+
+
+/* --- Надзаголовки секций -----------------------------------------------------
+   На главной их ДВА, и они не взаимозаменяемы. В прототипе оба места
+   занимала одна золотая строчка «01 · Your store»; здесь она разведена так
+   же, как на главной.
+
+   1. НУМЕРОВАННЫЙ СТОЛП (у главной это 06, 07, 08) — крупный золотой номер
+      отдельной строкой, под ним зелёная пилюля капсом. Номер набран
+      дисплейным и работает верстовым столбом: по нему видно, какой из
+      шести блоков читаешь.
+
+   2. ОБЫЧНАЯ СЕКЦИЯ (04, 05, 09, 12) — короткий штрих и капс в строку, без
+      номера. Стоит там, где номера нет: отзывы, доверие, вопросы.
+
+   Значения взяты из 06-pillar-store.css и не подобраны заново: это один и
+   тот же компонент на двух страницах. ------------------------------------ */
+
+/* 1 · Столп: номер + пилюля */
+.fb-numeral {
+    font-family: var(--f-display);
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--c-gold);
+}
+
+/* .kicker с пилюлей: другой цвет и трекинг, чем у базового надзаголовка.
+   Подложка зелёная, а не песочная: на 12px с трекингом буквы тонкие, и
+   тёплая плашка перекрашивает их на глаз в коричневый. */
+.fb-label {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 14px;
+    border-radius: var(--r-pill);
+    background: color-mix(in srgb, var(--c-green) 10%, transparent);
+    letter-spacing: 1.44px;
+    line-height: 16px;
+    color: var(--c-green-text);
+}
+
+/* На тёмной секции зелёный тинт почти не виден, а текст в нём нечитаем —
+   по таблице пар берём зелёный для тёмного и поднимаем плотность плашки. */
+.fb-section--dark .fb-label {
+    background: rgba(127, 201, 160, 0.14);
+    color: var(--c-green-on-dark);
+}
+
+.fb-section--dark .fb-numeral { color: var(--c-sand); }
+
+/* 2 · Обычная секция: штрих + капс */
+.fb-eye {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* .rule по умолчанию 120px — здесь короткий штрих слева от надписи */
+.fb-eye .rule {
+    flex: none;
+    width: 24px;
+    border-radius: 2px;
+}
+
+.fb-eye .kicker {
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 1.3px;
+}
+
+
+/* --- Шапка секции -------------------------------------------------------------
+   Кегль заголовка — не общий .h2, а тот, что стоит у столпов главной:
+   30/38 на телефоне и 38/46 с 601. Общий .h2 на 601 даёт 34/42, на 901
+   уходит в 44/52 — рядом с главной блоки читались крупнее её собственных. */
+.fb-head__title {
+    margin-top: 14px;
+    max-width: 15em;
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.7px;
+}
+
+.fb-head__lead {
+    margin-top: 14px;
+    max-width: 44em;
+    color: var(--c-text-muted);
+}
+
+.fb-section--dark .fb-head__lead { color: var(--c-on-dark-soft); }
+
+
+/* --- Чек-лист ---------------------------------------------------------------
+   Галочка — рисованная иконка из набора Tajiro, а не текстовый знак «✓».
+   Сначала стоял знак: он ничего не весит и виден сразу. Но у столпов
+   главной в этом месте лежит check-green.svg, и два разных вида галочки на
+   соседних страницах — первое, за что цепляется глаз. Кегль и цвет строки
+   тоже оттуда: 15/23, --c-text-muted. --------------------------------------- */
+.fb-check {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.fb-check__item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 15px;
+    line-height: 23px;
+    color: var(--c-text-muted);
+}
+
+/* В макете иконка выровнена по верху строки (items-start), не по центру */
+.fb-check__mark {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin-top: 3px;
+}
+
+.fb-section--dark .fb-check__item { color: var(--c-on-dark-soft); }
+
+
+/* --- Ряд показателей ----------------------------------------------------------
+   «100 / 60s / 100%» под чек-листом. Геометрия и типографика — та же, что у
+   столпов главной (задана в её 00-base.css для .s-06/07/08__stats).
+
+   В прототипе это были плашки с рамкой. Здесь рамки нет намеренно: у
+   главной показатель в столпе — голая пара «число + подпись капсом», и
+   обведённые плашки рядом с ней читались чужим компонентом. Число крупное
+   дисплейное, подпись мелкая прописными в разрядку. ---------------------- */
+.fb-mini {
+  /* Сетка, а не поток: в потоке ширина ячейки равна содержимому, и колонки
+     в разных секциях встают по-разному. */
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+    margin-top: 24px;
+}
+
+.fb-mini__m {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.fb-mini__n {
+    font-family: var(--f-display);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+  /* Числа не переносятся: «AED 26–3,669» на двух строках — уже не число. */
+    white-space: nowrap;
+    color: var(--c-ink-surface-2);
+}
+
+.fb-mini__l {
+    font-size: 10px;
+    line-height: 14px;
+  /* Прописными в разрядку: подпись читается служебной строкой при числе, а
+     не второй строкой текста. */
+    text-transform: uppercase;
+    letter-spacing: 0.55px;
+  /* Резерв на две строки: длинные подписи в узкую долю в одну не влезают, и
+     без резерва ряды разъезжаются по высоте. */
+    min-height: 28px;
+    color: var(--c-text-muted);
+}
+
+.fb-section--dark .fb-mini__n { color: var(--c-on-dark); }
+.fb-section--dark .fb-mini__l { color: var(--c-on-dark-muted); }
+
+
+/* --- Ряд кнопок --------------------------------------------------------------- */
+.fb-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.fb-actions--center { justify-content: center; }
+
+/* Условия под кнопкой: «Free 14-day trial · Nothing to ship» */
+.fb-terms { margin-top: 14px; }
+
+
+/* --- Выбор рынка -------------------------------------------------------------
+   В прототипе селект стоял в шапке. Шапка здесь общая с главной и про
+   страны не знает — а добавить его туда значило бы вывести выбор рынка и на
+   главную. Переехал на первый экран, к строке условий: там он и по смыслу
+   ближе, потому что именно от страны зависит цена, о которой говорит
+   соседняя строка.
+
+   Класс .market-pick на самом элементе оставлен из прототипа: по нему
+   скрипт цен находит селект.
+
+   Родную стрелку убираем и рисуем свою: системная нарисована шрифтом ОС и
+   рядом с кнопками страницы читается формой из другого набора. ---------- */
+.fb-market {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 42px;
+    padding: 0 38px 0 16px;
+    border: 1.5px solid var(--c-line-gold);
+    border-radius: var(--r-btn);
+    background-color: rgba(255, 255, 255, 0.5);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M0.536 0.625H7.464L4 4.375L0.536 0.625Z' fill='%23865b2a'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-gold);
+    cursor: pointer;
+    transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.fb-market:hover {
+    border-color: var(--c-line-strong);
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+/* Список раскрывается средствами ОС — его вид не наш. Пункты хотя бы не
+   белые на белом: эти цвета браузер берёт для выпадающего списка. */
+.fb-market option {
+    background: var(--c-bg-alt);
+    color: var(--c-text);
+}
+
+.fb-market__row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 22px;
+}
+
+
+/* --- Стеклянная плашка -------------------------------------------------------
+   Вариант из раздела 7.1 свода, собранный из токенов, — тот самый, что
+   стоит на главной. Упрощённая утилита .glass намеренно не используется:
+   рядом два разных стекла читаются как два разных материала.
+
+   Граница прозрачная и работает распоркой: по ней конический градиент
+   кромки и рисует торец. ---------------------------------------------------- */
+.fb-panel {
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    background-image: var(--glass-bg), var(--glass-edge);
+    background-origin: padding-box, border-box;
+    background-clip: padding-box, border-box;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+}
+
+/* На тёмной секции белые градиенты стекла превращаются в молочное пятно —
+   по своду там нужна плоская тёмная плашка со светящейся гранью. */
+.fb-panel--dark {
+    border: 1px solid var(--c-line-on-dark);
+    background-image: none;
+    background-color: var(--c-ink-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+
+/* --- Точки логотипа ------------------------------------------------------------
+   Всё, что осталось от шапки прототипа: их носит знак Tajiro в панели
+   аналитики на первом экране. Смещения в em — точки едут вместе с кеглем. */
+.fb-logo__dot {
+    position: absolute;
+    top: 0.125em;
+    width: 0.15625em;
+    height: 0.15625em;
+    border-radius: 50%;
+}
+
+.fb-logo__dot--green { left: 1.1em;   background: var(--c-green); }
+.fb-logo__dot--sand  { left: 1.334em; background: var(--c-sand); }
+
+
+/* --- Адаптив: снизу вверх ------------------------------------------------------
+   Пороги те же, что во всей системе: 601 / 901 / 1281, только min-width и
+   строго по возрастанию. ---------------------------------------------------- */
+@media (min-width: 601px) {
+  .fb-section { padding-block: 80px; }
+  .fb-market { height: 46px; }
+
+  /* Те же ступени, что у столпов главной */
+  .fb-numeral { font-size: 68px; letter-spacing: -2.4px; }
+  .fb-head__title { font-size: 38px; line-height: 46px; letter-spacing: -1px; }
+  .fb-mini { gap: 24px; }
+  .fb-mini__n { font-size: 28px; line-height: 30px; }
+  .fb-mini__l { font-size: 11px; line-height: 15px; min-height: 30px; }
+}
+
+@media (min-width: 901px) {
+  .fb-section { padding-block: 96px; }
+}
+
+@media (min-width: 1281px) {
+  .fb-section { padding-block: 120px; }
+}

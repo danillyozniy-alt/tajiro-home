@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--#include partials/free/head.html -->
+
+<!--# Порядок как на главной: сначала шрифты и токены, потом шапка и
+     механизм появления, потом стили секций — ровно в том порядке, в каком
+     секции лежат на странице, и подвал последним.
+
+     Общая база берётся без правок: токены, типографика, кнопки, стекло и
+     доступность приходят из 00-base.css. В css/free лежит только то, чего
+     в базе нет. -->
+<link rel="stylesheet" href="css/00-fonts.css">
+<link rel="stylesheet" href="css/00-base.css">
+<link rel="stylesheet" href="css/00-header.css">
+<link rel="stylesheet" href="css/00-reveal.css">
+<link rel="stylesheet" href="css/free/00-base.css">
+<link rel="stylesheet" href="css/free/01-hero.css">
+
+<!--# Полоса показателей и блок «A complete platform» — НЕ свои. Это секции
+     главной: 02 и 05. Стили берутся их собственными файлами, а не
+     переписываются заново — иначе на двух страницах живут два похожих
+     блока, которые расходятся при первой же правке. -->
+<link rel="stylesheet" href="css/02-stats.css">
+<link rel="stylesheet" href="css/05-what-you-get.css">
+<link rel="stylesheet" href="css/free/03-platform.css">
+<link rel="stylesheet" href="css/free/04-pillars.css">
+<link rel="stylesheet" href="css/free/05-all-in-one.css">
+<link rel="stylesheet" href="css/free/06-reviews.css">
+<link rel="stylesheet" href="css/free/07-cta.css">
+<link rel="stylesheet" href="css/free/08-trust.css">
+<link rel="stylesheet" href="css/free/09-faq.css">
+<link rel="stylesheet" href="css/14-footer.css">
+</head>
+<body class="fb">
+
+<!--# Шапка и подвал — ТЕ ЖЕ файлы, что на главной, а не копия. Копия
+     расходится с оригиналом на первой же правке: меняют одну, а вторая про
+     это не знает. Поэтому здесь стоят те же партиалы, те же стили и те же
+     скрипты. -->
+<!--#include partials/00-header.html -->
+
+<!--#include partials/free/01-hero.html -->
+<!--# Полоса показателей — партиал главной без изменений: числа и сноски там
+     те же самые, и держать вторую копию незачем. -->
+<!--#include partials/02-stats.html -->
+<!--#include partials/free/03-platform.html -->
+<!--#include partials/free/04-store.html -->
+<!--#include partials/free/05-how.html -->
+<!--#include partials/free/06-sell.html -->
+<!--#include partials/free/07-create.html -->
+<!--#include partials/free/08-marketing.html -->
+<!--#include partials/free/09-all-in-one.html -->
+<!--#include partials/free/10-reviews.html -->
+<!--#include partials/free/11-band.html -->
+<!--#include partials/free/12-trust.html -->
+<!--#include partials/free/13-faq.html -->
+<!--#include partials/free/14-final.html -->
+<!--#include partials/14-footer.html -->
+
+<!--# Скрипты шапки и подвала общие с главной. Цены идут до reveal.js:
+     они переписывают текст в ценниках, и делать это лучше до того, как
+     появление начнёт мерить раскладку. -->
+<script src="js/00-lang.js"></script>
+<script src="js/header.js"></script>
+<script src="js/14-footer.js"></script>
+<script src="js/free-prices.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+/* DEVELOPER NOTE — Stripe is NOT connected yet.
+   Every [data-stub="checkout"] link is a placeholder.
+
+   PRICING: amounts on this page are shown in USD ($39/mo) as a
+   value anchor for the layout stage only.
+   BEFORE going live, the checkout MUST display the local price
+   with VAT per market — this is a legal requirement in the UAE
+   (showing a price without VAT is a finable offence).
+   Fixed VAT-inclusive prices, do NOT convert from USD live:
+     UAE   AED 150 (VAT 5%)
+     Saudi SAR 168 (VAT 15%)
+     Qatar QAR 142
+     Bahrain BHD 16.17 (VAT 10%)
+     Oman  OMR 15.75 (VAT 5%)
+   Implement with Stripe Checkout + Stripe Tax; five Price
+   objects, one per currency. The country switcher in the header
+   is where the market is chosen. */
+</script>
+</body>
+</html>

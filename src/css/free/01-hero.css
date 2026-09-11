@@ -1,0 +1,198 @@
+/* ==========================================================================
+   tajiro — Free Basic · 01 · Первый экран
+
+   Песочный фон, как на главной: он же держит переход к кремовой полосе
+   счётчиков ниже. В прототипе первый экран стоял на общем фоне страницы, и
+   верх страницы читался одной плоскостью без начала.
+
+   Панель аналитики переведена в стекло на токенах (свод, 7.1). Она к этому
+   готова: снимка внутри нет, а под секцией лежит гирих — стеклу есть что
+   искажать.
+   ========================================================================== */
+
+.fb-hero { padding-block: 44px 48px; }
+
+.fb-hero__wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+    align-items: center;
+}
+
+.fb-hero__eyebrow { margin-bottom: 20px; }
+
+.fb-hero__lede {
+    max-width: 30em;
+    margin: 22px 0 28px;
+    color: var(--c-text-body);
+}
+
+
+/* --- Панель аналитики ------------------------------------------------------ */
+
+/* Тёмная шапка панели. Внутри стекла это единственная глухая плоскость —
+   она задаёт панели верх и не даёт ей растечься по песку. */
+.fb-dash__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 18px;
+    background: var(--c-ink-surface-2);
+}
+
+.fb-dash__brand {
+    position: relative;
+    font-family: var(--f-display);
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 19px;
+    letter-spacing: -0.38px;
+    color: var(--c-on-dark);
+}
+
+.fb-dash__live {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--c-green-on-dark);
+}
+
+/* Пульс «магазин работает». Тот же приём, что у точки в пилюле: кольцо
+   расходится и гаснет. Цвет зелёный для тёмного фона: --c-green-bright на
+   #1f1d1a тускнеет. */
+.fb-dash__pulse {
+    position: relative;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-green-on-dark);
+}
+
+.fb-dash__pulse::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid rgba(127, 201, 160, 0.55);
+    animation: fb-dash-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes fb-dash-ping {
+  0%        { transform: scale(0.5); opacity: 1; }
+  80%, 100% { transform: scale(1.9); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-dash__pulse::after { animation: none; }
+}
+
+.fb-dash__body { padding: 20px 18px; }
+
+.fb-dash__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+/* Плитка показателя. В прототипе подложка была мятной (--mist); здесь
+   кремовая: зелёный в системе живёт в акцентах, а не в заливках. */
+.fb-stat {
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    border-radius: var(--r-card);
+    background: rgba(251, 248, 243, 0.72);
+    border: 1px solid var(--c-line-soft);
+}
+
+.fb-stat__k {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--c-text-muted);
+}
+
+/* Крупное число — дисплейным, как все показатели страницы. Текст в него
+   подставляет скрипт цен, поэтому размер держим с запасом: «BHD 692» и
+   «AED 6,760» набираются в одну строку. */
+.fb-stat__v {
+    margin-top: 3px;
+    font-family: var(--f-display);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+    letter-spacing: -0.5px;
+    color: var(--c-text);
+}
+
+.fb-stat__up {
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--c-green-text);
+}
+
+.fb-dash__list {
+    border-top: 1px solid var(--c-line-soft);
+    padding-top: 6px;
+}
+
+.fb-dash__li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    font-size: 14px;
+}
+
+.fb-dash__name {
+    display: block;
+    font-weight: 700;
+    color: var(--c-text-strong);
+}
+
+.fb-dash__time {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--c-text-muted);
+}
+
+/* Метка оплаты — пилюля на бледной зелёной заливке (--c-green-mist) */
+.fb-dash__paid {
+    flex: none;
+    padding: 3px 10px;
+    border-radius: var(--r-pill);
+    background: var(--c-green-mist);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-green-text);
+}
+
+.fb-dash__note {
+    padding: 10px;
+    border-top: 1px solid var(--c-line-soft);
+    background: rgba(245, 240, 235, 0.6);
+    font-size: 11px;
+    text-align: center;
+    color: var(--c-text-muted);
+}
+
+
+/* --- Адаптив ---------------------------------------------------------------- */
+@media (min-width: 601px) {
+  .fb-hero { padding-block: 56px 64px; }
+  .fb-stat__v { font-size: 26px; }
+}
+
+@media (min-width: 901px) {
+  .fb-hero { padding-block: 64px 80px; }
+  .fb-hero__wrap {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 52px;
+  }
+}

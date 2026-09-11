@@ -1,0 +1,54 @@
+/* ==========================================================================
+   tajiro — Free Basic · 05 · Всё в одном
+
+   Секция кремовая, поэтому карточки белые: на --c-bg-alt (тоже кремовый)
+   строки слились бы с фоном. Тень мягкая — это перечень, а не витрина, и
+   поднимать строки над страницей незачем.
+   ========================================================================== */
+
+.fb-incl {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    margin-top: 32px;
+}
+
+.fb-incl__row {
+    display: flex;
+    gap: 14px;
+    padding: 20px;
+    border: 1px solid var(--c-line-soft);
+    border-radius: 14px;
+    background: var(--c-surface);
+    box-shadow: 0 1px 2px rgba(43, 38, 33, 0.04);
+}
+
+/* Галочка общая с чек-листами страницы: тот же знак и тот же зелёный */
+.fb-incl__row .fb-check__mark {
+    margin-top: 2px;
+    font-size: 17px;
+}
+
+.fb-incl__body { display: block; }
+
+.fb-incl__title {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: 700;
+    color: var(--c-text);
+}
+
+.fb-incl__text {
+    display: block;
+    font-size: 15px;
+    line-height: 24px;
+    color: var(--c-text-muted);
+}
+
+.fb-included__actions { margin-top: 26px; }
+
+
+/* --- Адаптив ---------------------------------------------------------------- */
+@media (min-width: 601px) {
+  .fb-incl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 36px; }
+}

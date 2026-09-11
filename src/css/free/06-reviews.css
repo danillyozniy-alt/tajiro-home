@@ -1,0 +1,59 @@
+/* ==========================================================================
+   tajiro — Free Basic · 06 · Отзывы
+
+   ПРО КУРСИВ. В прототипе цитаты набраны курсивом. У Almarai курсивного
+   начертания нет вовсе — браузер подделал бы его наклоном, и на четырёх
+   карточках подряд это видно сразу. По своду роль курсива в цитатах берёт
+   кегль: цитата крупнее подписи и заголовка карточки, и этого хватает,
+   чтобы прочитать её прямой речью.
+   ========================================================================== */
+
+.fb-revs {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.fb-rev {
+    padding: 26px;
+    border: 1px solid var(--c-line-soft);
+    border-radius: 14px;
+    background: var(--c-surface);
+    box-shadow: var(--sh-card);
+}
+
+/* Звёзды золотом — тёплый акцент страницы. Трекинг из прототипа сохранён:
+   без него пять знаков читаются одним пятном. */
+.fb-rev__stars {
+    margin-bottom: 12px;
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: var(--c-gold);
+}
+
+.fb-rev__head { margin-bottom: 10px; }
+
+.fb-rev__quote {
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--c-text-body);
+}
+
+.fb-rev__who {
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--c-text-muted);
+}
+
+.fb-rev__who b { color: var(--c-text); }
+
+
+/* --- Адаптив ---------------------------------------------------------------- */
+@media (min-width: 601px) {
+  .fb-revs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 40px; }
+}
+
+@media (min-width: 901px) {
+  .fb-rev__quote { font-size: 18px; line-height: 30px; }
+}
