@@ -51,10 +51,24 @@ const SEND = path.join(ROOT, 'send');
 
    Список существует затем, чтобы добавление страницы было одной строкой, а
    не правкой в четырёх местах. Отчёт, очистка старых цельных файлов и
-   выбор стартовой страницы сервера строятся отсюда же. */
+   выбор стартовой страницы сервера строятся отсюда же.
+
+   Шаблоны лежат в src/pages/, их части — в подпапках по странице:
+
+     partials/shared/   шапка, подвал, полоса показателей — общее для всех
+     partials/home/     секции главной
+     partials/<стр>/    секции этой страницы
+
+     css/core/          шрифты, токены, появление — фундамент
+     css/shared/        блоки, которые стоят больше чем на одной странице
+     css/home/          секции главной
+     css/<стр>/         секции этой страницы
+
+   То же деление у js/. Правило одно: файл переезжает в shared/ ровно тогда,
+   когда его подключает вторая страница, — не раньше. */
 const PAGES = [
-  { template: 'index.html',       out: 'index.html',       send: 'Tajiro-home.html' },
-  { template: 'free-basic.html',  out: 'free-basic.html',  send: 'Tajiro-free-basic.html' }
+  { template: 'pages/index.html',       out: 'index.html',       send: 'Tajiro-home.html' },
+  { template: 'pages/free-basic.html',  out: 'free-basic.html',  send: 'Tajiro-free-basic.html' }
 ];
 
 const PORT = Number(process.env.PORT) || 4173;

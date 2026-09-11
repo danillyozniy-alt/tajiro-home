@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--#include partials/home/head.html -->
+
+<!--# Порядок важен: 00-* задают токены, шапку и общий механизм появления,
+     дальше секции идут ровно так, как лежат на странице. -->
+<link rel="stylesheet" href="css/core/fonts.css">
+<link rel="stylesheet" href="css/core/base.css">
+<link rel="stylesheet" href="css/shared/header.css">
+<link rel="stylesheet" href="css/core/reveal.css">
+<link rel="stylesheet" href="css/home/01-hero.css">
+<link rel="stylesheet" href="css/shared/stats.css">
+<!--# Секции 03 больше нет: слита с 08. Файл оставлен — на нём держится
+     телефон с роликом, переехавший в 08 вместе с классами s-03__*. -->
+<link rel="stylesheet" href="css/home/03-ai-influencers.css">
+<link rel="stylesheet" href="css/home/03b-marketplace-ads.css">
+<link rel="stylesheet" href="css/home/04-how-it-works.css">
+<link rel="stylesheet" href="css/shared/what-you-get.css">
+<link rel="stylesheet" href="css/home/06-pillar-store.css">
+<link rel="stylesheet" href="css/home/07-pillar-products.css">
+<link rel="stylesheet" href="css/home/08-pillar-marketing.css">
+<link rel="stylesheet" href="css/home/09-social-proof.css">
+<link rel="stylesheet" href="css/home/10-the-math.css">
+<link rel="stylesheet" href="css/home/10b-growth-manager.css">
+<link rel="stylesheet" href="css/home/12-trust-security.css">
+<link rel="stylesheet" href="css/home/13-footer-cta.css">
+<link rel="stylesheet" href="css/shared/footer.css">
+</head>
+<body>
+
+<!--#include partials/shared/header.html -->
+<!--#include partials/home/01-hero.html -->
+<!--#include partials/shared/stats.html -->
+<!--#include partials/home/04-how-it-works.html -->
+<!--#include partials/home/05-what-you-get.html -->
+<!--#include partials/home/06-pillar-store.html -->
+<!--#include partials/home/07-pillar-products.html -->
+<!--#include partials/home/08-pillar-marketing.html -->
+<!--#include partials/home/03b-marketplace-ads.html -->
+<!--#include partials/home/10-the-math.html -->
+<!--#include partials/home/10b-growth-manager.html -->
+<!--#include partials/home/12-trust-security.html -->
+<!--#include partials/home/09-social-proof.html -->
+<!--#include partials/home/13-footer-cta.html -->
+<!--#include partials/shared/footer.html -->
+
+<!--# Скрипты секций идут первыми, reveal.js — последним: он меряет раскладку
+     и только потом взводит .reveal-armed. Любая перестановка даёт вспышку. -->
+<script src="js/core/lang.js"></script>
+<script src="js/home/01-hero-flow.js"></script>
+<script src="js/home/01-hero-sub.js"></script>
+<script src="js/home/03-ai-team.js"></script>
+<script src="js/home/04-how-it-works.js"></script>
+<script src="js/home/05-what-you-get.js"></script>
+<script src="js/home/06-store.js"></script>
+<script src="js/home/07-products.js"></script>
+<script src="js/home/09-social-proof.js"></script>
+<script src="js/home/10-globe-land.js"></script>
+<script src="js/home/10-globe.js"></script>
+<script src="js/shared/footer.js"></script>
+<script src="js/shared/header.js"></script>
+<script src="js/core/reveal.js"></script>
+</body>
+</html>

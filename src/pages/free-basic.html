@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!--#include partials/free/head.html -->
+<!--#include partials/free-basic/head.html -->
 
 <!--# Порядок как на главной: сначала шрифты и токены, потом шапка и
      механизм появления, потом стили секций — ровно в том порядке, в каком
@@ -10,27 +10,27 @@
      Общая база берётся без правок: токены, типографика, кнопки, стекло и
      доступность приходят из 00-base.css. В css/free лежит только то, чего
      в базе нет. -->
-<link rel="stylesheet" href="css/00-fonts.css">
-<link rel="stylesheet" href="css/00-base.css">
-<link rel="stylesheet" href="css/00-header.css">
-<link rel="stylesheet" href="css/00-reveal.css">
-<link rel="stylesheet" href="css/free/00-base.css">
-<link rel="stylesheet" href="css/free/01-hero.css">
+<link rel="stylesheet" href="css/core/fonts.css">
+<link rel="stylesheet" href="css/core/base.css">
+<link rel="stylesheet" href="css/shared/header.css">
+<link rel="stylesheet" href="css/core/reveal.css">
+<link rel="stylesheet" href="css/free-basic/00-base.css">
+<link rel="stylesheet" href="css/free-basic/01-hero.css">
 
 <!--# Полоса показателей и блок «A complete platform» — НЕ свои. Это секции
      главной: 02 и 05. Стили берутся их собственными файлами, а не
      переписываются заново — иначе на двух страницах живут два похожих
      блока, которые расходятся при первой же правке. -->
-<link rel="stylesheet" href="css/02-stats.css">
-<link rel="stylesheet" href="css/05-what-you-get.css">
-<link rel="stylesheet" href="css/free/03-platform.css">
-<link rel="stylesheet" href="css/free/04-pillars.css">
-<link rel="stylesheet" href="css/free/05-all-in-one.css">
-<link rel="stylesheet" href="css/free/06-reviews.css">
-<link rel="stylesheet" href="css/free/07-cta.css">
-<link rel="stylesheet" href="css/free/08-trust.css">
-<link rel="stylesheet" href="css/free/09-faq.css">
-<link rel="stylesheet" href="css/14-footer.css">
+<link rel="stylesheet" href="css/shared/stats.css">
+<link rel="stylesheet" href="css/shared/what-you-get.css">
+<link rel="stylesheet" href="css/free-basic/03-platform.css">
+<link rel="stylesheet" href="css/free-basic/04-pillars.css">
+<link rel="stylesheet" href="css/free-basic/05-all-in-one.css">
+<link rel="stylesheet" href="css/free-basic/06-reviews.css">
+<link rel="stylesheet" href="css/free-basic/07-cta.css">
+<link rel="stylesheet" href="css/free-basic/08-trust.css">
+<link rel="stylesheet" href="css/free-basic/09-faq.css">
+<link rel="stylesheet" href="css/shared/footer.css">
 </head>
 <body class="fb">
 
@@ -38,34 +38,34 @@
      расходится с оригиналом на первой же правке: меняют одну, а вторая про
      это не знает. Поэтому здесь стоят те же партиалы, те же стили и те же
      скрипты. -->
-<!--#include partials/00-header.html -->
+<!--#include partials/shared/header.html -->
 
-<!--#include partials/free/01-hero.html -->
+<!--#include partials/free-basic/01-hero.html -->
 <!--# Полоса показателей — партиал главной без изменений: числа и сноски там
      те же самые, и держать вторую копию незачем. -->
-<!--#include partials/02-stats.html -->
-<!--#include partials/free/03-platform.html -->
-<!--#include partials/free/04-store.html -->
-<!--#include partials/free/05-how.html -->
-<!--#include partials/free/06-sell.html -->
-<!--#include partials/free/07-create.html -->
-<!--#include partials/free/08-marketing.html -->
-<!--#include partials/free/09-all-in-one.html -->
-<!--#include partials/free/10-reviews.html -->
-<!--#include partials/free/11-band.html -->
-<!--#include partials/free/12-trust.html -->
-<!--#include partials/free/13-faq.html -->
-<!--#include partials/free/14-final.html -->
-<!--#include partials/14-footer.html -->
+<!--#include partials/shared/stats.html -->
+<!--#include partials/free-basic/03-platform.html -->
+<!--#include partials/free-basic/04-store.html -->
+<!--#include partials/free-basic/05-how.html -->
+<!--#include partials/free-basic/06-sell.html -->
+<!--#include partials/free-basic/07-create.html -->
+<!--#include partials/free-basic/08-marketing.html -->
+<!--#include partials/free-basic/09-all-in-one.html -->
+<!--#include partials/free-basic/10-reviews.html -->
+<!--#include partials/free-basic/11-band.html -->
+<!--#include partials/free-basic/12-trust.html -->
+<!--#include partials/free-basic/13-faq.html -->
+<!--#include partials/free-basic/14-final.html -->
+<!--#include partials/shared/footer.html -->
 
 <!--# Скрипты шапки и подвала общие с главной. Цены идут до reveal.js:
      они переписывают текст в ценниках, и делать это лучше до того, как
      появление начнёт мерить раскладку. -->
-<script src="js/00-lang.js"></script>
-<script src="js/header.js"></script>
-<script src="js/14-footer.js"></script>
-<script src="js/free-prices.js"></script>
-<script src="js/reveal.js"></script>
+<script src="js/core/lang.js"></script>
+<script src="js/shared/header.js"></script>
+<script src="js/shared/footer.js"></script>
+<script src="js/free-basic/prices.js"></script>
+<script src="js/core/reveal.js"></script>
 
 <script>
 /* DEVELOPER NOTE — Stripe is NOT connected yet.

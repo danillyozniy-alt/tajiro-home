@@ -55,7 +55,7 @@
      Гирих оставлен, он даёт фактуру, но взят вдвое тише. */
     background: radial-gradient(54% 46% at 16% 20%, rgba(212, 163, 115, 0.16) 0%, transparent 66%),
     radial-gradient(48% 42% at 86% 76%, rgba(61, 143, 99, 0.12) 0%, transparent 64%),
-    url("../assets/img/decor/girih-pattern.svg") center / 620px repeat;
+    url("../../assets/img/decor/girih-pattern.svg") center / 620px repeat;
     opacity: 0.30;
 }
 
