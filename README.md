@@ -43,14 +43,13 @@ tajiro/
 │   │   └── free-basic/           секции фрибейсика
 │   ├── css/                  стили — той же раскладкой
 │   │   ├── core/                 fonts · base · reveal
-│   │   ├── shared/               header · footer · stats · what-you-get
+│   │   ├── shared/               header · footer · prefs · stats · what-you-get
 │   │   ├── home/
 │   │   └── free-basic/
 │   ├── js/                   поведение — той же раскладкой
-│   │   ├── core/                 reveal · lang · sand
-│   │   ├── shared/               header · footer
-│   │   ├── home/
-│   │   └── free-basic/
+│   │   ├── core/                 reveal · sand
+│   │   ├── shared/               header · footer · prefs
+│   │   └── home/
 │   └── assets/
 │       ├── fonts/            5 шрифтов (Almarai 400/700/800, Outfit 600/700)
 │       └── img/              картинки вместо base64-простыней
@@ -152,8 +151,11 @@ npm run build
 | 08 | `free-basic/08-trust` | Доверие и безопасность |
 | 09 | `free-basic/09-faq` | Вопросы |
 
-Цены на странице пересчитываются по выбранной стране — `js/free-basic/prices.js`.
-Селект помечен классом `.market-pick`, по нему скрипт его и находит.
+Язык и валюта переключаются одним элементом в шапке — `js/shared/prefs.js`.
+Он общий для всех страниц: собирает кнопки по `data-lang` и `data-market`,
+держит панель в шапке и строку в мобильном листе в одном состоянии и
+пересчитывает всё, что помечено `data-usd`, `data-sub`, `data-range`,
+`data-week`. На странице без таких пометок просто ничего не находит.
 
 ---
 

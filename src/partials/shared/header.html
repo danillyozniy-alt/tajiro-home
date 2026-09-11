@@ -140,16 +140,51 @@
     <div class="site-header__right">
       <a class="nav__login" href="#login">Log in</a>
 
-      <!-- Выбор рынка. Стоит слева от кнопки, как в макете. От него зависят
-           цены на странице: их пересчитывает js/shared/prices.js по классу
-           .market-pick. Переименуешь класс — цены встанут. -->
-      <select class="market-pick nav-market" aria-label="Choose your country">
-        <option value="AE">🇦🇪 UAE</option>
-        <option value="SA">🇸🇦 Saudi</option>
-        <option value="QA">🇶🇦 Qatar</option>
-        <option value="BH">🇧🇭 Bahrain</option>
-        <option value="OM">🇴🇲 Oman</option>
-      </select>
+      <!-- Язык и валюта — ОДИН элемент в полосе, а не два.
+
+           Двумя они в неё не влезают: рядом уже стоят «Log in» и кнопка, и
+           на 960px строка ломалась пополам. Поэтому в баре висит короткая
+           надпись «EN · AED» с текущим выбором, а сам выбор лежит в панели —
+           той же стеклянной, что у Platform и Resources, и на том же
+           механизме (.nav__trigger + aria-controls).
+
+           Панель прижата к правому краю: она последняя в строке, и от
+           левого края уехала бы за экран. -->
+      <div class="nav__item nav__item--prefs">
+        <button class="nav__trigger nav-prefs__trigger" type="button" id="nav-trigger-prefs"
+                aria-expanded="false" aria-controls="nav-panel-prefs">
+          <span class="nav-prefs__now" data-prefs-label>EN &middot; AED</span>
+          <svg class="nav__chev" viewBox="0 0 8 5" width="8" height="5" aria-hidden="true" focusable="false">
+            <path d="M0.536 0.625H7.464L4 4.375L0.536 0.625Z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <div class="nav-panel nav-panel--prefs" id="nav-panel-prefs"
+             role="group" aria-labelledby="nav-trigger-prefs">
+          <div class="nav-prefs">
+
+            <div class="nav-prefs__group">
+              <p class="kicker nav-prefs__kicker">Language</p>
+              <div class="nav-prefs__opts nav-prefs__opts--lang">
+                <button class="nav-prefs__opt" type="button" data-lang="en" aria-pressed="true">English</button>
+                <button class="nav-prefs__opt" type="button" data-lang="ar" lang="ar" aria-pressed="false">العربية</button>
+              </div>
+            </div>
+
+            <div class="nav-prefs__group">
+              <p class="kicker nav-prefs__kicker">Currency</p>
+              <div class="nav-prefs__opts">
+                <button class="nav-prefs__opt" type="button" data-market="AE" aria-pressed="true">United Arab Emirates<span class="nav-prefs__cur">AED</span></button>
+                <button class="nav-prefs__opt" type="button" data-market="SA" aria-pressed="false">Saudi Arabia<span class="nav-prefs__cur">SAR</span></button>
+                <button class="nav-prefs__opt" type="button" data-market="QA" aria-pressed="false">Qatar<span class="nav-prefs__cur">QAR</span></button>
+                <button class="nav-prefs__opt" type="button" data-market="BH" aria-pressed="false">Bahrain<span class="nav-prefs__cur">BHD</span></button>
+                <button class="nav-prefs__opt" type="button" data-market="OM" aria-pressed="false">Oman<span class="nav-prefs__cur">OMR</span></button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
 
       <a class="btn btn--primary btn--sm" href="#footer-cta">Start for free</a>
     </div>
@@ -255,20 +290,50 @@
         <li class="nav-acc__row">
           <a class="nav-acc__trigger nav-acc__trigger--plain" href="#the-math">Pricing</a>
         </li>
+
+        <!-- Язык и валюта на телефоне — обычная строка аккордеона, как
+             Platform и Resources: ниже 901 десктопная полоса скрыта целиком,
+             и без этой строки выбрать их нечем. Кнопки те же, что в панели:
+             скрипт находит их по data-lang и data-market и держит обе
+             копии в одном состоянии. -->
+        <li class="nav-acc__row">
+          <button class="nav-acc__trigger" type="button" id="acc-trigger-prefs"
+                  aria-expanded="false" aria-controls="acc-panel-prefs">
+            <span data-prefs-label>EN &middot; AED</span>
+            <svg class="nav-acc__chev" viewBox="0 0 8.66026 4.5" width="10" height="6" aria-hidden="true" focusable="false">
+              <path d="M0 0H8.66025L4.33013 4.5L0 0Z" fill="currentColor"/>
+            </svg>
+          </button>
+          <div class="nav-acc__panel" id="acc-panel-prefs" role="group" aria-labelledby="acc-trigger-prefs">
+            <div class="nav-acc__clip">
+              <div class="nav-prefs nav-prefs--sheet">
+
+                <div class="nav-prefs__group">
+                  <p class="kicker nav-prefs__kicker">Language</p>
+                  <div class="nav-prefs__opts nav-prefs__opts--lang">
+                    <button class="nav-prefs__opt" type="button" data-lang="en" aria-pressed="true">English</button>
+                    <button class="nav-prefs__opt" type="button" data-lang="ar" lang="ar" aria-pressed="false">العربية</button>
+                  </div>
+                </div>
+
+                <div class="nav-prefs__group">
+                  <p class="kicker nav-prefs__kicker">Currency</p>
+                  <div class="nav-prefs__opts">
+                    <button class="nav-prefs__opt" type="button" data-market="AE" aria-pressed="true">United Arab Emirates<span class="nav-prefs__cur">AED</span></button>
+                    <button class="nav-prefs__opt" type="button" data-market="SA" aria-pressed="false">Saudi Arabia<span class="nav-prefs__cur">SAR</span></button>
+                    <button class="nav-prefs__opt" type="button" data-market="QA" aria-pressed="false">Qatar<span class="nav-prefs__cur">QAR</span></button>
+                    <button class="nav-prefs__opt" type="button" data-market="BH" aria-pressed="false">Bahrain<span class="nav-prefs__cur">BHD</span></button>
+                    <button class="nav-prefs__opt" type="button" data-market="OM" aria-pressed="false">Oman<span class="nav-prefs__cur">OMR</span></button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </li>
       </ul>
 
       <a class="nav-sheet__login" href="#login">Log in</a>
-
-      <!-- Тот же выбор рынка, что в десктопной полосе: ниже 901 она скрыта
-           целиком, и без этой копии на телефоне страну выбрать нечем.
-           Скрипт цен держит оба селекта в одном состоянии. -->
-      <select class="market-pick nav-sheet__market" aria-label="Choose your country">
-        <option value="AE">🇦🇪 UAE</option>
-        <option value="SA">🇸🇦 Saudi</option>
-        <option value="QA">🇶🇦 Qatar</option>
-        <option value="BH">🇧🇭 Bahrain</option>
-        <option value="OM">🇴🇲 Oman</option>
-      </select>
     </div>
 
     <a class="btn btn--primary nav-sheet__cta" href="#footer-cta">Start for free</a>

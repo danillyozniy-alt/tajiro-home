@@ -647,74 +647,6 @@ body.nav-open {
 }
 
 
-/* --- Выбор рынка -------------------------------------------------------------
-   Селект страны в правой группе шапки, слева от кнопки. От него зависят цены
-   на странице — их пересчитывает js/shared/prices.js.
-
-   Родную стрелку снимаем и рисуем свою: системная нарисована шрифтом ОС и
-   рядом с кнопкой страницы читается формой из другого набора. Обводка
-   бронзовая, как у второстепенной кнопки — рядом с зелёной заливкой это
-   разводит их по ролям.
-   -------------------------------------------------------------------------- */
-.nav-market {
-    appearance: none;
-    -webkit-appearance: none;
-    flex: none;
-    height: 42px;
-    padding: 0 34px 0 14px;
-    border: 1.5px solid var(--c-line-gold);
-    border-radius: var(--r-btn);
-    background-color: rgba(255, 255, 255, 0.5);
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M0.536 0.625H7.464L4 4.375L0.536 0.625Z' fill='%23865b2a'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 13px center;
-    font-family: var(--f-body);
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--c-gold);
-    cursor: pointer;
-    transition: border-color 0.18s ease, background-color 0.18s ease;
-}
-
-.nav-market:hover {
-    border-color: var(--c-line-strong);
-    background-color: rgba(255, 255, 255, 0.75);
-}
-
-/* Список раскрывается средствами ОС — его вид не наш. Пункты хотя бы не
-   белые на белом: эти цвета браузер берёт для выпадающего списка. */
-.market-pick option {
-    background: var(--c-bg-alt);
-    color: var(--c-text);
-}
-
-/* Копия в мобильном листе. Там она стоит в столбце под «Log in»,
-   поэтому прижата влево и набрана тем же кеглем, что соседние строки. */
-.nav-sheet__market {
-    appearance: none;
-    -webkit-appearance: none;
-    align-self: flex-start;
-    margin-top: 14px;
-    height: 46px;
-    padding: 0 38px 0 16px;
-    border: 1.5px solid var(--c-line-gold);
-    border-radius: var(--r-btn);
-    background-color: rgba(255, 255, 255, 0.5);
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M0.536 0.625H7.464L4 4.375L0.536 0.625Z' fill='%23865b2a'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    font-family: var(--f-body);
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--c-gold);
-    cursor: pointer;
-}
-
-/* Показывается ровно там, где скрыта правая группа шапки, и наоборот */
-@media (min-width: 901px) { .nav-sheet__market { display: none; } }
-
 /* Правая группа: «Log in», выбор страны и кнопка. Прежний зазор 28px их на
    901–1280 не вмещал — «Log in» ломался в две строки. Ужимаем зазор и
    запрещаем перенос; с 1281 места снова хватает, и зазор возвращается. */
@@ -728,3 +660,122 @@ body.nav-open {
 @media (min-width: 1281px) {
   .site-header__right { gap: 24px; }
 }
+
+/* --- Язык и валюта -----------------------------------------------------------
+   Один элемент в полосе вместо двух. В баре — короткая надпись с текущим
+   выбором, сам выбор в панели. Панель та же, что у Platform и Resources:
+   стекло, тот же механизм открытия, та же глубина тени.
+   -------------------------------------------------------------------------- */
+.nav__item--prefs { position: relative; }
+
+/* Надпись «EN · AED». Обводки нет намеренно: рядом стоит простая ссылка
+   «Log in» и зелёная кнопка, третий элемент с рамкой спорил бы с обоими. */
+.nav-prefs__trigger {
+    height: auto;
+    padding: 0;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+}
+
+.nav-prefs__now { font-weight: 700; }
+
+/* Панель прижата к правому краю: она последняя в строке, и от левого края
+   уехала бы за экран. Ширина по содержимому — списки короткие. */
+.nav-panel--prefs {
+    left: auto;
+    right: 0;
+    width: 268px;
+}
+
+.nav-prefs {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 18px;
+}
+
+.nav-prefs__kicker {
+    margin-bottom: 8px;
+    font-size: 11px;
+    letter-spacing: 1.3px;
+    color: var(--c-text-muted);
+}
+
+.nav-prefs__opts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Язык — два варианта в строку: они короткие, и столбцом из двух пунктов
+   список выглядел бы длиннее, чем есть. */
+.nav-prefs__opts--lang {
+    flex-direction: row;
+    gap: 8px;
+}
+
+.nav-prefs__opts--lang .nav-prefs__opt {
+  /* width: auto перебивает 100% из общего правила: в строке ширину задаёт
+     flex, а 100% плюс зазор дают переполнение — в мобильном листе вторая
+     кнопка уезжала за правый край. */
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    justify-content: center;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-btn);
+}
+
+.nav-prefs__opt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: var(--r-card);
+    font-family: var(--f-body);
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    color: var(--c-text-strong);
+    transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.nav-prefs__opt:hover { background: var(--nav-hover); }
+
+/* Код валюты — тем же дисплейным, что все числа страницы: рядом с названием
+   страны он читается значением, а не второй половиной названия. */
+.nav-prefs__cur {
+    flex: none;
+    font-family: var(--f-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-text-muted);
+}
+
+/* Выбранный вариант. Зелёный тинт и зелёный текст — та же пилюля, что у
+   надзаголовков столпов; цвет здесь не единственный носитель смысла,
+   состояние продублировано в aria-pressed. */
+.nav-prefs__opt[aria-pressed="true"] {
+    background: color-mix(in srgb, var(--c-green) 10%, transparent);
+    color: var(--c-green-text);
+    font-weight: 700;
+}
+
+.nav-prefs__opt[aria-pressed="true"] .nav-prefs__cur { color: var(--c-green-text); }
+
+.nav-prefs__opts--lang .nav-prefs__opt[aria-pressed="true"] {
+    border-color: var(--c-line-green);
+}
+
+/* --- Та же пара в мобильном листе --------------------------------------------
+   Строка аккордеона, как Platform и Resources. Рамок у вариантов там нет:
+   лист и без них узкий, а два уровня обводок в столбце читаются решёткой. */
+.nav-prefs--sheet {
+    gap: 16px;
+    padding: 4px 0 12px;
+}
+
+.nav-prefs--sheet .nav-prefs__opt { font-size: 16px; line-height: 24px; }
+.nav-prefs--sheet .nav-prefs__cur { font-size: 14px; }
