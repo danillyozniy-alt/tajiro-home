@@ -198,6 +198,19 @@ function buildLinked(html, out) {
 function buildSingle(html, withVideo, sendBase) {
   let out = html;
 
+  /* --- ссылки между страницами -------------------------------------------
+     На сайте кнопки главной ведут на free-basic.html — файл лежит рядом в
+     dist/. В send/ такого файла нет: там у каждой страницы своё имя вида
+     Tajiro-<страница>.html. Без подмены кнопка в отправленном файле ведёт
+     в никуда, и снаружи это выглядит поломкой вёрстки, а не сборки.
+
+     Поэтому в цельной версии адрес страницы заменяется на имя её цельного
+     файла: положишь оба рядом — переходы работают и без сети. */
+  for (const other of PAGES) {
+    if (other.send === sendBase) continue;
+    out = out.split('href="' + other.out + '"').join('href="' + other.send + '"');
+  }
+
   /* --- стили: весь блок <link> схлопывается в один <style> --------------- */
   const sheets = [];
   out = out.replace(
