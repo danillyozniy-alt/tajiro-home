@@ -73,7 +73,7 @@
 @media (min-width: 901px) {
   .s-05__index--six {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    max-width: 1000px;
+    max-width: 1160px;
   }
 
   /* Сначала возвращаем черту всем (с 601 она снята у нечётных), потом
@@ -82,10 +82,25 @@
   .s-05__index--six .s-05__item:nth-child(3n + 1)::before { display: none; }
 
   .fb-idx { padding: 18px 24px; }
-  .s-05__index--six .s-05__num { font-size: 20px; }
+
+  /* Пункты набраны КРУПНЕЕ, чем на главной: 22/30 против её 19/25 у подписи
+     и 15/23 против 14/22 у описания.
+
+     Совпадение кеглей тут не работает. У главной пункт держит крупный
+     золотой номер сбоку — он и даёт блоку вес. Здесь номер убран в строку и
+     уравнен с подписью (иначе он забирал первый взгляд себе), и без него
+     тем же кеглем шесть пунктов читались мелкой сноской под большим
+     заголовком. Вес, который там несёт номер, здесь несёт сам текст.
+
+     Выше поднимать нельзя: на 16 описание «AI influencers and promo videos,
+     ready to post.» перестаёт помещаться в строку, ряды идут вразнобой. */
+  .s-05__index--six .s-05__num { font-size: 22px; }
+  .s-05__index--six .s-05__item-title { font-size: 22px; line-height: 30px; }
+  .s-05__index--six .s-05__item-text { font-size: 15px; line-height: 23px; }
 }
 
 @media (min-width: 1281px) {
-  .s-05__index--six { max-width: 1100px; }
+  /* Во всю ширину контейнера, как у оглавления главной */
+  .s-05__index--six { max-width: 1200px; }
   .fb-idx { padding-inline: 32px; }
 }
