@@ -27,18 +27,27 @@
    Своя обёртка .fb-idx несёт только отступы.
    ========================================================================== */
 
-.fb-idx { display: block; padding: 12px 0; }
+.fb-idx { display: block; padding: 14px 0; }
 
-/* Номер в строку с подписью. Дисплейный, как все числа страницы, но кеглем
-   меньше подписи и песочный — он метка порядка, а не заголовок. */
+/* Номер в строку с подписью.
+
+   Кегль крупный — вровень с номерами главной по весу, а не по числу. У неё
+   номер стоит отдельным столбцом и набран 40-м; здесь он внутри строки, и
+   40 разорвали бы строку подписи. 26 — тот предел, при котором номер ещё
+   держится в строке, но читается наравне с ней, а не сноской.
+
+   line-height: 1 обязателен. Без него высокий инлайновый элемент раздвигает
+   строку подписи изнутри: у подписи 25px интерлиньяжа, а номер просил бы
+   свои 26 плюс полулидинг — строка вырастала на четыре пиксела, и ряды
+   переставали стоять вровень. */
 .s-05__index--six .s-05__num {
     display: inline;
-    margin-right: 9px;
+    margin-right: 10px;
     font-family: var(--f-display);
-    font-size: 15px;
+    font-size: 26px;
     font-weight: 600;
-    line-height: inherit;
-    letter-spacing: 0;
+    line-height: 1;
+    letter-spacing: -0.6px;
     color: var(--c-sand);
 }
 
@@ -68,8 +77,8 @@
   .s-05__index--six .s-05__item:nth-child(odd)::before { display: block; }
   .s-05__index--six .s-05__item:nth-child(3n + 1)::before { display: none; }
 
-  .fb-idx { padding: 10px 24px; }
-  .s-05__index--six .s-05__num { font-size: 16px; }
+  .fb-idx { padding: 18px 24px; }
+  .s-05__index--six .s-05__num { font-size: 28px; }
 }
 
 @media (min-width: 1281px) {
