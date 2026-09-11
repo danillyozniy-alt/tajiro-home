@@ -10,7 +10,18 @@
    искажать.
    ========================================================================== */
 
-.fb-hero { padding-block: 44px 48px; }
+/* Геометрия блока — та же, что у первого экрана главной, и списана с него
+   целиком: отступы, пропорция колонок и высота.
+
+   Про высоту отдельно. У главной она не задана числом, а тянется за
+   высотой окна: clamp(380, 100vh − 300, 580) плюс 48 пикселей воздуха.
+   Смысл в том, чтобы первый экран помещался в сгиб вместе с кнопками при
+   любом мониторе. Здесь справа не фигура, а стеклянная панель, и своей
+   высоты ей хватает — но без той же формулы блок выходил ниже, чем на
+   главной (667 против 629 на 1440×900), и два первых экрана рядом читались
+   разными. Поэтому берём ту же: панель центрируется в полосе так же, как
+   там центрируется снимок. */
+.fb-hero { padding-block: 40px 48px; }
 
 .fb-hero__wrap {
     display: grid;
@@ -217,23 +228,40 @@
 
 /* --- Адаптив ---------------------------------------------------------------- */
 @media (min-width: 601px) {
-  .fb-hero { padding-block: 56px 64px; }
+  .fb-hero { padding-block: 52px 56px; }
   .fb-hero__title { font-size: 52px; line-height: 58px; letter-spacing: -1.4px; }
   .fb-hero__lede { line-height: 29px; }
   .fb-stat__v { font-size: 26px; }
 }
 
 @media (min-width: 901px) {
-  .fb-hero { padding-block: 64px 80px; }
-  .fb-hero__wrap {
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 52px;
+  /* Рост полосы тянется за высотой окна — формула главной без изменений */
+  .fb-hero {
+    --fb-fig-h: clamp(380px, calc(100vh - 300px), 580px);
+
+  /* Флекс, а не просто min-height: полоса выше своего содержимого, и без
+     центрирования панель прижималась бы к верху, а на главной снимок
+     стоит посередине. */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(var(--fb-fig-h) + 48px);
+    padding-block: 56px;
   }
+
+  /* Колонки НЕ равные, как на главной: текст берёт больше. При половине на
+     половину заголовок расходился на пять строк и читался лесенкой. */
+  .fb-hero__wrap {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    column-gap: 40px;
+  }
+
   .fb-hero__title { font-size: 60px; line-height: 66px; letter-spacing: -1.8px; }
   .fb-hero__lede { font-size: 20px; line-height: 32px; }
 }
 
 @media (min-width: 1281px) {
+  .fb-hero { padding-block: 64px; }
   .fb-hero__title { font-size: 68px; line-height: 74px; letter-spacing: -2px; }
   .fb-hero__lede { font-size: 22px; line-height: 34px; }
 }
