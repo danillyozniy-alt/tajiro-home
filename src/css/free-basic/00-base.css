@@ -189,8 +189,13 @@
 
 /* --- Шапка секции -------------------------------------------------------------
    Кегль заголовка — не общий .h2, а тот, что стоит у столпов главной:
-   30/38 на телефоне и 38/46 с 601. Общий .h2 на 601 даёт 34/42, на 901
-   уходит в 44/52 — рядом с главной блоки читались крупнее её собственных. */
+   30/38 → 38/46 → 48/54 → 56/62. Ступени переписаны с 06-pillar-store.css
+   один в один, включая трекинг.
+
+   Общий .h2 сюда не годится: у него другая лесенка (28 → 34 → 44), и на
+   широком экране заголовки страницы оказывались на восемь пунктов мельче
+   тех же заголовков на главной. Семейство и вес при этом совпадали, поэтому
+   разница читалась не как «другой шрифт», а как «что-то не то». */
 .fb-head__title {
     margin-top: 14px;
     max-width: 15em;
@@ -306,55 +311,13 @@
 
 
 /* --- Выбор рынка -------------------------------------------------------------
-   В прототипе селект стоял в шапке. Шапка здесь общая с главной и про
-   страны не знает — а добавить его туда значило бы вывести выбор рынка и на
-   главную. Переехал на первый экран, к строке условий: там он и по смыслу
-   ближе, потому что именно от страны зависит цена, о которой говорит
-   соседняя строка.
+   Своего здесь нет. Селект страны стоит в общей шапке — там же, где в
+   прототипе, — и оформлен в css/shared/header.css (.nav-market плюс копия
+   для мобильного листа .nav-sheet__market).
 
-   Класс .market-pick на самом элементе оставлен из прототипа: по нему
-   скрипт цен находит селект.
-
-   Родную стрелку убираем и рисуем свою: системная нарисована шрифтом ОС и
-   рядом с кнопками страницы читается формой из другого набора. ---------- */
-.fb-market {
-    appearance: none;
-    -webkit-appearance: none;
-    height: 42px;
-    padding: 0 38px 0 16px;
-    border: 1.5px solid var(--c-line-gold);
-    border-radius: var(--r-btn);
-    background-color: rgba(255, 255, 255, 0.5);
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M0.536 0.625H7.464L4 4.375L0.536 0.625Z' fill='%23865b2a'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--c-gold);
-    cursor: pointer;
-    transition: border-color 0.18s ease, background-color 0.18s ease;
-}
-
-.fb-market:hover {
-    border-color: var(--c-line-strong);
-    background-color: rgba(255, 255, 255, 0.75);
-}
-
-/* Список раскрывается средствами ОС — его вид не наш. Пункты хотя бы не
-   белые на белом: эти цвета браузер берёт для выпадающего списка. */
-.fb-market option {
-    background: var(--c-bg-alt);
-    color: var(--c-text);
-}
-
-.fb-market__row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin-top: 22px;
-}
+   Он общий намеренно: шапка одна на все страницы, и выбор рынка должен
+   стоять на каждой в одном месте. Цены по нему пересчитывает
+   js/shared/prices.js — тоже общий. -------------------------------------- */
 
 
 /* --- Стеклянная плашка -------------------------------------------------------
@@ -410,7 +373,6 @@
    строго по возрастанию. ---------------------------------------------------- */
 @media (min-width: 601px) {
   .fb-section { padding-block: 80px; }
-  .fb-market { height: 46px; }
 
   /* Те же ступени, что у столпов главной */
   .fb-numeral { font-size: 68px; letter-spacing: -2.4px; }
@@ -422,8 +384,12 @@
 
 @media (min-width: 901px) {
   .fb-section { padding-block: 96px; }
+  .fb-numeral { font-size: 80px; letter-spacing: -3px; }
+  .fb-head__title { font-size: 48px; line-height: 54px; letter-spacing: -1.2px; }
 }
 
 @media (min-width: 1281px) {
   .fb-section { padding-block: 120px; }
+  .fb-numeral { font-size: 96px; letter-spacing: -3.8px; }
+  .fb-head__title { font-size: 56px; line-height: 62px; letter-spacing: -1.5px; }
 }

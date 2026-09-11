@@ -138,8 +138,19 @@
     </nav>
 
     <div class="site-header__right">
-      <button class="nav__lang" type="button" data-lang-switch lang="ar">عربي</button>
       <a class="nav__login" href="#login">Log in</a>
+
+      <!-- Выбор рынка. Стоит слева от кнопки, как в макете. От него зависят
+           цены на странице: их пересчитывает js/shared/prices.js по классу
+           .market-pick. Переименуешь класс — цены встанут. -->
+      <select class="market-pick nav-market" aria-label="Choose your country">
+        <option value="AE">🇦🇪 UAE</option>
+        <option value="SA">🇸🇦 Saudi</option>
+        <option value="QA">🇶🇦 Qatar</option>
+        <option value="BH">🇧🇭 Bahrain</option>
+        <option value="OM">🇴🇲 Oman</option>
+      </select>
+
       <a class="btn btn--primary btn--sm" href="#footer-cta">Start for free</a>
     </div>
 
@@ -246,8 +257,18 @@
         </li>
       </ul>
 
-      <button class="nav-sheet__lang" type="button" data-lang-switch lang="ar">عربي</button>
       <a class="nav-sheet__login" href="#login">Log in</a>
+
+      <!-- Тот же выбор рынка, что в десктопной полосе: ниже 901 она скрыта
+           целиком, и без этой копии на телефоне страну выбрать нечем.
+           Скрипт цен держит оба селекта в одном состоянии. -->
+      <select class="market-pick nav-sheet__market" aria-label="Choose your country">
+        <option value="AE">🇦🇪 UAE</option>
+        <option value="SA">🇸🇦 Saudi</option>
+        <option value="QA">🇶🇦 Qatar</option>
+        <option value="BH">🇧🇭 Bahrain</option>
+        <option value="OM">🇴🇲 Oman</option>
+      </select>
     </div>
 
     <a class="btn btn--primary nav-sheet__cta" href="#footer-cta">Start for free</a>

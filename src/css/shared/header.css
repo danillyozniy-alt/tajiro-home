@@ -647,44 +647,84 @@ body.nav-open {
 }
 
 
+/* --- Выбор рынка -------------------------------------------------------------
+   Селект страны в правой группе шапки, слева от кнопки. От него зависят цены
+   на странице — их пересчитывает js/shared/prices.js.
 
-
-/* --- Язык -----------------------------------------------------------------
-   Не капсула и не список: рядом стоят простая ссылка «Log in» и зелёная
-   кнопка, третий элемент с рамкой спорил бы с обоими. Надпись повторяет
-   вид «Log in», а написан на ней тот язык, на который переключишься. */
-.nav__lang {
-    display: inline-flex;
-    align-items: center;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--c-text-strong);
+   Родную стрелку снимаем и рисуем свою: системная нарисована шрифтом ОС и
+   рядом с кнопкой страницы читается формой из другого набора. Обводка
+   бронзовая, как у второстепенной кнопки — рядом с зелёной заливкой это
+   разводит их по ролям.
+   -------------------------------------------------------------------------- */
+.nav-market {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    height: 42px;
+    padding: 0 34px 0 14px;
+    border: 1.5px solid var(--c-line-gold);
+    border-radius: var(--r-btn);
+    background-color: rgba(255, 255, 255, 0.5);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M0.536 0.625H7.464L4 4.375L0.536 0.625Z' fill='%23865b2a'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 13px center;
     font-family: var(--f-body);
-  /* Арабское начертание при равном кегле выглядит крупнее латинского:
-     у него выше очко и длиннее выносные. Поэтому 14 против 15 у «Log in» —
-     на глаз строки получаются одного роста. Вес не поднимаем: рядом
-     обычные ссылки, и жирная надпись выбивалась. */
     font-size: 14px;
-    line-height: 22px;
+    font-weight: 700;
+    color: var(--c-gold);
     cursor: pointer;
-    transition: color 0.18s ease;
+    transition: border-color 0.18s ease, background-color 0.18s ease;
 }
 
-.nav__lang:hover { color: var(--c-gold); }
+.nav-market:hover {
+    border-color: var(--c-line-strong);
+    background-color: rgba(255, 255, 255, 0.75);
+}
 
-.nav-sheet__lang {
+/* Список раскрывается средствами ОС — его вид не наш. Пункты хотя бы не
+   белые на белом: эти цвета браузер берёт для выпадающего списка. */
+.market-pick option {
+    background: var(--c-bg-alt);
+    color: var(--c-text);
+}
+
+/* Копия в мобильном листе. Там она стоит в столбце под «Log in»,
+   поэтому прижата влево и набрана тем же кеглем, что соседние строки. */
+.nav-sheet__market {
+    appearance: none;
+    -webkit-appearance: none;
     align-self: flex-start;
-    margin-bottom: 12px;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--c-text-strong);
+    margin-top: 14px;
+    height: 46px;
+    padding: 0 38px 0 16px;
+    border: 1.5px solid var(--c-line-gold);
+    border-radius: var(--r-btn);
+    background-color: rgba(255, 255, 255, 0.5);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M0.536 0.625H7.464L4 4.375L0.536 0.625Z' fill='%23865b2a'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
     font-family: var(--f-body);
-    font-size: 17px;
-        line-height: 26px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--c-gold);
     cursor: pointer;
 }
 
-@media (max-width: 900px) { .nav__lang { display: none; } }
-@media (min-width: 901px) { .nav-sheet__lang { display: none; } }
+/* Показывается ровно там, где скрыта правая группа шапки, и наоборот */
+@media (min-width: 901px) { .nav-sheet__market { display: none; } }
+
+/* Правая группа: «Log in», выбор страны и кнопка. Прежний зазор 28px их на
+   901–1280 не вмещал — «Log in» ломался в две строки. Ужимаем зазор и
+   запрещаем перенос; с 1281 места снова хватает, и зазор возвращается. */
+@media (min-width: 901px) {
+  .site-header__right { gap: 16px; }
+  .nav__login {
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 1281px) {
+  .site-header__right { gap: 24px; }
+}
